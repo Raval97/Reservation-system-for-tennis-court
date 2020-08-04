@@ -3,30 +3,45 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Web Api</title>
 
-    <link rel="stylesheet" href="../static/helloStyle.css" th:href="@{/helloStyle.css}">
-    <link rel="stylesheet" href="../static/main.css" th:href="@{/main.css}">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin-ext" rel="stylesheet">
-</head >
-<body>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/main.css}">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="script.js"></script>
 
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="main.css">
 </head>
-<body>
+<body onload="time(); setInterval(time,1000);">
 
-Hello
+    <div id="container">
+        <div id="top">
+            <div id="logo">
+                <h1>Logo</h1>
+            </div>
+            <div id="topMenu">
+                <button type="button" id="registration">REGISTER</button>
+                <button type="button" id="login">LOG IN</button>
+            </div>
+        </div>
 
+        <div id="center">
+            <div id="menu">
+                <ul>
+                    <li><a href="">About Us</a></li>
+                    <li><a href="">Price-List</a></li>
+                    <li><a href="">Gallery</a></li>
+                    <li><a href="">Contact</a></li>
+                </ul>
+            </div>
+            <div id="content">
+                <h1>HELLO</h1>
+            </div>
+        </div>
+
+        <div id="footer">
+            &copy;2020 RG
+        </div>
     </div>
-    <div class="both"></div>
-    <div class="footer">
-    </div>
-</div>
+
 </body>
 </html>

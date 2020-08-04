@@ -1,6 +1,9 @@
 package tennisCourt.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tennisCourt.model.User;
@@ -9,8 +12,7 @@ import tennisCourt.repo.UserRepository;
 import java.util.List;
 
 @Service
-@Transactional
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private UserRepository repo;
 
@@ -35,4 +37,12 @@ public class UserService {
         repo.deleteById(id);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return repo.findByUsername(s);
+    }
+
+    public User findUserByUsername(String s) {
+        return repo.findByUsername(s);
+    }
 }
