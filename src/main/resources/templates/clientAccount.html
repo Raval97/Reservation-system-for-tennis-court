@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Web Api</title>
+
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/main.css}">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="script.js"></script>
+
+</head>
+<body onload="time(); setInterval(time,1000);">
+
+<div id="container">
+    <div id="top">
+        <div id="logo">
+            <h1>Logo</h1>
+        </div>
+        <div id="topMenu">
+            <a th:href="@{'/account'}">
+                <button type="button" id="account">ACCOUNT</button>
+            </a>
+            <a th:href="@{'/logout'}">
+                <button type="button" id="logout">LOG OUT</button>
+            </a>
+        </div>
+    </div>
+
+    <div id="center">
+        <div id="menu">
+            <ul>
+                <li><a href="/account">Personal Data</a></li>
+                <li><a href="/clientReservation">My Reservation</a></li>
+                <li><a href="/payment">Payment</a></li>
+            </ul>
+        </div>
+        <div id="content">
+            <form action="#" th:action="@{'/client/edit_data/'+${user.id}}" method="post">
+                <div id="clientData">
+                    <table border="0" cellpadding="10">
+                        <tr th:object="${client}">
+                            <td></td>
+                            <td class="heading" colspan="2">Your account</td>
+                        </tr>
+                        <tr th:object="${client}">
+                            <td>First Name:</td>
+                            <td><input type="text" th:field="*{name}"/></td>
+                        </tr>
+                        <tr th:object="${client}">
+                            <td>Second Name:</td>
+                            <td><input type="text" th:field="*{surname}"/></td>
+                        </tr>
+                        <tr th:object="${client}">
+                            <td>Email Address:</td>
+                            <td><input type="text" th:field="*{emailAddress}"/></td>
+                        </tr>
+                        <tr th:object="${client}">
+                            <td>Phone Number:</td>
+                            <td><input type="text" th:field="*{phoneNumber}"/></td>
+                        </tr>
+                        <tr th:object="${user}">
+                            <td>Login:</td>
+                            <td><input type="text" th:field="*{username}"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="optionClientAccount" align="center">
+                    <a th:href="@{'/editClientData'}">
+                        <button type="submit" class="option" id="editClientData">EDIT DATA</button>
+                    </a>
+                    <a th:href="@{'/changePassword'}">
+                        <button type="button" class="option" id="changePassword">CHANGE PASSWORD</button>
+                    </a>
+                    <a th:href="@{'/deleteClient'}">
+                        <button type="button" class="option" id="deleteClient">DELETE ACCOUNT</button>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div id="footer">
+            &copy;2020 RG
+        </div>
+    </div>
+
+</body>
+</html>

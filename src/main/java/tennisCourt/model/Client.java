@@ -18,8 +18,10 @@ public class Client {
     @MapsId
     private User user;
 
-    public Client(Long id, String name, String surname, String emailAddress, int phoneNumber) {
-        this.id = id;
+    public Client() {
+    }
+
+    public Client(String name, String surname, String emailAddress, int phoneNumber) {
         this.name = name;
         this.surname = surname;
         this.emailAddress = emailAddress;

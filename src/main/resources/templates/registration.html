@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Web Api</title>
+
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/main.css}">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="script.js"></script>
+
+</head>
+<body onload="time(); setInterval(time,1000);">
+
+    <div id="container">
+        <div id="top">
+            <div id="logo">
+                <h1>Logo</h1>
+            </div>
+            <div id="topMenu">
+                <a th:href="@{'/start'}"><button type="button" id="back">BACK</button></a>
+                <a th:href="@{'/login'}"><button type="button" id="login">LOG IN</button></a>
+            </div>
+        </div>
+
+        <div id="center">
+            <div id="clientData">
+                <table border="0" cellpadding="10">
+                    <tr>
+                        <td class="heading" colspan="2">Create Account</td>
+                    </tr>
+                    <form action="#" th:action="@{/add-user}" th:object="${client}" method="post">
+                        <tr>
+                            <td>First Name:</td>
+                            <td><input type="text"  th:field="*{name}" /></td>
+                        </tr>
+                        <tr>
+                            <td>Second Name:</td>
+                            <td><input type="text"  th:field="*{surname}" /></td>
+                        </tr>
+                        <tr>
+                            <td>Email Address:</td>
+                            <td><input type="text"  th:field="*{emailAddress}" /></td>
+                        </tr>
+                        <tr>
+                            <td>Phone Number:</td>
+                            <td><input type="text"  th:field="*{phoneNumber}" /></td>
+                        </tr>
+                        <tr th:object="${user}">
+                            <td>Login:</td>
+                            <td><input type="text"  th:field="*{username}" /></td>
+                        </tr>
+                        <tr th:object="${user}">
+                            <td>Password:</td>
+                            <td><input type="text"  th:field="*{password}" /></td>
+                        </tr>
+                        <tr align="center">
+                            <td colspan="2"><button class="registerNewUser" type="submit">REGISTER</button> </td>
+                        </tr>
+                    </form>
+                </table>
+            </div>
+        </div>
+
+        <div id="footer">
+            &copy;2020 RG
+        </div>
+    </div>
+
+</body>
+</html>

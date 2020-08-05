@@ -39,7 +39,14 @@ public class User implements UserDetails{
         this.role = role;
     }
 
-    public User() {
+    public User() { }
+
+    public User(String username, String password, String role, Client client) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.client=client;
+        this.client.setUser(this);
     }
 
     public void setPassword(String password) {
