@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Web Api</title>
+    <title>Web Api start</title>
 
     <link rel="stylesheet" href="../static/style.css" th:href="@{/main.css}">
     <link rel="stylesheet" href="style.css">
@@ -19,20 +19,20 @@
                 <h1>Logo</h1>
             </div>
             <div id="topMenu">
-                <a th:href="@{'/registration'}"><button type="button" id="register">REGISTER</button></a>
+                <a th:href="@{'/registration'}"><button type="button">REGISTER</button></a>
                 <a th:href="@{'/login'}"><button type="button" id="login">LOG IN</button></a>
             </div>
         </div>
 
         <div id="center">
-            <div id="menu">
-                <ul>
-                    <li><a href="/start">About Us</a></li>
-                    <li><a href="priceList">Price-List</a></li>
-                    <li><a href="gallery">Gallery</a></li>
-                    <li><a href="contact">Contact</a></li>
-                </ul>
-            </div>
+			<div class="menu_div">
+				<ul>
+					<li id="active"><a href="/start">About Us</a></li>
+					<li><a href="priceList">Price-List</a></li>
+					<li><a href="gallery">Gallery</a></li>
+					<li><a href="contact">Contact</a></li>
+				</ul>
+			</div>
             <div id="content">
                 <h1>HELLO</h1>
             </div>

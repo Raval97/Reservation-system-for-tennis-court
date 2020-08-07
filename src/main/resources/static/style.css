@@ -52,29 +52,44 @@ button {
     height: 500px;
 }
 
-#menu {
+.menu_div {
 	margin-top: 50px;
     width: 20%;
 	height: 100%;
     float: left;
 }
 
-
-#menu ul {
-    padding: 0;
-    margin: 0;
+.menu_div ul
+{
+	padding:0px;
+	margin-left:20px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:20px;
+	font-weight: 900;
+	color:#FFF;
+	list-style:none;
+	text-indent:15px;
 }
-
-#menu li {
-    list-style: none;
-	text-decoration: none;
-    color:  #000;
-    background: lightblue;
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 4px;
-    display: block;
-    transition:  all 0.5s ease-in-out;
+.menu_div ul li
+{
+	padding-bottom: 5px;
+	background:#3f3f3f;
+	line-height:70px;
+    border-bottom:10px solid #333;
+}
+.menu_div ul li a
+{
+	text-decoration:none;
+	color:#FFF;
+	display:block;
+}
+.menu_div ul li a:hover
+{
+	background:#d40203;
+}
+.menu_div ul li#active
+{
+	background:#d40203;
 }
 
 #content{
@@ -96,8 +111,13 @@ button {
 /* registration  clientAccount*/
 
 #clientData {
-    margin: 50px auto 20px;
-    width: 50%;
+    margin: 50px auto 50px;
+    width: 40%;
+}
+
+#register{
+	width: 100%;
+	margin: 20px auto 30px;
 }
 
 .heading {

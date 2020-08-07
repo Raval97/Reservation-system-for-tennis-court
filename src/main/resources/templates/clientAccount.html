@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Web Api</title>
+    <title>Web Api cl_account</title>
 
     <link rel="stylesheet" href="../static/style.css" th:href="@{/main.css}">
     <link rel="stylesheet" href="style.css">
@@ -19,8 +19,8 @@
             <h1>Logo</h1>
         </div>
         <div id="topMenu">
-            <a th:href="@{'/account'}">
-                <button type="button" id="account">ACCOUNT</button>
+            <a th:href="@{'/client'}">
+                <button type="button" id="back">BACK</button>
             </a>
             <a th:href="@{'/logout'}">
                 <button type="button" id="logout">LOG OUT</button>
@@ -29,13 +29,13 @@
     </div>
 
     <div id="center">
-        <div id="menu">
-            <ul>
-                <li><a href="/account">Personal Data</a></li>
-                <li><a href="/clientReservation">My Reservation</a></li>
-                <li><a href="/payment">Payment</a></li>
-            </ul>
-        </div>
+		 <div class="menu_div">
+				<ul>
+					<li><a href="/account">Personal Data</a></li>
+					<li><a href="/clientReservation">My Reservation</a></li>
+					<li><a href="/payment">Payment</a></li>
+				</ul>
+			</div>
         <div id="content">
             <form action="#" th:action="@{'/client/edit_data/'+${user.id}}" method="post">
                 <div id="clientData">
