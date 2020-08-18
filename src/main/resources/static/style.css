@@ -1,3 +1,6 @@
+@import url("priceListStylePage.css");
+@import url("registration&AccountPagesStyle.css");
+
 body
 {
     margin: 0;
@@ -108,29 +111,4 @@ button {
     clear: both;
 }
 
-/* registration  clientAccount*/
 
-#clientData {
-    margin: 50px auto 50px;
-    width: 40%;
-}
-
-#register{
-	width: 100%;
-	margin: 20px auto 30px;
-}
-
-.heading {
-    color: yellow;
-    font-size: 120%;
-    font-weight: 900;
-    text-align: center;
-}
-
-.option {
-	color: yellow;
-	font-size: 20px;
-	width: 250px;
-	height: 60px;
-	margin: 5px 30px 10px;
-}

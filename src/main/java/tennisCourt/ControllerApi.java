@@ -13,6 +13,7 @@ import tennisCourt.model.Client;
 import tennisCourt.model.ReservationServices;
 import tennisCourt.model.User;
 import tennisCourt.repo.CourtRepository;
+import tennisCourt.security.WebSecurityConfig;
 import tennisCourt.service.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +52,12 @@ public class ControllerApi {
         return "startPage";
     }
 
+    @RequestMapping("/priceList")
+    public String viewPriceListPage(Model model) {
+        return "priceList";
+    }
+
+
 
     //############## START CLIENT ##########################################
     @RequestMapping("/client")
@@ -58,32 +65,72 @@ public class ControllerApi {
         return "clientPage";
     }
 
-    @RequestMapping("/account")
-    public String viewClientAccount(Model model) {
+    //############## CLIENT ACCOUNT ##########################################
+
+    @RequestMapping("/account/{type}")
+    public String viewClientAccount(@PathVariable(name = "type") Double type, Model model) {
         User user = userService.findUserByUsername(User.getUserName());
         Client client = clientService.get(user.getId());
         model.addAttribute("client", client);
         model.addAttribute("user", user);
+        model.addAttribute("type", type);
+        String oldPassword = new String();
+        String newPassword = new String();
+        String repeatNewPassword = new String();
+        model.addAttribute("oldPassword", oldPassword);
+        model.addAttribute("newPassword", newPassword);
+        model.addAttribute("repeatNewPassword", repeatNewPassword);
+        String ifDeleteAccount = "NO";
+        model.addAttribute("ifDeleteAccount", ifDeleteAccount);
         return "clientAccount";
     }
 
     @RequestMapping(value = "/client/edit_data/{id}", method = RequestMethod.POST)
     public String editClientData(@PathVariable(name = "id") Long id,
-                                 @ModelAttribute ("client") Client client,
-                                 @ModelAttribute ("user") User user){
+                                 @ModelAttribute("client") Client client,
+                                 @ModelAttribute("user") User user) {
         User userToChange = userService.get(id);
-        userToChange.setUsername(user.getUsername());
-        userToChange.setClient(client);
-        userService.save(userToChange);
-        return "redirect:/account";
+        Client clientToChange = clientService.get(user.getId());
+        if((!userToChange.getUsername().equals(user.getUsername())) || (!clientToChange.equals(client))) {
+            userToChange.setUsername(user.getUsername());
+            userToChange.setClient(client);
+            userService.save(userToChange);
+            return "redirect:/account/1.1";
+        }
+        else
+            return "redirect:/account/1";
     }
-    //bład: edyttuje dane ale nie aktualizuje ich w programie i nie moze odczytac zaktualizowanego id bo go nie widzi
 
+    @RequestMapping(value = "/client/changePassword/{id}", method = RequestMethod.POST)
+    public String changeClientPassword(@PathVariable(name = "id") Long id,
+                                       @ModelAttribute("user") User user,
+                                       @RequestParam String newPassword,
+                                       @RequestParam String repeatNewPassword,
+                                       @RequestParam String oldPassword) {
+        User userToChange = userService.get(id);
+        if (WebSecurityConfig.passwordEncoder().matches(oldPassword, userToChange.getPassword())) {
+            System.out.println(newPassword+"  "+repeatNewPassword);
+            if (repeatNewPassword.equals(newPassword)) {
+                userToChange.setPassword(newPassword);
+                userService.save(userToChange);
+                return "redirect:/account/2.1";
+            }
+            else
+                return "redirect:/account/2.2";
+        } else
+            return "redirect:/account/2.3";
+    }
+
+    @RequestMapping("/client/deleteAccount/{id}")
+    public String deleteBetFromCoupon(@PathVariable(name = "id") int id) {
+        userService.delete(id);
+        return "redirect:/start";
+    }
 
     //################  LOGOWANIE & REJESTRACJA  ##################################
 
     @GetMapping("/registration")
-    public  String test(Model model){
+    public String test(Model model) {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("client", new Client());

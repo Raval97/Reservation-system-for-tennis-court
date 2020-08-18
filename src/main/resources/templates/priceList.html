@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Web Api start</title>
+
+    <link rel="stylesheet" href="style.css">
+<!--    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
+    <script src ="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+
+</head>
+<body onload="time(); setInterval(time,1000);">
+
+    <div id="container">
+        <div id="top">
+            <div id="logo">
+                <h1>Logo</h1>
+            </div>
+            <div id="topMenu">
+                <a th:href="@{'/registration'}"><button type="button">REGISTER</button></a>
+                <a th:href="@{'/login'}"><button type="button" id="login">LOG IN</button></a>
+            </div>
+        </div>
+
+        <div id="center" class="center2">
+			<div class="menu_div">
+				<ul>
+					<li id="active"><a href="/start">About Us</a></li>
+					<li><a href="/priceList">Price-List</a></li>
+					<li><a href="/gallery">Gallery</a></li>
+					<li><a href="/contact">Contact</a></li>
+				</ul>
+			</div>
+            <div id="content" align="center">
+                <div id="choiceOption">
+                    <div id="calendar">
+                        <button class="week" id="prevWeek"> PREV </button>
+                        <button class="week" id="nextWeek"> NEXT </button>
+                    </div>
+
+                    <div id="schedule"  align="center">
+                        <table >
+                            <thead>
+                                <tr>
+                                    <th>TIME</th>
+                                    <th>Court 1</th>
+                                    <th>Court 2</th>
+                                    <th>Court 3</th>
+                                    <th>Court 4</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div >
+                    <div id="additions">
+
+                    </div >
+                </div>
+                <div id="orderList">
+
+                </div >
+            </div>
+        </div>
+
+        <div id="footer">
+            &copy;2020 RG
+        </div>
+    </div>
+
+</body>
+</html>
