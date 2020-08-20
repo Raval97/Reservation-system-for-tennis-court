@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Web Api cl_account</title>
 
-    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
-    <script type="text/javascript" src="script.js"></script>
+    <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
 
 </head>
 <body onload="time(); setInterval(time,1000);">
@@ -18,7 +18,7 @@
             <h1>Logo</h1>
         </div>
         <div id="topMenu">
-            <a th:href="@{'/client'}">
+            <a th:href="@{'/OurTennis'}">
                 <button type="button" id="back">BACK</button>
             </a>
             <a th:href="@{'/logout'}">
@@ -30,15 +30,15 @@
     <div id="center">
         <div class="menu_div">
             <ul>
-                <li id="active"><a href="/client">Application</a></li>
-                <li><a href="/account">Personal Data</a></li>
-                <li><a href="/clientReservation">My Reservation</a></li>
-                <li><a href="/payment">Payment</a></li>
+                <li id="active"><a href="/OurTennis">Application</a></li>
+                <li><a href="/OurTennis/account">Personal Data</a></li>
+                <li><a href="/OurTennis/clientReservation">My Reservation</a></li>
+                <li><a href="/OurTennis/payment">Payment</a></li>
             </ul>
         </div>
         <div id="content">
             <!-- CHANGE DATA -->
-            <form  th:if="${type >=1 && type < 2}" action="#" th:action="@{'/client/edit_data/'+${user.id}}" method="post">
+            <form  th:if="${type >=1 && type < 2}" action="#" th:action="@{'/OurTennis/client/edit_data/'+${user.id}}" method="post">
                 <div id="clientData">
                     <table border="0" cellpadding="10">
                         <tr th:if="${type == 1}">
@@ -73,19 +73,19 @@
                     </table>
                 </div>
                 <div id="optionClientAccount" align="center">
-                    <a th:href="@{'/account/2'}" >
+                    <a th:href="@{'/OurTennis/account/2'}" >
                         <button type="button" class="option" id="changePassword">CHANGE PASSWORD</button>
                     </a>
                     <a>
                         <button type="submit" class="option" id="editClientData">EDIT DATA</button>
                     </a>
-                    <a th:href="@{'/account/3'}" >
+                    <a th:href="@{'/OurTennis/account/3'}" >
                         <button type="button" class="option" id="deleteClient">DELETE ACCOUNT</button>
                     </a>
                 </div>
             </form>
             <!-- CHANGE PASSWORD -->
-            <form  th:if="${type >=2 && type <3}" action="#" th:action="@{'/client/changePassword/'+${user.id}}" method="post">
+            <form  th:if="${type >=2 && type <3}" action="#" th:action="@{'/OurTennis/client/changePassword/'+${user.id}}" method="post">
                 <div id="clientData">
                     <table border="0" cellpadding="10">
                         <tr th:if="${type == 2.0}">
@@ -115,20 +115,20 @@
                     </table>
                 </div>
                 <div id="optionClientAccount" align="center">
-                    <a th:href="@{'/account/1'}">
+                    <a th:href="@{'/OurTennis/account/1'}">
                         <button type="button" class="option" id="editClientData">EDIT DATA</button>
                     </a>
                     <a>
                         <button type="submit" class="option" id="changePassword">CHANGE PASSWORD</button>
                     </a>
-                    <a th:href="@{'/account/3'}">
+                    <a th:href="@{'/OurTennis/account/3'}">
                         <button type="button" class="option" id="deleteClient">DELETE ACCOUNT</button>
                     </a>
                 </div>
             </form>
         </div>
             <!-- DELETE ACCOUNT-->
-            <form  th:if="${type >= 3}" action="#" th:action="@{'/client/deleteAccount/'+${user.id}}" method="post">
+            <form  th:if="${type >= 3}" action="#" th:action="@{'/OurTennis/client/deleteAccount/'+${user.id}}" method="post">
                 <div id="clientData">
                     <table border="0" cellpadding="10">
                         <tr>
@@ -142,13 +142,13 @@
                     </table>
                 </div>
                 <div id="optionClientAccount" align="center">
-                    <a th:href="@{'/account/1'}">
+                    <a th:href="@{'/OurTennis/account/1'}">
                         <button type="button" class="option" id="editClientData">EDIT DATA</button>
                     </a>
                     <a>
                         <button type="submit" class="option" id="deleteClient">DELETE ACCOUNT</button>
                     </a>
-                    <a th:href="@{'/account/2'}">
+                    <a th:href="@{'/OurTennis/account/2'}">
                         <button type="submit" class="option" id="changePassword">CHANGE PASSWORD</button>
                     </a>
                 </div>

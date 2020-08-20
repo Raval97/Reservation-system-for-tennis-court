@@ -38,12 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/client/**").hasRole("USER")
+                .antMatchers("/OurTennis/**").hasRole("USER")
                 .and()
-                .formLogin().permitAll().defaultSuccessUrl("/client", true)
+                .formLogin().permitAll().defaultSuccessUrl("/OurTennis", true)
                 .and()
                 .logout()
-                .logoutSuccessUrl("/start")
+                .logoutSuccessUrl("/ourTennis")
                 .permitAll();
     }
 

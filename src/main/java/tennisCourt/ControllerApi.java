@@ -47,27 +47,40 @@ public class ControllerApi {
     }
 
     //############## START USER ##########################################
-    @RequestMapping("/start")
+    @RequestMapping("/ourTennis")
     public String viewStartPage(Model model) {
+        model.addAttribute("logged", false);
         return "startPage";
     }
 
-    @RequestMapping("/priceList")
+    @RequestMapping("/ourTennis/priceList")
     public String viewPriceListPage(Model model) {
+        model.addAttribute("logged", false);
         return "priceList";
     }
 
 
-
     //############## START CLIENT ##########################################
-    @RequestMapping("/client")
+    @RequestMapping("/OurTennis")
     public String viewClientPage(Model model) {
-        return "clientPage";
+        model.addAttribute("logged", true);
+        return "startPage";
+    }
+
+    @RequestMapping("/OurTennis/priceList")
+    public String viewClientPriceListPage(Model model) {
+        model.addAttribute("logged", true);
+        return "priceList";
+    }
+
+    @RequestMapping("/OurTennis/reservation")
+    public String viewReservationPage(Model model) {
+        return "reservationPage";
     }
 
     //############## CLIENT ACCOUNT ##########################################
 
-    @RequestMapping("/account/{type}")
+    @RequestMapping("/OurTennis/account/{type}")
     public String viewClientAccount(@PathVariable(name = "type") Double type, Model model) {
         User user = userService.findUserByUsername(User.getUserName());
         Client client = clientService.get(user.getId());
@@ -85,7 +98,7 @@ public class ControllerApi {
         return "clientAccount";
     }
 
-    @RequestMapping(value = "/client/edit_data/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/OurTennis/client/edit_data/{id}", method = RequestMethod.POST)
     public String editClientData(@PathVariable(name = "id") Long id,
                                  @ModelAttribute("client") Client client,
                                  @ModelAttribute("user") User user) {
@@ -101,7 +114,7 @@ public class ControllerApi {
             return "redirect:/account/1";
     }
 
-    @RequestMapping(value = "/client/changePassword/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/OurTennis/client/changePassword/{id}", method = RequestMethod.POST)
     public String changeClientPassword(@PathVariable(name = "id") Long id,
                                        @ModelAttribute("user") User user,
                                        @RequestParam String newPassword,
@@ -121,7 +134,7 @@ public class ControllerApi {
             return "redirect:/account/2.3";
     }
 
-    @RequestMapping("/client/deleteAccount/{id}")
+    @RequestMapping("/OurTennis/client/deleteAccount/{id}")
     public String deleteBetFromCoupon(@PathVariable(name = "id") int id) {
         userService.delete(id);
         return "redirect:/start";

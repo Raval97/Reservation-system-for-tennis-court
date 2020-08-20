@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Web Api start</title>
 
-    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
-    <script type="text/javascript" src="script.js"></script>
+    <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
 
 </head>
 <body onload="time(); setInterval(time,1000);">
@@ -17,7 +17,11 @@
         <div id="logo">
             <h1>Logo</h1>
         </div>
-        <div id="topMenu">
+        <div id="topMenu" th:if="${logged == true}">
+            <a th:href="@{'/OurTennis/account/1'}"><button type="button" id="account">ACCOUNT</button></a>
+            <a th:href="@{'/logout'}"><button type="button" id="logout">LOG OUT</button></a>
+        </div>
+        <div id="topMenu" th:if="${logged == false}">
             <a th:href="@{'/registration'}"><button type="button">REGISTER</button></a>
             <a th:href="@{'/login'}"><button type="button" id="login">LOG IN</button></a>
         </div>
@@ -25,11 +29,18 @@
 
     <div id="center">
         <div class="menu_div">
-            <ul>
-                <li id="active"><a href="/start">About Us</a></li>
-                <li><a href="priceList">Price-List</a></li>
-                <li><a href="gallery">Gallery</a></li>
-                <li><a href="contact">Contact</a></li>
+            <ul th:if="${logged == true}">
+                <li  id="active"><a href="/OurTennis/reservation">Reservation</a></li>
+                <li><a href="/OurTennis">About US</a></li>
+                <li><a href="/OurTennis/priceList">Price-List</a></li>
+                <li><a href="/OurTennis/gallery">Gallery</a></li>
+                <li><a href="/OurTennis/contact">Contact</a></li>
+            </ul>
+            <ul th:if="${logged == false}">
+                <li id="active"><a href="/ourTennis">About Us</a></li>
+                <li><a href="/ourTennis/priceList">Price-List</a></li>
+                <li><a href="/ourTennis/gallery">Gallery</a></li>
+                <li><a href="/ourTennis/contact">Contact</a></li>
             </ul>
         </div>
         <div id="content">

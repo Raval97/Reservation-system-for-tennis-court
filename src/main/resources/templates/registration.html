@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Web Api register</title>
 
-    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
-    <script type="text/javascript" src="script.js"></script>
+    <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
 
 </head>
 <body onload="time(); setInterval(time,1000);">
@@ -18,7 +18,7 @@
             <h1>Logo</h1>
         </div>
         <div id="topMenu">
-            <a th:href="@{'/start'}"><button type="button" id="back">BACK</button></a>
+            <a th:href="@{'/ourTennis'}"><button type="button" id="back">BACK</button></a>
             <a th:href="@{'/login'}"><button type="button" id="login">LOG IN</button></a>
         </div>
     </div>
@@ -26,10 +26,10 @@
     <div id="center">
         <div class="menu_div">
             <ul>
-                <li id="active"><a href="/start">About Us</a></li>
-                <li><a href="priceList">Price-List</a></li>
-                <li><a href="gallery">Gallery</a></li>
-                <li><a href="contact">Contact</a></li>
+                <li id="active"><a href="/ourTennis">About Us</a></li>
+                <li><a href="/ourTennis/priceList">Price-List</a></li>
+                <li><a href="/ourTennis/gallery">Gallery</a></li>
+                <li><a href="/ourTennis/contact">Contact</a></li>
             </ul>
         </div>
         <div id="register" align="center">

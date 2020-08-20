@@ -19,34 +19,52 @@
             <div id="logo">
                 <h1>Logo</h1>
             </div>
-            <div id="topMenu" th:if="${logged == true}">
+            <div>
                 <a th:href="@{'/OurTennis/account/1'}"><button type="button" id="account">ACCOUNT</button></a>
                 <a th:href="@{'/logout'}"><button type="button" id="logout">LOG OUT</button></a>
-            </div>
-            <div id="topMenu" th:if="${logged == false}">
-                <a th:href="@{'/registration'}"><button type="button">REGISTER</button></a>
-                <a th:href="@{'/login'}"><button type="button" id="login">LOG IN</button></a>
             </div>
         </div>
 
         <div id="center" class="center2">
 			<div class="menu_div">
-                <ul th:if="${logged == true}">
+                <ul>
                     <li  id="active"><a href="/OurTennis/reservation">Reservation</a></li>
                     <li><a href="/OurTennis">About US</a></li>
                     <li><a href="/OurTennis/priceList">Price-List</a></li>
                     <li><a href="/OurTennis/gallery">Gallery</a></li>
                     <li><a href="/OurTennis/contact">Contact</a></li>
                 </ul>
-                <ul th:if="${logged == false}">
-                    <li id="active"><a href="/ourTennis">About Us</a></li>
-                    <li><a href="/ourTennis/priceList">Price-List</a></li>
-                    <li><a href="/ourTennis/gallery">Gallery</a></li>
-                    <li><a href="/ourTennis/contact">Contact</a></li>
-                </ul>
 			</div>
             <div id="content" align="center">
-                <h1>HELLO</h1>
+                <div id="choiceOption">
+                    <div id="calendar">
+                        <button class="week" id="prevWeek"> PREV </button>
+                        <button class="week" id="nextWeek"> NEXT </button>
+                    </div>
+
+                    <div id="schedule"  align="center">
+                        <table >
+                            <thead>
+                                <tr>
+                                    <th>TIME</th>
+                                    <th>Court 1</th>
+                                    <th>Court 2</th>
+                                    <th>Court 3</th>
+                                    <th>Court 4</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div >
+                    <div id="additions">
+
+                    </div >
+                </div>
+                <div id="orderList">
+
+                </div >
             </div>
         </div>
 
