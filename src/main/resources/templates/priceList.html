@@ -6,54 +6,121 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Web Api start</title>
 
-    <script src ="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/priceListStylePage.css}">
     <script type="text/javascript" th:src="@{/jsFiles/script.js}"></script>
 
 
 </head>
 <body onload="time(); setInterval(time,1000);">
 
-    <div id="container">
-        <div id="top">
-            <div id="logo">
-                <h1>Logo</h1>
-            </div>
-            <div id="topMenu" th:if="${logged == true}">
-                <a th:href="@{'/OurTennis/account/1'}"><button type="button" id="account">ACCOUNT</button></a>
-                <a th:href="@{'/logout'}"><button type="button" id="logout">LOG OUT</button></a>
-            </div>
-            <div id="topMenu" th:if="${logged == false}">
-                <a th:href="@{'/registration'}"><button type="button">REGISTER</button></a>
-                <a th:href="@{'/login'}"><button type="button" id="login">LOG IN</button></a>
-            </div>
+<div id="container">
+    <div id="top">
+        <div id="logo">
+            <h1>Logo</h1>
         </div>
-
-        <div id="center" class="center2">
-			<div class="menu_div">
-                <ul th:if="${logged == true}">
-                    <li  id="active"><a href="/OurTennis/reservation">Reservation</a></li>
-                    <li><a href="/OurTennis">About US</a></li>
-                    <li><a href="/OurTennis/priceList">Price-List</a></li>
-                    <li><a href="/OurTennis/gallery">Gallery</a></li>
-                    <li><a href="/OurTennis/contact">Contact</a></li>
-                </ul>
-                <ul th:if="${logged == false}">
-                    <li id="active"><a href="/ourTennis">About Us</a></li>
-                    <li><a href="/ourTennis/priceList">Price-List</a></li>
-                    <li><a href="/ourTennis/gallery">Gallery</a></li>
-                    <li><a href="/ourTennis/contact">Contact</a></li>
-                </ul>
-			</div>
-            <div id="content" align="center">
-                <h1>HELLO</h1>
-            </div>
+        <div id="topMenu" th:if="${logged == true}">
+            <a th:href="@{'/OurTennis/account/1'}">
+                <button type="button" id="account">ACCOUNT</button>
+            </a>
+            <a th:href="@{'/logout'}">
+                <button type="button" id="logout">LOG OUT</button>
+            </a>
         </div>
-
-        <div id="footer">
-            &copy;2020 RG
+        <div id="topMenu" th:if="${logged == false}">
+            <a th:href="@{'/registration'}">
+                <button type="button">REGISTER</button>
+            </a>
+            <a th:href="@{'/login'}">
+                <button type="button" id="login">LOG IN</button>
+            </a>
         </div>
     </div>
+
+    <div id="center" class="center2">
+        <div class="menu_div">
+            <ul th:if="${logged == true}">
+                <li id="active"><a href="/OurTennis/reservation">Reservation</a></li>
+                <li><a href="/OurTennis">About US</a></li>
+                <li><a href="/OurTennis/priceList">Price-List</a></li>
+                <li><a href="/OurTennis/gallery">Gallery</a></li>
+                <li><a href="/OurTennis/contact">Contact</a></li>
+            </ul>
+            <ul th:if="${logged == false}">
+                <li id="active"><a href="/ourTennis">About Us</a></li>
+                <li><a href="/ourTennis/priceList">Price-List</a></li>
+                <li><a href="/ourTennis/gallery">Gallery</a></li>
+                <li><a href="/ourTennis/contact">Contact</a></li>
+            </ul>
+        </div>
+        <div id="content" align="center">
+            <div id="priceList">
+                <h1 style="color: red">Price List</h1>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Savings</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>From Monday To Friday</td>
+                        <td>6.00 - 14.00</td>
+                        <td>40 PLN</td>
+                    </tr>
+                    <tr>
+                        <td>From Monday To Friday</td>
+                        <td>14.00 - 23.00</td>
+                        <td>50 PLN</td>
+                    </tr>
+                    <tr>
+                        <td>From Saturday To Sunday</td>
+                        <td>6.00 - 23.00</td>
+                        <td>45 PLN</td>
+                    </tr>
+                    <tr>
+                        <td>Night Gaming</td>
+                        <td>23.00 - 01.00</td>
+                        <td>30 PLN</td>
+                    </tr>
+                    <tr>
+                        <td>10-hour Tennis Pass</td>
+                        <td>6.00 - 14..00</td>
+                        <td>300 PLN</td>
+                    </tr>
+                    <tr>
+                        <td>10-hour Tennis Pass</td>
+                        <td>14.00 - 23.00</td>
+                        <td>400 PLN</td>
+                    </tr>
+                    <tr>
+                        <td>Rocket Rental</td>
+                        <td>The Duration Of The Game</td>
+                        <td>5 PLN</td>
+                    </tr>
+                    <tr>
+                        <td>Balls Rental</td>
+                        <td>The Duration Of The Game</td>
+                        <td>2 PLN</td>
+                    </tr>
+                    <tr>
+                        <td>Shoes Rental (1 pairs)</td>
+                        <td>The Duration Of The Game</td>
+                        <td>5 PLN</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer">
+        &copy;2020 RG
+    </div>
+</div>
 
 </body>
 </html>

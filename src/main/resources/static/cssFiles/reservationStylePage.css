@@ -1,0 +1,105 @@
+.center2{
+    min-height: 1500px;
+}
+
+#choiceOption{
+    margin-left: 1%;
+    height: 700px;
+    width: 69%;
+    float: left;
+}
+
+#calendar{
+    height: 100px;
+    padding-top: 10px;
+}
+
+#schedule{
+    height: auto;
+}
+
+#additions{
+    background: green;
+    height: 100px;
+}
+
+#orderList{
+    background: red;
+    height: 400px;
+    width: 30%;
+    float: left;
+}
+
+.calendarDay{
+    float: left;
+    background: #7b38d8;
+    font-size: 12px;
+    font-weight: 200;
+    height: 50px;
+    width: 10%;
+    border-radius: 5px;
+    border: 2px solid white;
+    margin: 5px;
+    padding: 0px;
+}
+
+.week{
+    float: left;
+    width: 8%;
+    padding: 5px;
+    margin: 10px 5px 5px;
+}
+
+#prevWeek{
+    background: gray;
+    color: black;
+    cursor: default;
+}
+
+.clickedButton {
+    color: yellow;
+    font-weight: 900;
+    border: 5px solid yellow;
+    float: left;
+    background: #7b38d8;
+    font-size: 12px;
+    height: 50px;
+    width: 10%;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 0px;
+    cursor: default;
+}
+
+th{
+    background: cornflowerblue;
+    color: #d40203;
+    height: 50px;
+    font-size: 20px;
+}
+
+.tableHour{
+    background: firebrick;
+    color: white;
+    font-weight: 700;
+    width: 150px;
+}
+
+.tableNode{
+    background: lightblue;
+    color: black;
+    width: 140px;
+    border-radius: 0px;
+    margin: auto;
+    font-size: 12px;
+    border: 0px;
+    padding: 15px;
+}
+
+.tableNode:hover{
+    background-color:white;
+}
+
+.tableNode:focus{
+    background-color:blue;
+}
