@@ -120,7 +120,11 @@
                         <h2>DELETE ACCOUNT</h2>
                         <tr th:object="${client}">
                             <td>Ae you sure, you want to delete your account?</td>
-                            <td><input type="text" th:field="*{name}"/></td>
+                            <td>
+                                <label class="switch">
+                                    <input type="checkbox"><span class="slider round" id="rentBalls"></span>
+                                </label>
+                            </td>
                         </tr>
                     </table>
                 </div>
