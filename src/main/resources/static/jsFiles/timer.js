@@ -1,3 +1,4 @@
+
 function time() {
     var data = new Date();
     var hours = data.getHours();

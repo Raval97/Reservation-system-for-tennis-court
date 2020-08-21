@@ -41,23 +41,23 @@
     <div id="center" class="center2">
         <div class="menu_div">
             <ul th:if="${logged == true}">
-                <li id="active"><a href="/OurTennis/reservation">Reservation</a></li>
+                <li><a href="/OurTennis/reservation">Reservation</a></li>
                 <li><a href="/OurTennis">About US</a></li>
                 <li><a href="/OurTennis/priceList">Price-List</a></li>
-                <li><a href="/OurTennis/gallery">Gallery</a></li>
+                <li id="active"><a href="/OurTennis/gallery">Gallery</a></li>
                 <li><a href="/OurTennis/contact">Contact</a></li>
             </ul>
             <ul th:if="${logged == false}">
-                <li id="active"><a href="/ourTennis">About Us</a></li>
+                <li><a href="/ourTennis">About Us</a></li>
                 <li><a href="/ourTennis/priceList">Price-List</a></li>
-                <li><a href="/ourTennis/gallery">Gallery</a></li>
+                <li id="active"><a href="/ourTennis/gallery">Gallery</a></li>
                 <li><a href="/ourTennis/contact">Contact</a></li>
             </ul>
         </div>
         <div id="content" align="center">
             <div id="gallery">
-                <h1 style="color: red">Gallery</h1>
-                </br></br></br>
+                <h2>Gallery</h2>
+                </br>
                 <img src="https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/image1.jpg">
                 </br></br></br>
                 <img src="https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/image2.jpg">

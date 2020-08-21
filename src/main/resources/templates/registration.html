@@ -27,7 +27,7 @@
     <div id="center">
         <div class="menu_div">
             <ul>
-                <li id="active"><a href="/ourTennis">About Us</a></li>
+                <li><a href="/ourTennis">About Us</a></li>
                 <li><a href="/ourTennis/priceList">Price-List</a></li>
                 <li><a href="/ourTennis/gallery">Gallery</a></li>
                 <li><a href="/ourTennis/contact">Contact</a></li>
@@ -35,9 +35,7 @@
         </div>
         <div id="register" align="center">
             <table border="0" cellpadding="10">
-                <tr>
-                    <td class="heading" colspan="2">Create Account</td>
-                </tr>
+                <h2>Create Account</h2>
                 <form action="#" th:action="@{/add-user}" th:object="${client}" method="post">
                     <tr>
                         <td>First Name:</td>

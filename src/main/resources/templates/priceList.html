@@ -41,22 +41,22 @@
     <div id="center" class="center2">
         <div class="menu_div">
             <ul th:if="${logged == true}">
-                <li id="active"><a href="/OurTennis/reservation">Reservation</a></li>
+                <li><a href="/OurTennis/reservation">Reservation</a></li>
                 <li><a href="/OurTennis">About US</a></li>
-                <li><a href="/OurTennis/priceList">Price-List</a></li>
+                <li id="active"><a href="/OurTennis/priceList">Price-List</a></li>
                 <li><a href="/OurTennis/gallery">Gallery</a></li>
                 <li><a href="/OurTennis/contact">Contact</a></li>
             </ul>
             <ul th:if="${logged == false}">
-                <li id="active"><a href="/ourTennis">About Us</a></li>
-                <li><a href="/ourTennis/priceList">Price-List</a></li>
+                <li><a href="/ourTennis">About Us</a></li>
+                <li id="active"><a href="/ourTennis/priceList">Price-List</a></li>
                 <li><a href="/ourTennis/gallery">Gallery</a></li>
                 <li><a href="/ourTennis/contact">Contact</a></li>
             </ul>
         </div>
         <div id="content" align="center">
             <div id="priceList">
-                <h1 style="color: red">Price List</h1>
+                <h2>Price List</h2>
                 <table>
                     <thead>
                     <tr>

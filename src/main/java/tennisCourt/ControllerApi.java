@@ -50,7 +50,7 @@ public class ControllerApi {
     public ControllerApi() {
     }
 
-    //############## START USER ##########################################
+    //############## USER ##########################################
     @RequestMapping("/ourTennis")
     public String viewStartPage(Model model) {
         model.addAttribute("logged", false);
@@ -78,7 +78,7 @@ public class ControllerApi {
         return "galleryPage";
     }
 
-    //############## START CLIENT ##########################################
+    //############## CLIENT ##########################################
     @RequestMapping("/OurTennis")
     public String viewClientPage(Model model) {
         model.addAttribute("logged", true);
@@ -142,10 +142,10 @@ public class ControllerApi {
             userToChange.setUsername(user.getUsername());
             userToChange.setClient(client);
             userService.save(userToChange);
-            return "redirect:/account/1.1";
+            return "redirect:/OurTennis/account/1.1";
         }
         else
-            return "redirect:/account/1";
+            return "redirect:/OurTennis/account/1";
     }
 
     @RequestMapping(value = "/OurTennis/client/changePassword/{id}", method = RequestMethod.POST)
@@ -160,18 +160,28 @@ public class ControllerApi {
             if (repeatNewPassword.equals(newPassword)) {
                 userToChange.setPassword(newPassword);
                 userService.save(userToChange);
-                return "redirect:/account/2.1";
+                return "redirect:/OurTennis/account/2.1";
             }
             else
-                return "redirect:/account/2.2";
+                return "redirect:/OurTennis/account/2.2";
         } else
-            return "redirect:/account/2.3";
+            return "redirect:/OurTennis/account/2.3";
     }
 
     @RequestMapping("/OurTennis/client/deleteAccount/{id}")
     public String deleteBetFromCoupon(@PathVariable(name = "id") int id) {
         userService.delete(id);
-        return "redirect:/start";
+        return "redirect:/ourTennis";
+    }
+
+    @RequestMapping("/OurTennis/clientReservation")
+    public String viewClientReservationPage(Model model) {
+        return "clientReservationPage";
+    }
+
+    @RequestMapping("/OurTennis/payment")
+    public String viewClientPaymentPage(Model model) {
+        return "clientPaymentPage";
     }
 
     //################  LOGOWANIE & REJESTRACJA  ##################################
@@ -188,7 +198,7 @@ public class ControllerApi {
     public String addUser(@ModelAttribute User user, @ModelAttribute Client client) {
         User newUser = new User(user.getUsername(), user.getPassword(), "ROLE_USER", client);
         userService.save(newUser);
-        return "redirect:/start";
+        return "redirect:/ourTennis";
     }
 
 }
