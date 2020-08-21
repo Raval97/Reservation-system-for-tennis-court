@@ -9,6 +9,8 @@ weekday[5] = "Friday";
 weekday[6] = "Saturday";
 
 $(document).ready(function () {
+
+    //###################### kalendarz  init ########################################
     var data = new Date()
     data.setDate(data.getDate() - 1);
     var div = null;
@@ -28,6 +30,7 @@ $(document).ready(function () {
 
     }
 
+    //###################### grafik init ########################################
     let d = new Date();
     d.setHours(5, 30, 0);
     for (let i = 0; i < 33; i++) {
@@ -43,6 +46,11 @@ $(document).ready(function () {
         tableBody.append(markup);
     }
 
+    $(".tableNode").click(function () {
+        this.className = "selectNode";
+    });
+
+    //###################### kalendarz  click ########################################
     let clickedButtonID = "day0";
     let nrOfWeek = counter;
     $(".calendarDay").click(function () {
