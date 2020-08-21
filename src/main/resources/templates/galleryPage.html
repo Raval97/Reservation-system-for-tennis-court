@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OurTennis</title>
+    <title>OurTennis | gallery</title>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
-    <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
+    <link rel="stylesheet" th:href="@{/cssFiles/contactPageStale.css}">
+    <script type="text/javascript" th:src="@{/jsFiles/script.js}"></script>
+
 
 </head>
 <body onload="time(); setInterval(time,1000);">
@@ -18,19 +21,27 @@
             <h1>Logo</h1>
         </div>
         <div id="topMenu" th:if="${logged == true}">
-            <a th:href="@{'/OurTennis/account/1'}"><button type="button" id="account">ACCOUNT</button></a>
-            <a th:href="@{'/logout'}"><button type="button" id="logout">LOG OUT</button></a>
+            <a th:href="@{'/OurTennis/account/1'}">
+                <button type="button" id="account">ACCOUNT</button>
+            </a>
+            <a th:href="@{'/logout'}">
+                <button type="button" id="logout">LOG OUT</button>
+            </a>
         </div>
         <div id="topMenu" th:if="${logged == false}">
-            <a th:href="@{'/registration'}"><button type="button">REGISTER</button></a>
-            <a th:href="@{'/login'}"><button type="button" id="login">LOG IN</button></a>
+            <a th:href="@{'/registration'}">
+                <button type="button">REGISTER</button>
+            </a>
+            <a th:href="@{'/login'}">
+                <button type="button" id="login">LOG IN</button>
+            </a>
         </div>
     </div>
 
-    <div id="center">
+    <div id="center" class="center2">
         <div class="menu_div">
             <ul th:if="${logged == true}">
-                <li  id="active"><a href="/OurTennis/reservation">Reservation</a></li>
+                <li id="active"><a href="/OurTennis/reservation">Reservation</a></li>
                 <li><a href="/OurTennis">About US</a></li>
                 <li><a href="/OurTennis/priceList">Price-List</a></li>
                 <li><a href="/OurTennis/gallery">Gallery</a></li>
@@ -43,8 +54,11 @@
                 <li><a href="/ourTennis/contact">Contact</a></li>
             </ul>
         </div>
-        <div id="content">
-            <h1>HELLO</h1>
+        <div id="content" align="center">
+            <div id="gallery">
+                <h1 style="color: red">Gallery</h1>
+                </br></br>
+            </div>
         </div>
     </div>
 

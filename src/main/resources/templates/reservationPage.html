@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Web Api start</title>
+    <title>OurTennis | reservation</title>
 
     <script src ="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/reservationStylePage.css}">
     <script type="text/javascript" th:src="@{/jsFiles/script.js}"></script>
 
 
@@ -19,7 +20,7 @@
             <div id="logo">
                 <h1>Logo</h1>
             </div>
-            <div>
+            <div id="topMenu">
                 <a th:href="@{'/OurTennis/account/1'}"><button type="button" id="account">ACCOUNT</button></a>
                 <a th:href="@{'/logout'}"><button type="button" id="logout">LOG OUT</button></a>
             </div>

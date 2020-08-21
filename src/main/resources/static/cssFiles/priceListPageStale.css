@@ -1,6 +1,7 @@
 table {
   border-collapse: collapse;
   width: 100%;
+  height: 600px;
 }
 
 th, td {
@@ -8,13 +9,16 @@ th, td {
   padding: 8px;
 }
 
-tr:nth-child(even){background-color: #f2f2f2}
+tr:nth-child(even){
+    background-color: #1E1236;
+}
 
 th {
   background-color: #4CAF50;
   color: white;
+  font-size: 21px;
 }
 
 #priceList{
-    padding: 5px 50px 5px;
+    padding: 5px 50px 30px;
 }

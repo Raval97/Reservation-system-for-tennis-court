@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tennisCourt.model.Client;
+import tennisCourt.model.PriceList;
 import tennisCourt.model.ReservationServices;
 import tennisCourt.model.User;
 import tennisCourt.repo.CourtRepository;
@@ -29,11 +30,13 @@ public class ControllerApi {
     private ServicesService servicesService;
     private UserReservationService userReservationService;
     private ReservationServicesService reservationServicesService;
+    private PriceListService priceListService;
 
     @Autowired
     public ControllerApi(UserService userService, ClientService clientService, CourtService courtService,
                          ReservationService reservationService, UserReservationService userReservationService,
-                         ServicesService servicesService, ReservationServicesService reservationServicesService) {
+                         ServicesService servicesService, ReservationServicesService reservationServicesService,
+                         PriceListService priceListService) {
         this.userService = userService;
         this.clientService = clientService;
         this.courtService = courtService;
@@ -41,6 +44,7 @@ public class ControllerApi {
         this.servicesService = servicesService;
         this.userReservationService = userReservationService;
         this.reservationServicesService = reservationServicesService;
+        this.priceListService = priceListService;
     }
 
     public ControllerApi() {
@@ -55,10 +59,24 @@ public class ControllerApi {
 
     @RequestMapping("/ourTennis/priceList")
     public String viewPriceListPage(Model model) {
+        List<PriceList> priceList;
+        priceList = priceListService.listAll();
+        model.addAttribute("priceList", priceList);
         model.addAttribute("logged", false);
         return "priceList";
     }
 
+    @RequestMapping("/ourTennis/contact")
+    public String viewContactPage(Model model) {
+        model.addAttribute("logged", false);
+        return "contactPage";
+    }
+
+    @RequestMapping("/ourTennis/gallery")
+    public String viewGalleryPage(Model model) {
+        model.addAttribute("logged", false);
+        return "galleryPage";
+    }
 
     //############## START CLIENT ##########################################
     @RequestMapping("/OurTennis")
@@ -69,9 +87,25 @@ public class ControllerApi {
 
     @RequestMapping("/OurTennis/priceList")
     public String viewClientPriceListPage(Model model) {
+        List<PriceList> priceList;
+        priceList = priceListService.listAll();
+        model.addAttribute("priceList", priceList);
         model.addAttribute("logged", true);
         return "priceList";
     }
+
+    @RequestMapping("/OurTennis/contact")
+    public String viewClientContactPage(Model model) {
+        model.addAttribute("logged", true);
+        return "contactPage";
+    }
+
+    @RequestMapping("/OurTennis/gallery")
+    public String viewClientGalleryPage(Model model) {
+        model.addAttribute("logged", true);
+        return "galleryPage";
+    }
+
 
     @RequestMapping("/OurTennis/reservation")
     public String viewReservationPage(Model model) {

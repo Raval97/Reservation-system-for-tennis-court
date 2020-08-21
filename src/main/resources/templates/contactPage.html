@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OurTennis | price-list</title>
+    <title>OurTennis | contact</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
-    <link rel="stylesheet" th:href="@{/cssFiles/priceListPageStale.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/contactPageStale.css}">
     <script type="text/javascript" th:src="@{/jsFiles/script.js}"></script>
 
 
@@ -55,21 +55,23 @@
             </ul>
         </div>
         <div id="content" align="center">
-            <div id="priceList">
-                <h1 style="color: red">Price List</h1>
+            <div id="contact">
+                <h1 style="color: red">Contact</h1>
+                </br></br>
                 <table>
-                    <thead>
-                    <tr>
-                        <th>Game & Equipment</th>
-                        <th>TIME</th>
-                        <th>PRICE</th>
-                    </tr>
-                    </thead>
                     <tbody>
-                    <tr th:each="element,iter : ${priceList}">
-                        <td th:text="${element.type}"></td>
-                        <td th:text="${element.time}"></td>
-                        <td th:text="${element.price} + ' PLN'"></td>
+                    <tr></tr>
+                    <tr>
+                        <td>Address :</td>
+                        <td>Chrząszczyrzewoszyce ul. Wesoła 12</td>
+                    </tr>
+                    <tr>
+                        <td>Phone :</td>
+                        <td>+48 123 456 789</td>
+                    </tr>
+                    <tr>
+                        <td>E-mail :</td>
+                        <td>ourTennis@ourtennis.com</td>
                     </tr>
                     </tbody>
                 </table>

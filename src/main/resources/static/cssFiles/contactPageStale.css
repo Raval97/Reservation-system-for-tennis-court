@@ -1,0 +1,21 @@
+table {
+  border-collapse: collapse;
+  width: 70%;
+  font-size: 23px;
+  margin: auto;
+}
+
+td {
+  text-align: left;
+  padding: 20px;
+  width: 100px;
+  height: 50px;
+}
+
+tr:nth-child(even){
+    background-color: #1E1236;
+}
+
+#contact{
+    padding: 5px 100px 30px;
+}
