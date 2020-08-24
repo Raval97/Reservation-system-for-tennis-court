@@ -31,4 +31,8 @@ public class UserReservationService {
         repo.deleteById(id);
     }
 
+    public void deleteByReservationId(Long id) {
+        repo.deleteByReservationId(id);
+    }
+
 }

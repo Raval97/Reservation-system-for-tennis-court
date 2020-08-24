@@ -35,4 +35,8 @@ public class ReservationService {
         repo.deleteById(id);
     }
 
+    public List<Reservation> listAllByUserId(Long id){
+        return repo.findAllByIdUser(id);
+    }
+
 }

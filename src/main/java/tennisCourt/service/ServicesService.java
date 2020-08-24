@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tennisCourt.model.Services;
 import tennisCourt.repo.ServicesRepository;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -33,6 +35,14 @@ public class ServicesService {
 
     public void delete(long id) {
         repo.deleteById(id);
+    }
+
+    public void deleteAllByReservationId(Long id) {
+        repo.deleteByReservationId(id);
+    }
+
+    public List<Services> listAllByReservationId(Long id){
+        return repo.findAllByReservationId(id);
     }
 
 }

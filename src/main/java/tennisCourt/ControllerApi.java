@@ -4,20 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import tennisCourt.model.Client;
-import tennisCourt.model.PriceList;
-import tennisCourt.model.ReservationServices;
-import tennisCourt.model.User;
-import tennisCourt.repo.CourtRepository;
+import tennisCourt.model.*;
 import tennisCourt.security.WebSecurityConfig;
 import tennisCourt.service.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -63,7 +59,7 @@ public class ControllerApi {
         priceList = priceListService.listAll();
         model.addAttribute("priceList", priceList);
         model.addAttribute("logged", false);
-        return "priceList";
+        return "priceListPage";
     }
 
     @RequestMapping("/ourTennis/contact")
@@ -91,7 +87,7 @@ public class ControllerApi {
         priceList = priceListService.listAll();
         model.addAttribute("priceList", priceList);
         model.addAttribute("logged", true);
-        return "priceList";
+        return "priceListPage";
     }
 
     @RequestMapping("/OurTennis/contact")
@@ -129,7 +125,7 @@ public class ControllerApi {
         model.addAttribute("repeatNewPassword", repeatNewPassword);
         String ifDeleteAccount = "NO";
         model.addAttribute("ifDeleteAccount", ifDeleteAccount);
-        return "clientAccount";
+        return "clientAccountPage";
     }
 
     @RequestMapping(value = "/OurTennis/client/edit_data/{id}", method = RequestMethod.POST)
@@ -176,11 +172,37 @@ public class ControllerApi {
 
     @RequestMapping("/OurTennis/clientReservation")
     public String viewClientReservationPage(Model model) {
+        User user = userService.findUserByUsername(User.getUserName());
+        List<Reservation> reservationList = reservationService.listAllByUserId(user.getId());
+        model.addAttribute("reservationList", reservationList);
         return "clientReservationPage";
+    }
+
+    @RequestMapping("/OurTennis/clientReservation/{id}")
+    public String viewClientReservationDetailsPage(Model model,
+                                                   @PathVariable(name = "id") Long id) {
+        Reservation reservation = reservationService.get(id);
+        List<Services> servicesList = servicesService.listAllByReservationId(id);
+        model.addAttribute("reservation", reservation);
+        model.addAttribute("servicesList", servicesList);
+        return "clientReservationDetailsPage";
+    }
+
+    @RequestMapping("/OurTennis/cancelReservation/{id}")
+    public String cancelReservation(Model model,
+                                    @PathVariable(name = "id") Long id) {
+        userReservationService.deleteByReservationId(id);
+        reservationServicesService.deleteAllByReservationId(id);
+        reservationService.delete(id);
+        servicesService.deleteAllByReservationId(id);
+        return "redirect:/OurTennis/clientReservation";
     }
 
     @RequestMapping("/OurTennis/payment")
     public String viewClientPaymentPage(Model model) {
+        User user = userService.findUserByUsername(User.getUserName());
+        List<Reservation> reservationList = reservationService.listAllByUserId(user.getId());
+        model.addAttribute("reservationList", reservationList);
         return "clientPaymentPage";
     }
 
@@ -191,7 +213,7 @@ public class ControllerApi {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("client", new Client());
-        return "registration";
+        return "registrationPage";
     }
 
     @PostMapping("/add-user")

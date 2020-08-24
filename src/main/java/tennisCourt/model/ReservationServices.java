@@ -16,4 +16,7 @@ public class ReservationServices {
     @OneToOne
     private Services services;
 
+    public ReservationServices() {
+    }
+
 }

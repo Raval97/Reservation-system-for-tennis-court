@@ -33,13 +33,14 @@ public class User implements UserDetails{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserReservation> userReservations;
 
+    public User() {
+    }
+
     public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
-
-    public User() { }
 
     public User(String username, String password, String role, Client client) {
         this.username = username;

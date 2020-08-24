@@ -7,7 +7,7 @@
     <title>OurTennis | account</title>
 
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
-    <link rel="stylesheet" th:href="@{/cssFiles/registration&AccountPagesStyle.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/registration_AccountPagesStyle.css}">
     <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
 
 </head>
@@ -41,7 +41,7 @@
             <!-- CHANGE DATA -->
             <form  th:if="${type >=1 && type < 2}" action="#" th:action="@{'/OurTennis/client/edit_data/'+${user.id}}" method="post">
                 <div id="clientData">
-                    <table border="0" cellpadding="10">
+                    <table border="0" cellpadding="10" style="margin: auto;">
                         <h2 th:if="${type == 1}">Your account</h2>
                         <h2 th:if="${type == 1.1}" style="color: green; font-size: 30px">Data Change</br>SUCCESSFUL</h2>
                         <h2 th:if="${type == 1.2}" style="color: red; font-size: 30px">Data Change FILED</h2>
@@ -82,7 +82,7 @@
             <!-- CHANGE PASSWORD -->
             <form  th:if="${type >=2 && type <3}" action="#" th:action="@{'/OurTennis/client/changePassword/'+${user.id}}" method="post">
                 <div id="clientData">
-                    <table border="0" cellpadding="10">
+                    <table border="0" cellpadding="10" style="margin: auto;">
                         <h2 th:if="${type == 2}">Set New Password</h2>
                         <h2 th:if="${type == 2.1}" style="color: green; font-size: 30px">Password Change SUCCESSFUL</h2>
                         <h2 th:if="${type == 2.2}" style="color: red; font-size: 30px">Password Change FILED </br> (incorrect repeat new password)</h2>
@@ -116,7 +116,7 @@
             <!-- DELETE ACCOUNT-->
             <form  th:if="${type >= 3}" action="#" th:action="@{'/OurTennis/client/deleteAccount/'+${user.id}}" method="post">
                 <div id="clientData">
-                    <table border="0" cellpadding="10">
+                    <table border="0" cellpadding="10" style="margin: auto;">
                         <h2>DELETE ACCOUNT</h2>
                         <tr th:object="${client}">
                             <td>Ae you sure, you want to delete your account?</td>

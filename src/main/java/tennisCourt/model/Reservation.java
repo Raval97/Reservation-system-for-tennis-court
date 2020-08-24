@@ -22,19 +22,28 @@ public class Reservation {
     private float finalPrice;
     private String statusOfReservation;
     private String typeOfPaying;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate finalPaymentDate;
     private String statusPaying;
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private UserReservation userReservation;
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private Set<ReservationServices> reservationServices;
 
-    public Reservation(Long id, LocalDate dateOfReservation, float finalPrice,
-                       String statusOfReservation, String typeOfPaying, String statusPaying) {
+    public Reservation() {
+    }
+
+    public Reservation(Long id, LocalDate dateOfReservation, float finalPrice, String statusOfReservation,
+                       String typeOfPaying, LocalDate finalPaymentDate, String statusPaying,
+                       UserReservation userReservation, Set<ReservationServices> reservationServices) {
         this.id = id;
         this.dateOfReservation = dateOfReservation;
         this.finalPrice = finalPrice;
         this.statusOfReservation = statusOfReservation;
         this.typeOfPaying = typeOfPaying;
+        this.finalPaymentDate = finalPaymentDate;
         this.statusPaying = statusPaying;
+        this.userReservation = userReservation;
+        this.reservationServices = reservationServices;
     }
 }

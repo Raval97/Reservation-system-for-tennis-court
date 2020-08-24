@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Data
@@ -16,26 +17,28 @@ public class Services {
     private Long id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
-    private float hours;
-    private float time;
-    private float count;
+    private LocalTime time;
+    private float numberOfHours;
+    private float unitCost;
     private Boolean ifRocket;
     private Boolean ifBalls;
     private Boolean ifShoes;
     private float price;
-    @OneToOne
-    @MapsId
+    @ManyToOne
     private Court court;
     @OneToOne(mappedBy = "services", cascade = CascadeType.ALL)
     private ReservationServices reservationService;
 
-    public Services(Long id, LocalDate date, float hours, float time, float count, Boolean ifRocket,
+    public Services() {
+    }
+
+    public Services(Long id, LocalDate date, float numberOfHours, LocalTime time, float unitCost, Boolean ifRocket,
                     Boolean ifBalls, Boolean ifShoes, float price) {
         this.id = id;
         this.date = date;
-        this.hours = hours;
+        this.numberOfHours = numberOfHours;
         this.time = time;
-        this.count = count;
+        this.unitCost = unitCost;
         this.ifRocket = ifRocket;
         this.ifBalls = ifBalls;
         this.ifShoes = ifShoes;

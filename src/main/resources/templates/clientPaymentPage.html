@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OurTennis | account</title>
+    <title>OurTennis | account</title>S
 
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
-    <link rel="stylesheet" th:href="@{/cssFiles/registration&AccountPagesStyle.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/clientPaymentPageStale.css}">
     <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
 
 </head>
@@ -38,7 +38,31 @@
             </ul>
         </div>
         <div id="content">
-            <h2>My Payments</h2>
+            <div id="clientPayments">
+                <h2>My Payments</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Final </br> Payment Date</th>
+                        <th>Price</th>
+                        <th>Type Of </br> Paying</th>
+                        <th>Status Of </br> Paying</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="element,iter : ${reservationList}">
+                        <td th:text="${element.id}"></td>
+                        <td th:text="${element.finalPaymentDate}"></td>
+                        <td th:text="${element.finalPrice}"></td>
+                        <td th:text="${element.typeOfPaying}"></td>
+                        <td th:text="${element.statusPaying}"></td>
+                        <td><a th:href="@{'/OurTennis/clientReservation/'+${element.id}}" style="color: yellow">Pay</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div id="footer">
