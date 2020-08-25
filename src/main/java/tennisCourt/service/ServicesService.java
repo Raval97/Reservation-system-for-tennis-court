@@ -7,8 +7,12 @@ import tennisCourt.model.Services;
 import tennisCourt.repo.ServicesRepository;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -44,5 +48,13 @@ public class ServicesService {
     public List<Services> listAllByReservationId(Long id){
         return repo.findAllByReservationId(id);
     }
+
+    public List<Time> getTimeByDate(String date){
+        return repo.findTimeByDate(date);
+    };
+
+    public List<Float> getNumberOfHoursByDate(String date){
+        return repo.findNumberOfHoursByDate(date);
+    };
 
 }

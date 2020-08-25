@@ -7,9 +7,17 @@
     <title>OurTennis | reservation</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+    $(document).ready(function () {
+         var mess = /*[[${timeList}]]*/ [];
+         $("#makeReservation").click(function (){
+             $('#makeReservation').text(mess[0]);
+        });
+    });
+    </script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
     <link rel="stylesheet" th:href="@{/cssFiles/reservationPageStyle.css}">
-    <script type="text/javascript" th:src="@{/jsFiles/script.js}"></script>
+    <script type="text/javascript" th:src="@{/jsFiles/script.js}">    </script>
 </head>
 <body onload="time(); setInterval(time,1000);">
 

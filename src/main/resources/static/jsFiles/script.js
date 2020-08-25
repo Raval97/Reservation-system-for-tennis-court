@@ -52,6 +52,12 @@ $(document).ready(function () {
         this.className = "selectNode";
     });
 
+
+//    $("#makeReservation").click(function (){
+////         $('#makeReservation').text(xx[1]);
+//         $('#makeReservation').text("text");
+//    });
+
     //###################### calendar click ########################################
     let clickedButtonID = "day0";
     let nrOfWeek = counter;

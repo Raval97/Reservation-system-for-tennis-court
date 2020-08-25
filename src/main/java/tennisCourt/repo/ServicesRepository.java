@@ -11,7 +11,9 @@ import tennisCourt.model.Services;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface ServicesRepository extends JpaRepository<Services, Long> {
@@ -29,5 +31,13 @@ public interface ServicesRepository extends JpaRepository<Services, Long> {
             "WHERE id in (SELECT services_id from reservation_services rs " +
             "WHERE rs.reservation_id=:id)", nativeQuery = true)
     void deleteByReservationId(Long id);
+
+    @Query(value = "SELECT time FROM services " +
+            "WHERE date = :date", nativeQuery = true)
+    List<Time> findTimeByDate(String date);
+
+    @Query(value = "SELECT number_of_hours FROM services " +
+            "WHERE date = :date", nativeQuery = true)
+    List<Float> findNumberOfHoursByDate(String date);
 
 }

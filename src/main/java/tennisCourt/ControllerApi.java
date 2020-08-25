@@ -13,8 +13,12 @@ import tennisCourt.security.WebSecurityConfig;
 import tennisCourt.service.*;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ControllerApi {
@@ -105,6 +109,23 @@ public class ControllerApi {
 
     @RequestMapping("/OurTennis/reservation")
     public String viewReservationPage(Model model) {
+        List<Time> timeList = servicesService.getTimeByDate("2020-08-30");
+        List<Float> numberOfHoursList = servicesService.getNumberOfHoursByDate("2020-08-30");
+        model.addAttribute("timeList", timeList);
+        model.addAttribute("numberOfHoursList", numberOfHoursList);
+        return "reservationPage";
+    }
+
+    @RequestMapping("/reservation")
+    public String example(Model model) {
+        List<Time> timeList = servicesService.getTimeByDate("2020-08-30");
+        List<Float> numberOfHoursList = servicesService.getNumberOfHoursByDate("2020-08-30");
+        System.out.println(timeList);
+        System.out.println(numberOfHoursList);
+        List<String> message = Arrays.asList("foo", "bar");
+        model.addAttribute("timeList", timeList);
+        model.addAttribute("numberOfHoursList", numberOfHoursList);
+        model.addAttribute("message", message);
         return "reservationPage";
     }
 
