@@ -11,8 +11,7 @@ import tennisCourt.model.UserReservation;
 @Repository
 public interface UserReservationRepository extends JpaRepository<UserReservation, Long> {
 
-    @Modifying
-    @Query(value = "DELETE FROM user_reservation " +
+    @Query(value = "Select * FROM user_reservation " +
             "WHERE reservation_id=:id", nativeQuery = true)
-    void deleteByReservationId(Long id);
+    UserReservation findByReservationId(Long id);
 }

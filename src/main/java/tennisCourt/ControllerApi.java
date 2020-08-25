@@ -166,7 +166,10 @@ public class ControllerApi {
 
     @RequestMapping("/OurTennis/client/deleteAccount/{id}")
     public String deleteBetFromCoupon(@PathVariable(name = "id") int id) {
-        userService.delete(id);
+        clientService.deleteByUserId(id);
+        User user = userService.get(id);
+        user.setPassword("cannotLogin");
+        userService.save(user);
         return "redirect:/ourTennis";
     }
 
@@ -191,10 +194,8 @@ public class ControllerApi {
     @RequestMapping("/OurTennis/cancelReservation/{id}")
     public String cancelReservation(Model model,
                                     @PathVariable(name = "id") Long id) {
-        userReservationService.deleteByReservationId(id);
         reservationServicesService.deleteAllByReservationId(id);
-        reservationService.delete(id);
-        servicesService.deleteAllByReservationId(id);
+        userReservationService.delete(userReservationService.getByReservationId(id).getId());
         return "redirect:/OurTennis/clientReservation";
     }
 
@@ -204,6 +205,21 @@ public class ControllerApi {
         List<Reservation> reservationList = reservationService.listAllByUserId(user.getId());
         model.addAttribute("reservationList", reservationList);
         return "clientPaymentPage";
+    }
+
+    @RequestMapping("/bankSimulator/{id}")
+    public String viewBankSimulatorPage(Model model,
+                                        @PathVariable(name = "id") Long id){
+        model.addAttribute("reservationID", id);
+        return "bankSimulatorPage";
+    }
+
+    @RequestMapping("/payForReservation/{id}")
+    public String setStatusForPayment(@PathVariable(name = "id") Long id){
+        Reservation reservation = reservationService.get(id);
+        reservation.setStatusPaying("Paid");
+        reservationService.save(reservation);
+        return "redirect:/OurTennis/payment";
     }
 
     //################  LOGOWANIE & REJESTRACJA  ##################################

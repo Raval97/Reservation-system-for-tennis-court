@@ -7,14 +7,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tennisCourt.model.ReservationServices;
 import tennisCourt.model.Services;
+import tennisCourt.model.UserReservation;
 
 import java.util.List;
 
 @Repository
 public interface ReservationServicesRepository extends JpaRepository<ReservationServices, Long> {
 
-    @Modifying
-    @Query(value = "DELETE FROM reservation_services " +
+    @Query(value = "Select * FROM reservation_services " +
             "WHERE reservation_id=:id", nativeQuery = true)
-    void deleteByReservationId(Long id);
+    List<ReservationServices>  findAllByReservationId(Long id);
 }

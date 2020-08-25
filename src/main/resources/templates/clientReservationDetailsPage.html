@@ -85,16 +85,16 @@
                         <td th:text="${element.unitCost}"></td>
                         <td th:text="${element.price}"></td>
                         <td>
-                            <span th:if="${element.ifBalls == 0}">NO</span>
-                            <span th:unless="${element.ifBalls == 1}">YES</span>
+                            <span th:if="${#bools.isTrue(element.ifBalls)}">YES</span>
+                            <span th:if="${#bools.isFalse(element.ifBalls)}">NO</span>
                         </td>
                         <td>
-                            <span th:if="${element.ifRocket == 0}">NO</span>
-                            <span th:unless="${element.ifRocket == 1}">YES</span>
+                            <span th:if="${#bools.isTrue(element.ifRocket)}">YES</span>
+                            <span th:if="${#bools.isFalse(element.ifRocket)}">NO</span>
                         </td>
                         <td>
-                            <span th:if="${element.ifShoes == 0}">NO</span>
-                            <span th:unless="${element.ifShoes == 1}">YES</span>
+                            <span th:if="${#bools.isTrue(element.ifShoes)}">YES</span>
+                            <span th:if="${#bools.isFalse(element.ifShoes)}">NO</span>
                         </td>
                     </tr>
                     </tbody>
@@ -114,6 +114,10 @@
                     <tr>
                         <td>Status Of Paying</td>
                         <td th:text="${reservation.statusPaying}"></td>
+                    </tr>
+                    <tr th:if="${#strings.toString(reservation.statusPaying)} == 'To Pay'">
+                        <td>Final Payment Date</td>
+                        <td th:text="${reservation.finalPaymentDate}"></td>
                     </tr>
                 </table>
             </div>

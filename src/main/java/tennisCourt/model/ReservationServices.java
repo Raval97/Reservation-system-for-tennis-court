@@ -13,7 +13,7 @@ public class ReservationServices {
     @ManyToOne
     @JoinColumn
     private Reservation reservation;
-    @OneToOne
+    @OneToOne(cascade =  CascadeType.REMOVE)
     private Services services;
 
     public ReservationServices() {

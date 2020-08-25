@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OurTennis | account</title>
+    <title>OurTennis | my_reservation</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
@@ -61,7 +61,7 @@
                         <td th:text="${element.finalPrice}"></td>
                         <td th:text="${element.typeOfPaying}"></td>
                         <td th:text="${element.statusPaying}"></td>
-                        <td><a th:href="@{'/OurTennis/clientReservation/'+${element.id}}" style="color: yellow">Details</a></td>
+                        <td><a class="details" th:href="@{'/OurTennis/clientReservation/'+${element.id}}" style="color: yellow">Details</a></td>
                     </tr>
                     </tbody>
                 </table>

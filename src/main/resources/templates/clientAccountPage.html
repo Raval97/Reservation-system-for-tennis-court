@@ -69,13 +69,13 @@
                 </div>
                 <div id="optionClientAccount" align="center">
                     <a th:href="@{'/OurTennis/account/2'}" >
-                        <button type="button" class="option" id="changePassword">CHANGE PASSWORD</button>
+                        <button type="button" style="background-color: gray;" class="option" id="changePassword">CHANGE PASSWORD</button>
                     </a>
                     <a>
                         <button type="submit" class="option" id="editClientData">EDIT DATA</button>
                     </a>
                     <a th:href="@{'/OurTennis/account/3'}" >
-                        <button type="button" class="option" id="deleteClient">DELETE ACCOUNT</button>
+                        <button type="button" style="background-color: gray;" class="option" id="deleteClient">DELETE ACCOUNT</button>
                     </a>
                 </div>
             </form>
@@ -103,13 +103,13 @@
                 </div>
                 <div id="optionClientAccount" align="center">
                     <a th:href="@{'/OurTennis/account/1'}">
-                        <button type="button" class="option" id="editClientData">EDIT DATA</button>
+                        <button type="button" style="background-color: gray;" class="option" id="editClientData">EDIT DATA</button>
                     </a>
                     <a>
                         <button type="submit" class="option" id="changePassword">CHANGE PASSWORD</button>
                     </a>
                     <a th:href="@{'/OurTennis/account/3'}">
-                        <button type="button" class="option" id="deleteClient">DELETE ACCOUNT</button>
+                        <button type="button" style="background-color: gray;" class="option" id="deleteClient">DELETE ACCOUNT</button>
                     </a>
                 </div>
             </form>
@@ -119,10 +119,14 @@
                     <table border="0" cellpadding="10" style="margin: auto;">
                         <h2>DELETE ACCOUNT</h2>
                         <tr th:object="${client}">
-                            <td>Ae you sure, you want to delete your account?</td>
+                            <td style="font-size: 20px;">Are you sure, you want to delete your account?</td>
                             <td>
                                 <label class="switch">
-                                    <input type="checkbox"><span class="slider round" id="rentBalls"></span>
+                                    <input type="checkbox" onchange="document.getElementById('deleteClient').disabled = !this.checked;
+                                        if(document.getElementById('deleteClient').style.backgroundColor === 'red')
+                                            document.getElementById('deleteClient').style.background = '#7b38d8';
+                                        else  document.getElementById('deleteClient').style.background = 'red';">
+                                    <span class="slider round" id="rentBalls"></span>
                                 </label>
                             </td>
                         </tr>
@@ -130,13 +134,13 @@
                 </div>
                 <div id="optionClientAccount" align="center">
                     <a th:href="@{'/OurTennis/account/1'}">
-                        <button type="button" class="option" id="editClientData">EDIT DATA</button>
+                        <button type="button" style="background-color: gray;" class="option" id="editClientData">EDIT DATA</button>
                     </a>
                     <a>
-                        <button type="submit" class="option" id="deleteClient">DELETE ACCOUNT</button>
+                        <button type="submit" disabled="true" style="background-color: red;" class="option" id="deleteClient">DELETE ACCOUNT</button>
                     </a>
                     <a th:href="@{'/OurTennis/account/2'}">
-                        <button type="submit" class="option" id="changePassword">CHANGE PASSWORD</button>
+                        <button type="submit" style="background-color: gray;" class="option" id="changePassword">CHANGE PASSWORD</button>
                     </a>
                 </div>
             </form>

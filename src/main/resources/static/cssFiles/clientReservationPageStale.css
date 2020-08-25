@@ -25,6 +25,6 @@ th {
     padding: 5px 50px 30px;
 }
 
-a:hover{
+a.details:hover{
     font-size: 120%;
 }

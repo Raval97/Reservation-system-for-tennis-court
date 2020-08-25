@@ -10,7 +10,7 @@ weekday[6] = "Saturday";
 
 $(document).ready(function () {
 
-    //###################### kalendarz  init ########################################
+    //###################### calendar init ########################################
     var data = new Date()
     data.setDate(data.getDate() - 1);
     var div = null;
@@ -30,17 +30,19 @@ $(document).ready(function () {
 
     }
 
-    //###################### grafik init ########################################
+    //###################### schedule init ########################################
     let d = new Date();
     d.setHours(5, 30, 0);
-    for (let i = 0; i < 33; i++) {
+    for (let i = 0; i < 34; i++) {
         d.setMinutes(d.getMinutes()+30);
+        timeElement = d.getHours()+"."+d.getMinutes();
+        if (d.getMinutes()<30) timeElement += "0";
         markup = "<tr>" +
-            "<td class=\"tableHour\" align=\"center\">"+d.getHours()+"."+d.getMinutes()+"</td>" +
-            "<td><button class=\"tableNode\" id=\"w"+i+"k1\"></button></td>" +
-            "<td><button class=\"tableNode\" id=\"w"+i+"k2\"></button></td>" +
-            "<td><button class=\"tableNode\" id=\"w"+i+"k3\"></button></td>" +
-            "<td><button class=\"tableNode\" id=\"w"+i+"k4\"></button></td>" +
+            "<td class=\"tableHour\" align=\"center\">"+timeElement+"</td>" +
+            "<td><button class=\"tableNode\" id=\"w1t"+timeElement+"c1\"></button></td>" +
+            "<td><button class=\"tableNode\" id=\"w2t"+timeElement+"c2\"></button></td>" +
+            "<td><button class=\"tableNode\" id=\"w3t"+timeElement+"c3\"></button></td>" +
+            "<td><button class=\"tableNode\" id=\"w4t"+timeElement+"c4\"></button></td>" +
             "</tr>";
         tableBody = $("table tbody");
         tableBody.append(markup);
@@ -50,7 +52,7 @@ $(document).ready(function () {
         this.className = "selectNode";
     });
 
-    //###################### kalendarz  click ########################################
+    //###################### calendar click ########################################
     let clickedButtonID = "day0";
     let nrOfWeek = counter;
     $(".calendarDay").click(function () {

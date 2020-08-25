@@ -2,6 +2,7 @@ package tennisCourt.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
@@ -16,7 +17,7 @@ public class UserReservation {
     @ManyToOne
     @JoinColumn
     private User user;
-    @OneToOne
+    @OneToOne(cascade =  CascadeType.REMOVE)
     private Reservation reservation;
 
     public UserReservation() {

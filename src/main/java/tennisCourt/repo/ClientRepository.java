@@ -16,4 +16,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = "SELECT * FROM client c WHERE c.user_id= :id", nativeQuery = true)
     Client findByIdClient(@Param("id") Long id);
 
+    @Modifying
+    @Query(value = "Delete FROM client WHERE user_id= :id", nativeQuery = true)
+    void deleteByUserId(@Param("id") Long id);
+
 }

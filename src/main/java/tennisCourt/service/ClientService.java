@@ -35,4 +35,8 @@ public class ClientService {
         repo.deleteById(id);
     }
 
+    public void deleteByUserId(long id) {
+        repo.deleteByUserId(id);
+    }
+
 }

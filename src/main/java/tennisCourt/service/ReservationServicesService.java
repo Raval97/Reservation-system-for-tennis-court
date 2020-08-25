@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tennisCourt.model.ReservationServices;
+import tennisCourt.model.UserReservation;
 import tennisCourt.repo.ReservationServicesRepository;
 
 import java.util.List;
@@ -31,8 +32,13 @@ public class ReservationServicesService {
         repo.deleteById(id);
     }
 
+    public List<ReservationServices> getAllByReservationId(Long id) {
+        return repo.findAllByReservationId(id);
+    }
+
     public void deleteAllByReservationId(Long id) {
-        repo.deleteByReservationId(id);
+        List<ReservationServices> reservationServicesList = repo.findAllByReservationId(id);
+        reservationServicesList.forEach((x) -> repo.deleteById(x.getId()));
     }
 
 }

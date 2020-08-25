@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OurTennis | account</title>S
+    <title>OurTennis | payment</title>S
 
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
     <link rel="stylesheet" th:href="@{/cssFiles/clientPaymentPageStale.css}">
@@ -58,7 +58,10 @@
                         <td th:text="${element.finalPrice}"></td>
                         <td th:text="${element.typeOfPaying}"></td>
                         <td th:text="${element.statusPaying}"></td>
-                        <td><a th:href="@{'/OurTennis/clientReservation/'+${element.id}}" style="color: yellow">Pay</a></td>
+                        <td th:if="${#strings.toString(element.statusPaying)} == 'To Pay'">
+                            <a class="pay" th:href="@{'/bankSimulator/'+${element.id}}" style="color: yellow">Pay</a>
+                        </td>
+                        <td th:if="${#strings.toString(element.statusPaying)} == 'Paid'">-----</td>
                     </tr>
                     </tbody>
                 </table>
