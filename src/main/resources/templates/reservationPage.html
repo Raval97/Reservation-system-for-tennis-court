@@ -8,12 +8,9 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script type="text/javascript" th:inline="javascript">
-    $(document).ready(function () {
-         var mess = /*[[${timeList}]]*/ [];
-         $("#makeReservation").click(function (){
-             $('#makeReservation').text(mess[0]);
-        });
-    });
+        var timeList = /*[[${timeList}]]*/ [];
+        var numberOfHoursList = /*[[${numberOfHoursList}]]*/ [];
+        var courtIdList = /*[[${courtIdList}]]*/ [];
     </script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
     <link rel="stylesheet" th:href="@{/cssFiles/reservationPageStyle.css}">
@@ -55,7 +52,7 @@
             <div id="choiceOption">
 
                 <div id="schedule" align="center">
-                    <table>
+                    <table id = "tblEntAttributes">
                         <thead>
                         <tr>
                             <th>TIME</th>
@@ -65,7 +62,7 @@
                             <th>Court 4</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                         </tbody>
                     </table>
                 </div>

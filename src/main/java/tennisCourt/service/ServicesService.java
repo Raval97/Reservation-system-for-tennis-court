@@ -57,4 +57,8 @@ public class ServicesService {
         return repo.findNumberOfHoursByDate(date);
     };
 
+    public List<Long> getCourtIdByDate(String date){
+        return repo.findCourtIdByDate(date);
+    };
+
 }

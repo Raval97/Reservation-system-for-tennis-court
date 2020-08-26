@@ -68,6 +68,8 @@
     cursor: default;
 }
 
+
+
 .switch {
   position: relative;
   display: inline-block;
@@ -160,6 +162,16 @@ th{
 }
 
 .selectNode{
+    background-color: yellow;
+    width: 140px;
+    border-radius: 0px;
+    margin: auto;
+    font-size: 12px;
+    border: 0px;
+    padding: 15px;
+}
+
+.reservedNode{
     background-color: green;
     width: 140px;
     border-radius: 0px;
@@ -167,6 +179,17 @@ th{
     font-size: 12px;
     border: 0px;
     padding: 15px;
+}
+
+.inaccessible{
+    background-color: red;
+    width: 140px;
+    border-radius: 0px;
+    margin: auto;
+    font-size: 12px;
+    border: 0px;
+    padding: 15px;
+    cursor: default;
 }
 
 #makeReservation{

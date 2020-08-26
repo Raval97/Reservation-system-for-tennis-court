@@ -40,4 +40,8 @@ public interface ServicesRepository extends JpaRepository<Services, Long> {
             "WHERE date = :date", nativeQuery = true)
     List<Float> findNumberOfHoursByDate(String date);
 
+    @Query(value = "SELECT court_id FROM services " +
+            "WHERE date = :date", nativeQuery = true)
+    List<Long> findCourtIdByDate(String date);
+
 }

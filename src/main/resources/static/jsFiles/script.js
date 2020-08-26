@@ -1,5 +1,6 @@
 var counter = 0;
 var weekday = new Array(7);
+var selectDay = null;
 weekday[0] = "Sunday";
 weekday[1] = "Monday";
 weekday[2] = "Tuesday";
@@ -21,46 +22,20 @@ $(document).ready(function () {
         div = document.querySelector("#calendar");
         newEl = document.createElement("button");
         data.setDate(data.getDate() + 1);
-        let month = data.getMonth();
+        var month = data.getMonth();
         if (month < 10) month = "0" + month;
-        newEl.innerText = weekday[data.getDay()] + " \n" + data.getUTCDate() + "." + month;
+        var day = data.getUTCDate();
+        if (day < 10) day = "0" + day;
+        newEl.innerText = weekday[data.getDay()] + " \n" + day + "." + month;
         newEl.className = "calendarDay";
         newEl.id = "day" + i;
         div.insertBefore(newEl, nextWeek)
-
     }
 
-    //###################### schedule init ########################################
-    let d = new Date();
-    d.setHours(5, 30, 0);
-    for (let i = 0; i < 34; i++) {
-        d.setMinutes(d.getMinutes()+30);
-        timeElement = d.getHours()+"."+d.getMinutes();
-        if (d.getMinutes()<30) timeElement += "0";
-        markup = "<tr>" +
-            "<td class=\"tableHour\" align=\"center\">"+timeElement+"</td>" +
-            "<td><button class=\"tableNode\" id=\"w1t"+timeElement+"c1\"></button></td>" +
-            "<td><button class=\"tableNode\" id=\"w2t"+timeElement+"c2\"></button></td>" +
-            "<td><button class=\"tableNode\" id=\"w3t"+timeElement+"c3\"></button></td>" +
-            "<td><button class=\"tableNode\" id=\"w4t"+timeElement+"c4\"></button></td>" +
-            "</tr>";
-        tableBody = $("table tbody");
-        tableBody.append(markup);
-    }
-
-    $(".tableNode").click(function () {
-        this.className = "selectNode";
-    });
-
-
-//    $("#makeReservation").click(function (){
-////         $('#makeReservation').text(xx[1]);
-//         $('#makeReservation').text("text");
-//    });
-
-    //###################### calendar click ########################################
     let clickedButtonID = "day0";
     let nrOfWeek = counter;
+
+    //###################### calendar day click ########################################
     $(".calendarDay").click(function () {
         if(nrOfWeek === counter) {
             document.querySelector(".clickedButton").className = "calendarDay";
@@ -73,7 +48,52 @@ $(document).ready(function () {
         nrOfWeek = counter;
     });
     document.querySelector("#"+clickedButtonID).className = "clickedButton";
+    selectDay =$("#"+clickedButtonID).text().split(" ")[1].split(".");
+    selectDay = "d"+selectDay[0]+"m"+selectDay[1];
 
+    //###################### schedule init ########################################
+    let d = new Date();
+    d.setHours(5, 30, 0);
+    for (let i = 0; i < 34; i++) {
+        d.setMinutes(d.getMinutes()+30);
+        var minute = d.getMinutes();
+        if (d.getMinutes()<30) minute += "0";
+        timeElement = "h"+d.getHours()+"m"+minute;
+        markup = "<tr>" +
+            "<td class=\"tableHour\" align=\"center\">"+d.getHours()+"."+minute+"</td>" +
+            "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c1\"></button></td>" +
+            "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c2\"></button></td>" +
+            "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c3\"></button></td>" +
+            "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c4\"></button></td>" +
+            "</tr>";
+        tableBody = $("table tbody");
+        tableBody.append(markup);
+    }
+
+    // set node elements to inaccessible where the reservation was made
+    for (var i = 0; i < timeList.length; i++){
+        let timeListIter = timeList[i].split(":");
+        d.setHours(timeListIter[0], timeListIter[1], timeListIter[2]);
+        for (var j = 0; j < numberOfHoursList[i]; j+=0.5){
+           timeElement = "h"+d.getHours()+"m"+d.getMinutes();
+           if (d.getMinutes()<30) timeElement += "0";
+           var element = document.querySelector("#"+selectDay+"_"+timeElement+"_c"+courtIdList[i]);
+           element.className = "inaccessible";
+           element.disabled = true;
+           d.setMinutes(d.getMinutes()+30);
+        }
+    }
+
+    $(".tableNode").click(function () {
+        this.className = "selectNode";
+    });
+
+    $("#makeReservation").click(function (){
+        $(".selectNode").addClass("reservedNode").removeClass("selectNode");
+//        document.querySelector(".selectNode").className = "reservedNode";
+    });
+
+    //###################### next or prev click ########################################
     $(".week").click(function () {
         let el;
         let text;
@@ -87,7 +107,9 @@ $(document).ready(function () {
                     data.setDate(data.getDate() + 7);
                     month = data.getMonth();
                     if (month < 10) month = "0" + month;
-                    el.innerText = weekday[data.getDay()] + " \n" + data.getUTCDate() + "." + month;
+                    var day = data.getUTCDate();
+                    if (day < 10) day = "0" + day;
+                    el.innerText = weekday[data.getDay()] + " \n" + day + "." + month;
                 }
                 counter++;
             }
@@ -101,7 +123,9 @@ $(document).ready(function () {
                     data.setDate(data.getDate() - 7);
                     month = data.getMonth();
                     if (month < 10) month = "0" + month;
-                    el.innerText = weekday[data.getDay()] + " \n" + data.getUTCDate() + "." + month;
+                    var day = data.getUTCDate();
+                    if (day < 10) day = "0" + day;
+                    el.innerText = weekday[data.getDay()] + " \n" + day + "." + month;
                 }
                 counter--;
             }

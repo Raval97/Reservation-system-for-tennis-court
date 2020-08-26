@@ -111,8 +111,10 @@ public class ControllerApi {
     public String viewReservationPage(Model model) {
         List<Time> timeList = servicesService.getTimeByDate("2020-08-30");
         List<Float> numberOfHoursList = servicesService.getNumberOfHoursByDate("2020-08-30");
+        List<Long> courtIdList = servicesService.getCourtIdByDate("2020-08-30");
         model.addAttribute("timeList", timeList);
         model.addAttribute("numberOfHoursList", numberOfHoursList);
+        model.addAttribute("courtIdList", courtIdList);
         return "reservationPage";
     }
 
@@ -120,12 +122,13 @@ public class ControllerApi {
     public String example(Model model) {
         List<Time> timeList = servicesService.getTimeByDate("2020-08-30");
         List<Float> numberOfHoursList = servicesService.getNumberOfHoursByDate("2020-08-30");
+        List<Long> courtIdList = servicesService.getCourtIdByDate("2020-08-30");
         System.out.println(timeList);
         System.out.println(numberOfHoursList);
-        List<String> message = Arrays.asList("foo", "bar");
+        System.out.println(courtIdList);
         model.addAttribute("timeList", timeList);
         model.addAttribute("numberOfHoursList", numberOfHoursList);
-        model.addAttribute("message", message);
+        model.addAttribute("courtIdList", courtIdList);
         return "reservationPage";
     }
 
