@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -11,12 +11,13 @@
         var timeList = /*[[${timeList}]]*/ [];
         var numberOfHoursList = /*[[${numberOfHoursList}]]*/ [];
         var courtIdList = /*[[${courtIdList}]]*/ [];
+        var dateFromBackend = [[${date}]];;
     </script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
     <link rel="stylesheet" th:href="@{/cssFiles/reservationPageStyle.css}">
-    <script type="text/javascript" th:src="@{/jsFiles/script.js}">    </script>
+    <script type="text/javascript" th:src="@{/jsFiles/script.js}"></script>
 </head>
-<body onload="time(); setInterval(time,1000);">
+<body >
 
 <div id="container">
     <div id="top">

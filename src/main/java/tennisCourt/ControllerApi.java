@@ -15,7 +15,9 @@ import tennisCourt.service.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -119,17 +121,33 @@ public class ControllerApi {
     }
 
     @RequestMapping("/reservation")
-    public String example(Model model) {
-        List<Time> timeList = servicesService.getTimeByDate("2020-08-30");
-        List<Float> numberOfHoursList = servicesService.getNumberOfHoursByDate("2020-08-30");
-        List<Long> courtIdList = servicesService.getCourtIdByDate("2020-08-30");
+    public String example(Model model,
+                          @RequestParam(value = "date", required = false) String date) {
+        if(date == null){
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            date = dtf.format(now);
+        }
+        System.out.println("date= "+date);
+        List<Time> timeList = servicesService.getTimeByDate(date);
+        List<Float> numberOfHoursList = servicesService.getNumberOfHoursByDate(date);
+        List<Long> courtIdList = servicesService.getCourtIdByDate(date);
         System.out.println(timeList);
         System.out.println(numberOfHoursList);
         System.out.println(courtIdList);
         model.addAttribute("timeList", timeList);
         model.addAttribute("numberOfHoursList", numberOfHoursList);
         model.addAttribute("courtIdList", courtIdList);
+        model.addAttribute("date", date);
         return "reservationPage";
+    }
+
+    @PostMapping("/saveSelectedDay")
+    public String saveSelectedDays(@RequestBody Object selectNodeArray) {
+        System.out.println(selectNodeArray.toString());
+        List<String> list = (List)selectNodeArray;
+        list.forEach(m ->  System.out.println(m) );
+        return "redirect:/reservation";
     }
 
     //############## CLIENT ACCOUNT ##########################################

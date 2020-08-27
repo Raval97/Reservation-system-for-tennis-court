@@ -1,6 +1,7 @@
 var counter = 0;
 var weekday = new Array(7);
 var selectDay = null;
+var selectNodeArray = [];
 weekday[0] = "Sunday";
 weekday[1] = "Monday";
 weekday[2] = "Tuesday";
@@ -12,40 +13,42 @@ weekday[6] = "Saturday";
 $(document).ready(function () {
 
     //###################### calendar init ########################################
-    var data = new Date()
-    data.setDate(data.getDate() - 1);
-    var div = null;
-    var newEl = null;
-    var nextWeek = document.querySelector("#nextWeek");
-
+    var data = new Date();
+    let today = data;
+    dateFromBackend = new Date(dateFromBackend.split("-")[0],dateFromBackend.split("-")[1]-1,dateFromBackend.split("-")[2]);
+    let diffDays =  Math.ceil((dateFromBackend - today) / (1000 * 60 * 60 * 24));
+    counter= counter + Math.floor(diffDays/7);
+    let clickedButtonID = "day"+(diffDays%7);
+    let nrOfWeek = counter;
+    data.setDate(data.getDate() + (counter*7) - 1);
     for (let i = 0; i < 7; i++) {
-        div = document.querySelector("#calendar");
-        newEl = document.createElement("button");
         data.setDate(data.getDate() + 1);
-        var month = data.getMonth();
+        var month = data.getMonth()+1;
         if (month < 10) month = "0" + month;
         var day = data.getUTCDate();
         if (day < 10) day = "0" + day;
-        newEl.innerText = weekday[data.getDay()] + " \n" + day + "." + month;
-        newEl.className = "calendarDay";
-        newEl.id = "day" + i;
-        div.insertBefore(newEl, nextWeek)
+        newEle = $("<button class=\"calendarDay\" id=\"day" + i+"\">"+weekday[data.getDay()] + " " + day + "." + month+"</button>");
+        nextWeekButton = $('#nextWeek')[0];
+        newEle.insertBefore(nextWeekButton);
     }
 
-    let clickedButtonID = "day0";
-    let nrOfWeek = counter;
+    if (counter > 2)
+        $("#nextWeek").css("background", "gray").css("color", "black").css("cursor", "default").attr("disabled", true);
+    else
+        $("#nextWeek").css("background", "#7b38d8").css("color", "#eeeeee").css("cursor", "pointer").attr("disabled", false);
+    if (counter < 1)
+        $("#prevWeek").css("background", "gray").css("color", "black").css("cursor", "default").attr("disabled", true);
+    else
+        $("#prevWeek").css("background", "#7b38d8") .css("color", "#eeeeee").css("cursor", "pointer").attr("disabled", false);
 
     //###################### calendar day click ########################################
     $(".calendarDay").click(function () {
-        if(nrOfWeek === counter) {
-            document.querySelector(".clickedButton").className = "calendarDay";
-            document.querySelector("#" + this.id).className = "clickedButton";
-            clickedButtonID = this.id;
-        }
-        else
-            document.querySelector("#" + this.id).className = "clickedButton";
         clickedButtonID = this.id;
-        nrOfWeek = counter;
+        button = document.querySelector("#" + clickedButtonID);
+        dateOfCalendar = button.innerText;
+        dateOfCalendar = dateOfCalendar.split(" ")[1].split(".");
+        dateOfCalendar = "2020-"+dateOfCalendar[1]+"-"+dateOfCalendar[0];
+        window.location='/reservation?date='+dateOfCalendar;
     });
     document.querySelector("#"+clickedButtonID).className = "clickedButton";
     selectDay =$("#"+clickedButtonID).text().split(" ")[1].split(".");
@@ -89,11 +92,34 @@ $(document).ready(function () {
     });
 
     $("#makeReservation").click(function (){
+        $('.selectNode').each(function () {
+            selectNodeArray.push(this.id);
+        });
+        var formData = {
+            bookId : $("#bookId").val(),
+            bookName : $("#bookName").val(),
+            author : $("#author").val()
+        }
+        console.log(selectNodeArray);
+        $.ajax({
+               type: "post",
+               url: "/saveSelectedDay",
+               contentType: "application/json",
+               dataType:"json",
+               data: JSON.stringify(formData),
+               success: function(result) {
+                    alert("success");
+               },
+               error: function(e){
+                     alert("error"+ e);
+                     console.log("ERROR: ", e);
+               }
+          });
         $(".selectNode").addClass("reservedNode").removeClass("selectNode");
-//        document.querySelector(".selectNode").className = "reservedNode";
     });
 
     //###################### next or prev click ########################################
+    let changedWeek = false;
     $(".week").click(function () {
         let el;
         let text;
@@ -103,13 +129,13 @@ $(document).ready(function () {
                 for (let i = 0; i < 7; i++) {
                     el = document.querySelector("#day" + i);
                     text = el.textContent.split(" ")[1].split(".");
-                    data.setFullYear(data.getFullYear(), text[1], text[0]);
+                    data.setFullYear(data.getFullYear(), text[1]-1, text[0]);
                     data.setDate(data.getDate() + 7);
-                    month = data.getMonth();
+                    month = data.getMonth()+1;
                     if (month < 10) month = "0" + month;
                     var day = data.getUTCDate();
                     if (day < 10) day = "0" + day;
-                    el.innerText = weekday[data.getDay()] + " \n" + day + "." + month;
+                    el.innerText = weekday[data.getDay()] + " " + day + "." + month;
                 }
                 counter++;
             }
@@ -119,45 +145,34 @@ $(document).ready(function () {
                 for (let i = 0; i < 7; i++) {
                     el = document.querySelector("#day" + i);
                     text = el.textContent.split(" ")[1].split(".");
-                    data.setFullYear(data.getFullYear(), text[1], text[0]);
+                    data.setFullYear(data.getFullYear(), text[1]-1, text[0]);
                     data.setDate(data.getDate() - 7);
-                    month = data.getMonth();
+                    month = data.getMonth()+1;
                     if (month < 10) month = "0" + month;
                     var day = data.getUTCDate();
                     if (day < 10) day = "0" + day;
-                    el.innerText = weekday[data.getDay()] + " \n" + day + "." + month;
+                    el.innerText = weekday[data.getDay()] + " " + day + "." + month;
                 }
                 counter--;
             }
         }
-        if (counter > 2) {
-            $("#nextWeek")
-                .css("background", "gray")
-                .css("color", "black")
-                .css("cursor", "default");
-        }
-        else {
-            $("#nextWeek")
-                .css("background", "#7b38d8")
-                .css("color", "#eeeeee")
-                .css("cursor", "pointer");
-        }
-        if (counter < 1) {
-            $("#prevWeek")
-                .css("background", "gray")
-                .css("color", "black")
-                .css("cursor", "default");
-        }
-        else {
-            $("#prevWeek")
-                .css("background", "#7b38d8")
-                .css("color", "#eeeeee")
-                .css("cursor", "pointer");
-        }
-        if(nrOfWeek!==counter)
-            document.querySelector(".clickedButton").className = "calendarDay";
+        if (counter > 2)
+            $("#nextWeek").css("background", "gray").css("color", "black").css("cursor", "default").attr("disabled", true);
         else
+            $("#nextWeek").css("background", "#7b38d8").css("color", "#eeeeee").css("cursor", "pointer").attr("disabled", false);
+        if (counter < 1)
+            $("#prevWeek").css("background", "gray").css("color", "black").css("cursor", "default").attr("disabled", true);
+        else
+            $("#prevWeek").css("background", "#7b38d8") .css("color", "#eeeeee").css("cursor", "pointer").attr("disabled", false);
+
+        if(nrOfWeek!==counter && !changedWeek){
+            document.querySelector(".clickedButton").className = "calendarDay";
+            changedWeek = true;
+         }
+        if(nrOfWeek===counter && changedWeek){
             document.querySelector("#" +clickedButtonID).className = "clickedButton";
+            changedWeek = false;
+        }
     });
 
 
