@@ -156,7 +156,7 @@ public class ControllerApi {
         startedReservation.forEach((x) ->{
             int day = x.getDate().getDayOfMonth();
             String stringDay= (day>10) ? String.valueOf(day) : "0"+day;
-            int month = x.getDate().getMonthValue()+1;
+            int month = x.getDate().getMonthValue();
             String stringMonth = (month>10) ? String.valueOf(month) : "0"+month;
             int hour = x.getTime().getHour();
             String stringHour = (hour<10) ? String.valueOf(hour) : "0"+hour;
