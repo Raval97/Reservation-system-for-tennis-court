@@ -14,6 +14,7 @@ import java.util.Set;
 public class Services {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
@@ -32,9 +33,8 @@ public class Services {
     public Services() {
     }
 
-    public Services(Long id, LocalDate date, float numberOfHours, LocalTime time, float unitCost, Boolean ifRocket,
-                    Boolean ifBalls, Boolean ifShoes, float price) {
-        this.id = id;
+    public Services(LocalDate date, float numberOfHours, LocalTime time, float unitCost, Boolean ifRocket,
+                    Boolean ifBalls, Boolean ifShoes, float price, ReservationServices reservationService, Court court) {
         this.date = date;
         this.numberOfHours = numberOfHours;
         this.time = time;
@@ -43,5 +43,8 @@ public class Services {
         this.ifBalls = ifBalls;
         this.ifShoes = ifShoes;
         this.price = price;
+        this.reservationService = reservationService;
+        this.reservationService.setServices(this);
+        this.court = court;
     }
 }

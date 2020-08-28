@@ -2,6 +2,7 @@ package tennisCourt.model;
 
 import lombok.Data;
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -10,6 +11,7 @@ import java.util.Set;
 public class Court {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String type;
@@ -25,5 +27,10 @@ public class Court {
     }
 
     public Court() {
+        this.services = new HashSet<Services>();
+    }
+
+    public void addServices(Services services){
+        this.services.add(services);
     }
 }

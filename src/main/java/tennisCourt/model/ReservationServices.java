@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class ReservationServices {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn
@@ -19,4 +20,7 @@ public class ReservationServices {
     public ReservationServices() {
     }
 
+    public ReservationServices(Reservation reservation) {
+        this.reservation = reservation;
+    }
 }

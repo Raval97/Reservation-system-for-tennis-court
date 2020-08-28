@@ -10,7 +10,7 @@ import tennisCourt.model.Court;
 @Repository
 public interface CourtRepository extends JpaRepository<Court, Long> {
 
-    @Query(value = "SELECT * FROM court c WHERE c.user_id= :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM court c WHERE c.id= :id", nativeQuery = true)
     Court findByIdCourt(@Param("id") Long id);
 
 }

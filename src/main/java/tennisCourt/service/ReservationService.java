@@ -39,4 +39,11 @@ public class ReservationService {
         return repo.findAllByIdUser(id);
     }
 
+    public Boolean checkIfUserHasStartedReservation(Long id){
+        return repo.findIfUserHasStartedReservation(id);
+    }
+
+    public Reservation getStartedReservationByUserId(Long id) {
+        return  repo.findStartedReservationByUserId(id);
+    }
 }

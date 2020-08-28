@@ -61,7 +61,9 @@ $(document).ready(function () {
         d.setMinutes(d.getMinutes()+30);
         var minute = d.getMinutes();
         if (d.getMinutes()<30) minute += "0";
-        timeElement = "h"+d.getHours()+"m"+minute;
+        var hours =d.getHours()
+        if (d.getHours()<10) hours = "0" + hours;
+        timeElement = "h"+hours+"m"+minute;
         markup = "<tr>" +
             "<td class=\"tableHour\" align=\"center\">"+d.getHours()+"."+minute+"</td>" +
             "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c1\"></button></td>" +
@@ -78,11 +80,15 @@ $(document).ready(function () {
         let timeListIter = timeList[i].split(":");
         d.setHours(timeListIter[0], timeListIter[1], timeListIter[2]);
         for (var j = 0; j < numberOfHoursList[i]; j+=0.5){
-           timeElement = "h"+d.getHours()+"m"+d.getMinutes();
+           hours =d.getHours()
+           if (d.getHours()<10) hours = "0" + hours;
+           timeElement = "h"+hours+"m"+d.getMinutes();
            if (d.getMinutes()<30) timeElement += "0";
            var element = document.querySelector("#"+selectDay+"_"+timeElement+"_c"+courtIdList[i]);
-           element.className = "inaccessible";
-           element.disabled = true;
+           if(element !== null){
+               element.className = "inaccessible";
+               element.disabled = true;
+           }
            d.setMinutes(d.getMinutes()+30);
         }
     }
@@ -95,24 +101,17 @@ $(document).ready(function () {
         $('.selectNode').each(function () {
             selectNodeArray.push(this.id);
         });
-        var formData = {
-            bookId : $("#bookId").val(),
-            bookName : $("#bookName").val(),
-            author : $("#author").val()
-        }
-        console.log(selectNodeArray);
         $.ajax({
                type: "post",
                url: "/saveSelectedDay",
                contentType: "application/json",
                dataType:"json",
-               data: JSON.stringify(formData),
+               data: JSON.stringify(selectNodeArray),
                success: function(result) {
-                    alert("success");
+                    console.log("success: ", result);
                },
                error: function(e){
-                     alert("error"+ e);
-                     console.log("ERROR: ", e);
+                    console.log("ERROR: ", e);
                }
           });
         $(".selectNode").addClass("reservedNode").removeClass("selectNode");

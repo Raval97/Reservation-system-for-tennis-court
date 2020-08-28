@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 public class Reservation {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfReservation;
@@ -33,10 +34,9 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(Long id, LocalDate dateOfReservation, float finalPrice, String statusOfReservation,
+    public Reservation(LocalDate dateOfReservation, float finalPrice, String statusOfReservation,
                        String typeOfPaying, LocalDate finalPaymentDate, String statusPaying,
-                       UserReservation userReservation, Set<ReservationServices> reservationServices) {
-        this.id = id;
+                       UserReservation userReservation) {
         this.dateOfReservation = dateOfReservation;
         this.finalPrice = finalPrice;
         this.statusOfReservation = statusOfReservation;
@@ -44,6 +44,6 @@ public class Reservation {
         this.finalPaymentDate = finalPaymentDate;
         this.statusPaying = statusPaying;
         this.userReservation = userReservation;
-        this.reservationServices = reservationServices;
+        this.userReservation.setReservation(this);
     }
 }

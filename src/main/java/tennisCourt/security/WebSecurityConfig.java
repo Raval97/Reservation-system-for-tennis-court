@@ -44,7 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutSuccessUrl("/ourTennis")
-                .permitAll();
+                .permitAll()
+                .and()
+                .csrf().disable().cors();
     }
 
     @Bean

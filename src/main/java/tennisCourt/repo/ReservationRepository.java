@@ -20,4 +20,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "LEFT JOIN user u on ur.user_id=u.id WHERE u.id=:id", nativeQuery = true)
     List<Reservation> findAllByIdUser(Long id);
 
+    @Query(value = "SELECT case when count(distinct id) > 0 then 'true' else 'false' end as bool\n" +
+            "FROM `reservation` WHERE status_of_reservation=\"Started\" " +
+            "AND id in (SELECT ur.reservation_id from user_reservation ur WHERE ur.user_id = :id)", nativeQuery = true)
+    Boolean findIfUserHasStartedReservation(Long id);
+
+    @Query(value = "SELECT * FROM reservation r WHERE r.status_of_reservation=\"Started\" AND r.id in " +
+            "(SELECT ur.reservation_id FROM user_reservation ur WHERE ur.user_id=:id) ", nativeQuery = true)
+    Reservation findStartedReservationByUserId(Long id);
+
 }

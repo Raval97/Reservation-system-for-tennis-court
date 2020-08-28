@@ -1,6 +1,9 @@
 package tennisCourt;
 
+import jdk.jfr.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -110,13 +113,20 @@ public class ControllerApi {
 
 
     @RequestMapping("/OurTennis/reservation")
-    public String viewReservationPage(Model model) {
-        List<Time> timeList = servicesService.getTimeByDate("2020-08-30");
-        List<Float> numberOfHoursList = servicesService.getNumberOfHoursByDate("2020-08-30");
-        List<Long> courtIdList = servicesService.getCourtIdByDate("2020-08-30");
+    public String viewReservationPage(Model model,
+                                      @RequestParam(value = "date", required = false) String date) {
+        if(date == null){
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            date = dtf.format(now);
+        }
+        List<Time> timeList = servicesService.getTimeByDate(date);
+        List<Float> numberOfHoursList = servicesService.getNumberOfHoursByDate(date);
+        List<Long> courtIdList = servicesService.getCourtIdByDate(date);
         model.addAttribute("timeList", timeList);
         model.addAttribute("numberOfHoursList", numberOfHoursList);
         model.addAttribute("courtIdList", courtIdList);
+        model.addAttribute("date", date);
         return "reservationPage";
     }
 
@@ -142,12 +152,35 @@ public class ControllerApi {
         return "reservationPage";
     }
 
-    @PostMapping("/saveSelectedDay")
-    public String saveSelectedDays(@RequestBody Object selectNodeArray) {
-        System.out.println(selectNodeArray.toString());
-        List<String> list = (List)selectNodeArray;
-        list.forEach(m ->  System.out.println(m) );
-        return "redirect:/reservation";
+    @ResponseBody
+    @RequestMapping(value = "/saveSelectedDay", method = RequestMethod.POST)
+    public ResponseEntity<Category> saveSelectedDays(@RequestBody Object selectNodeArray) {
+        System.out.println("response: "+selectNodeArray.toString());
+        List<String> selectNodeList = (List)selectNodeArray;
+        User user = userService.findUserByUsername(User.getUserName());
+        if (!reservationService.checkIfUserHasStartedReservation(user.getId())){
+            UserReservation userReservation = new UserReservation(user);
+            reservationService.save(new Reservation(null, 0, "Started",
+                null, null, null, userReservation));
+        }
+        Reservation reservation = reservationService.getStartedReservationByUserId(user.getId());
+        ReservationServices reservationServices = null;
+        LocalDate date = null;
+        LocalTime time  = null;
+        Court court = null;
+        for (String selectNode: selectNodeList){
+            date = LocalDate.of(2020, Integer.parseInt(selectNode.substring(4,6)), Integer.parseInt(selectNode.substring(1,3)));
+            time =  LocalTime.of(Integer.parseInt(selectNode.substring(8,10)),Integer.parseInt(selectNode.substring(11,13)));
+//            court = courtService.get(selectNode.charAt(15));
+            court = courtService.get(3L);
+            System.out.println(selectNode.charAt(15)+" court_id ");
+            System.out.println(selectNode.charAt(15)+" court_id "+court.getId());
+            reservationServices= new ReservationServices(reservation);
+            servicesService.save(new Services(date, 0.5F, time, 45,
+                    false, false, false, 22.5F, reservationServices, court));
+        }
+        selectNodeList.forEach(x ->  System.out.println(x));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //############## CLIENT ACCOUNT ##########################################

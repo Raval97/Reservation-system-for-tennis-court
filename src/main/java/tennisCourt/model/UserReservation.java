@@ -22,4 +22,8 @@ public class UserReservation {
 
     public UserReservation() {
     }
+
+    public UserReservation(User user) {
+        this.user = user;
+    }
 }
