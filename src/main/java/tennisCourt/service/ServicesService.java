@@ -68,4 +68,8 @@ public class ServicesService {
         return repo.findStartedCourtIdByDate(date, id);
     };
 
+    public List<Services> getInStartedReservationByUserId(Long id) {
+        return repo.findInStartedReservationByUserId(id);
+    }
+
 }

@@ -202,6 +202,18 @@ th{
     padding: 15px;
 }
 
+#refresh{
+    width: 200px;
+    height: 70px;
+    font-size: 20px;
+    background: #11333f;
+    border: 5px solid #12af12;
+}
+
+#refresh:hover{
+    background-color: yellow;
+}
+
 #makeReservation{
     width: 200px;
     height: 70px;
@@ -213,3 +225,4 @@ th{
 #makeReservation:hover{
     background-color: blue;
 }
+

@@ -72,6 +72,31 @@
                 </div>
 
                 <div id="orderList">
+                    <button id="refresh" align="center">Refresh</button>
+                    </br>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Court</th>
+                            <th>Date</th>
+                            <th>Hour<br>[start time]</th>
+                            <th>Time</br>[h]</th>
+                            <th>Cost</br>[per Hour]</th>
+                            <th>Price</br>[PLN]</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="element,iter : ${startedReservationServices}">
+                            <td th:text="${element.court.id}"></td>
+                            <td th:text="${element.date}"></td>
+                            <td th:text="${element.time}"></td>
+                            <td th:text="${element.numberOfHours}"></td>
+                            <td th:text="${element.unitCost}"></td>
+                            <td th:text="${element.price}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </br>
                     <div id="additions" align="center">
                         <div class="addition">Rent a rockets
                             <label class="switch">

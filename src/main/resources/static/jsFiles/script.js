@@ -10,6 +10,26 @@ weekday[4] = "Thursday";
 weekday[5] = "Friday";
 weekday[6] = "Saturday";
 
+function sendSelectNodeArrayWithAjax(dateUrlParameter){
+    $('.selectNode').each(function () {
+        selectNodeArray.push(this.id);
+    });
+    $.ajax({
+       type: "post",
+       url: "/saveSelectedDay",
+       contentType: "application/json",
+       dataType:"json",
+       data: JSON.stringify(selectNodeArray),
+       success: function(result) {
+            console.log("success: ", result);
+            window.location='/OurTennis/reservation?date='+dateUrlParameter;
+       },
+       error: function(e){
+            console.log("ERROR: ", e);
+       }
+    });
+}
+
 $(document).ready(function () {
 
     //###################### calendar init ########################################
@@ -48,7 +68,7 @@ $(document).ready(function () {
         dateOfCalendar = button.innerText;
         dateOfCalendar = dateOfCalendar.split(" ")[1].split(".");
         dateOfCalendar = "2020-"+dateOfCalendar[1]+"-"+dateOfCalendar[0];
-        window.location='/reservation?date='+dateOfCalendar;
+        sendSelectNodeArrayWithAjax(dateOfCalendar);
     });
     document.querySelector("#"+clickedButtonID).className = "clickedButton";
     selectDay =$("#"+clickedButtonID).text().split(" ")[1].split(".");
@@ -71,7 +91,7 @@ $(document).ready(function () {
             "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c3\"></button></td>" +
             "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c4\"></button></td>" +
             "</tr>";
-        tableBody = $("table tbody");
+        tableBody = $("#tableBody");
         tableBody.append(markup);
     }
 
@@ -115,25 +135,8 @@ $(document).ready(function () {
         this.className = "selectNode";
     });
 
-    $("#makeReservation").click(function (){
-        $('.selectNode').each(function () {
-            selectNodeArray.push(this.id);
-        });
-        $.ajax({
-               type: "post",
-               url: "/saveSelectedDay",
-               contentType: "application/json",
-               dataType:"json",
-               data: JSON.stringify(selectNodeArray),
-               success: function(result) {
-                    console.log("success: ", result);
-                    window.location='/reservation?date='+dateFromBackend;
-               },
-               error: function(e){
-                    console.log("ERROR: ", e);
-               }
-          });
-//        $(".selectNode").addClass("reservedNode").removeClass("selectNode");
+    $("#refresh").click(function (){
+        sendSelectNodeArrayWithAjax(dateFromBackend);
     });
 
     //###################### next or prev click ########################################

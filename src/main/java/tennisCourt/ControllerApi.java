@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -124,54 +125,46 @@ public class ControllerApi {
         List<Time> startedTimeList = servicesService.getStartedTimeByDate(date, user.getId());
         List<Float> startedNumberOfHoursList = servicesService.getStartedNumberOfHoursByDate(date, user.getId());
         List<Long> startedCourtIdList = servicesService.getStartedCourtIdByDate(date, user.getId());
+        List<Services> startedReservationServices = servicesService.getInStartedReservationByUserId(user.getId());
         model.addAttribute("reservedTimeList", reservedTimeList);
         model.addAttribute("reservedNumberOfHoursList", reservedNumberOfHoursList);
         model.addAttribute("reservedCourtIdList", reservedCourtIdList);
         model.addAttribute("startedTimeList", startedTimeList);
         model.addAttribute("startedNumberOfHoursList", startedNumberOfHoursList);
         model.addAttribute("startedCourtIdList", startedCourtIdList);
+        model.addAttribute("startedReservationServices", startedReservationServices);
         model.addAttribute("date", date);
         return "reservationPage";
     }
 
-    @RequestMapping("/reservation")
-    public String example(Model model,
-                          @RequestParam(value = "date", required = false) String date) {
-        if(date == null){
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDateTime now = LocalDateTime.now();
-            date = dtf.format(now);
-        }
-        User user = userService.findUserByUsername(User.getUserName());
-        System.out.println("date= "+date);
-        List<Time> reservedTimeList = servicesService.getReservedTimeByDate(date);
-        List<Float> reservedNumberOfHoursList = servicesService.getReservedNumberOfHoursByDate(date);
-        List<Long> reservedCourtIdList = servicesService.getReservedCourtIdByDate(date);
-        List<Time> startedTimeList = servicesService.getStartedTimeByDate(date, user.getId());
-        List<Float> startedNumberOfHoursList = servicesService.getStartedNumberOfHoursByDate(date, user.getId());
-        List<Long> startedCourtIdList = servicesService.getStartedCourtIdByDate(date, user.getId());
-        System.out.println(reservedTimeList);
-        System.out.println(reservedNumberOfHoursList);
-        System.out.println(reservedCourtIdList);
-        System.out.println(startedTimeList);
-        System.out.println(startedNumberOfHoursList);
-        System.out.println(startedCourtIdList);
-        model.addAttribute("reservedTimeList", reservedTimeList);
-        model.addAttribute("reservedNumberOfHoursList", reservedNumberOfHoursList);
-        model.addAttribute("reservedCourtIdList", reservedCourtIdList);
-        model.addAttribute("startedTimeList", startedTimeList);
-        model.addAttribute("startedNumberOfHoursList", startedNumberOfHoursList);
-        model.addAttribute("startedCourtIdList", startedCourtIdList);
-        model.addAttribute("date", date);
-        return "reservationPage";
-    }
+    /***
+     * pobieramy dane z frontu i z bazy
+     * parsujemy je do jedenj postaci
+     * grupujemy po dacie oraz korcie
+     * w tej samej podgrupie laczymy komórki obok siebie po godzinie i dodajemy ich cene i czas
+     * usuwamy dane z bazy
+     * zapisujemy zmodyfikowane dane
+     */
 
     @ResponseBody
     @RequestMapping(value = "/saveSelectedDay", method = RequestMethod.POST)
     public ResponseEntity<Category> saveSelectedDays(@RequestBody Object selectNodeArray) {
-        System.out.println("response: "+selectNodeArray.toString());
-        List<String> selectNodeList = (List)selectNodeArray;
         User user = userService.findUserByUsername(User.getUserName());
+        List<String> selectNodeList = (List)selectNodeArray;
+        List<Services> startedReservation = servicesService.getInStartedReservationByUserId(user.getId());
+        List<String> reservedNoteList = new ArrayList<String>();
+        startedReservation.forEach((x) ->{
+            int day = x.getDate().getDayOfMonth();
+            String stringDay= (day>10) ? String.valueOf(day) : "0"+day;
+            int month = x.getDate().getMonthValue()+1;
+            String stringMonth = (month>10) ? String.valueOf(month) : "0"+month;
+            int hour = x.getTime().getHour();
+            String stringHour = (hour<10) ? String.valueOf(hour) : "0"+hour;
+            int minutes = x.getTime().getMinute();
+            String stringMinutes = (minutes<10) ? String.valueOf(minutes) : "0"+minutes;
+            reservedNoteList.add("d"+stringDay+"m"+stringMonth+"_h"+
+                    stringHour+"m"+stringMinutes+"_c"+x.getCourt().getId());
+        });
         if (!reservationService.checkIfUserHasStartedReservation(user.getId())){
             UserReservation userReservation = new UserReservation(user);
             reservationService.save(new Reservation(null, 0, "Started",
@@ -186,14 +179,14 @@ public class ControllerApi {
             date = LocalDate.of(2020, Integer.parseInt(selectNode.substring(4,6)), Integer.parseInt(selectNode.substring(1,3)));
             time =  LocalTime.of(Integer.parseInt(selectNode.substring(8,10)),Integer.parseInt(selectNode.substring(11,13)));
             court = courtService.get(Character.getNumericValue(selectNode.charAt(15)));
-//            court = courtService.get(3L);
-            System.out.println(selectNode.charAt(15)+" court_id ");
-            System.out.println(selectNode.charAt(15)+" court_id "+court.getId());
             reservationServices= new ReservationServices(reservation);
             servicesService.save(new Services(date, 0.5F, time, 45,
                     false, false, false, 22.5F, reservationServices, court));
         }
-        selectNodeList.forEach(x ->  System.out.println(x));
+        System.out.println("\n\n\n\n\n\n\n"+selectNodeList);
+        System.out.println(reservedNoteList);
+        selectNodeList.addAll(reservedNoteList);
+        System.out.println(selectNodeList+"\n\n\n\n\n\n\n");
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

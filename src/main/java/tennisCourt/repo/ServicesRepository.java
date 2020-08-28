@@ -65,4 +65,9 @@ public interface ServicesRepository extends JpaRepository<Services, Long> {
             "AND r.id in (SELECT ur.reservation_id FROM user_reservation ur WHERE ur.user_id=:id)))", nativeQuery = true)
     List<Long> findStartedCourtIdByDate(String date, Long id);
 
+    @Query(value = "SELECT * FROM services WHERE id in " +
+            "(SELECT rs.services_id FROM reservation_services rs WHERE rs.reservation_id in " +
+            "(SELECT r.id FROM reservation r WHERE r.status_of_reservation =\"Started\" " +
+            "AND r.id in (SELECT ur.reservation_id FROM user_reservation ur WHERE ur.user_id=:id)))", nativeQuery = true)
+    List<Services> findInStartedReservationByUserId(Long id);
 }
