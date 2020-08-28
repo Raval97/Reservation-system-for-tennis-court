@@ -15,8 +15,8 @@ $(document).ready(function () {
     //###################### calendar init ########################################
     var data = new Date();
     let today = data;
-    dateFromBackend = new Date(dateFromBackend.split("-")[0],dateFromBackend.split("-")[1]-1,dateFromBackend.split("-")[2]);
-    let diffDays =  Math.ceil((dateFromBackend - today) / (1000 * 60 * 60 * 24));
+    const dateBackend = new Date(dateFromBackend.split("-")[0],dateFromBackend.split("-")[1]-1,dateFromBackend.split("-")[2]);
+    let diffDays =  Math.ceil((dateBackend - today) / (1000 * 60 * 60 * 24));
     counter= counter + Math.floor(diffDays/7);
     let clickedButtonID = "day"+(diffDays%7);
     let nrOfWeek = counter;
@@ -76,15 +76,15 @@ $(document).ready(function () {
     }
 
     // set node elements to inaccessible where the reservation was made
-    for (var i = 0; i < timeList.length; i++){
-        let timeListIter = timeList[i].split(":");
+    for (var i = 0; i < reservedTimeList.length; i++){
+        let timeListIter = reservedTimeList[i].split(":");
         d.setHours(timeListIter[0], timeListIter[1], timeListIter[2]);
-        for (var j = 0; j < numberOfHoursList[i]; j+=0.5){
+        for (var j = 0; j < reservedNumberOfHoursList[i]; j+=0.5){
            hours =d.getHours()
            if (d.getHours()<10) hours = "0" + hours;
            timeElement = "h"+hours+"m"+d.getMinutes();
            if (d.getMinutes()<30) timeElement += "0";
-           var element = document.querySelector("#"+selectDay+"_"+timeElement+"_c"+courtIdList[i]);
+           var element = document.querySelector("#"+selectDay+"_"+timeElement+"_c"+reservedCourtIdList[i]);
            if(element !== null){
                element.className = "inaccessible";
                element.disabled = true;
@@ -92,6 +92,24 @@ $(document).ready(function () {
            d.setMinutes(d.getMinutes()+30);
         }
     }
+
+    // set node elements to reserved where the client confirm selected node
+        for (var i = 0; i < startedTimeList.length; i++){
+            let timeListIter = startedTimeList[i].split(":");
+            d.setHours(timeListIter[0], timeListIter[1], timeListIter[2]);
+            for (var j = 0; j < startedNumberOfHoursList[i]; j+=0.5){
+               hours =d.getHours()
+               if (d.getHours()<10) hours = "0" + hours;
+               timeElement = "h"+hours+"m"+d.getMinutes();
+               if (d.getMinutes()<30) timeElement += "0";
+               var element = document.querySelector("#"+selectDay+"_"+timeElement+"_c"+startedCourtIdList[i]);
+               if(element !== null){
+                   element.className = "reservedNode";
+                   element.disabled = true;
+               }
+               d.setMinutes(d.getMinutes()+30);
+            }
+        }
 
     $(".tableNode").click(function () {
         this.className = "selectNode";
@@ -109,12 +127,13 @@ $(document).ready(function () {
                data: JSON.stringify(selectNodeArray),
                success: function(result) {
                     console.log("success: ", result);
+                    window.location='/reservation?date='+dateFromBackend;
                },
                error: function(e){
                     console.log("ERROR: ", e);
                }
           });
-        $(".selectNode").addClass("reservedNode").removeClass("selectNode");
+//        $(".selectNode").addClass("reservedNode").removeClass("selectNode");
     });
 
     //###################### next or prev click ########################################

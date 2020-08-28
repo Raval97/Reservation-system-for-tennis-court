@@ -8,9 +8,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script type="text/javascript" th:inline="javascript">
-        var timeList = /*[[${timeList}]]*/ [];
-        var numberOfHoursList = /*[[${numberOfHoursList}]]*/ [];
-        var courtIdList = /*[[${courtIdList}]]*/ [];
+        var reservedTimeList = /*[[${reservedTimeList}]]*/ [];
+        var reservedNumberOfHoursList = /*[[${reservedNumberOfHoursList}]]*/ [];
+        var reservedCourtIdList = /*[[${reservedCourtIdList}]]*/ [];
+        var startedTimeList = /*[[${startedTimeList}]]*/ [];
+        var startedNumberOfHoursList = /*[[${startedNumberOfHoursList}]]*/ [];
+        var startedCourtIdList = /*[[${startedCourtIdList}]]*/ [];
         var dateFromBackend = [[${date}]];;
     </script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">

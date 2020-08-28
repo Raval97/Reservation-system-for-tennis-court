@@ -32,16 +32,37 @@ public interface ServicesRepository extends JpaRepository<Services, Long> {
             "WHERE rs.reservation_id=:id)", nativeQuery = true)
     void deleteByReservationId(Long id);
 
-    @Query(value = "SELECT time FROM services " +
-            "WHERE date = :date", nativeQuery = true)
-    List<Time> findTimeByDate(String date);
+    @Query(value = "SELECT time FROM services WHERE date = :date AND id in " +
+            "(SELECT rs.services_id FROM reservation_services rs WHERE rs.reservation_id in " +
+            "(SELECT r.id FROM reservation r WHERE r.status_of_reservation =\"Reserved\"))", nativeQuery = true)
+    List<Time> findReservedTimeByDate(String date);
 
-    @Query(value = "SELECT number_of_hours FROM services " +
-            "WHERE date = :date", nativeQuery = true)
-    List<Float> findNumberOfHoursByDate(String date);
+    @Query(value = "SELECT number_of_hours FROM services WHERE date = :date AND id in " +
+            "(SELECT rs.services_id FROM reservation_services rs WHERE rs.reservation_id in " +
+            "(SELECT r.id FROM reservation r WHERE r.status_of_reservation =\"Reserved\"))", nativeQuery = true)
+    List<Float> findReservedNumberOfHoursByDate(String date);
 
-    @Query(value = "SELECT court_id FROM services " +
-            "WHERE date = :date", nativeQuery = true)
-    List<Long> findCourtIdByDate(String date);
+    @Query(value = "SELECT court_id FROM services WHERE date = :date AND id in " +
+            "(SELECT rs.services_id FROM reservation_services rs WHERE rs.reservation_id in " +
+            "(SELECT r.id FROM reservation r WHERE r.status_of_reservation =\"Reserved\"))", nativeQuery = true)
+    List<Long> findReservedCourtIdByDate(String date);
+
+    @Query(value = "SELECT time FROM services WHERE date = :date AND id in " +
+            "(SELECT rs.services_id FROM reservation_services rs WHERE rs.reservation_id in " +
+            "(SELECT r.id FROM reservation r WHERE r.status_of_reservation =\"Started\" " +
+            "AND r.id in (SELECT ur.reservation_id FROM user_reservation ur WHERE ur.user_id=:id)))", nativeQuery = true)
+    List<Time> findStartedTimeByDate(String date, Long id);
+
+    @Query(value = "SELECT number_of_hours FROM services WHERE date = :date AND id in " +
+            "(SELECT rs.services_id FROM reservation_services rs WHERE rs.reservation_id in " +
+            "(SELECT r.id FROM reservation r WHERE r.status_of_reservation =\"Started\" " +
+            "AND r.id in (SELECT ur.reservation_id FROM user_reservation ur WHERE ur.user_id=:id)))", nativeQuery = true)
+    List<Float> findStartedNumberOfHoursByDate(String date, Long id);
+
+    @Query(value = "SELECT court_id FROM services WHERE date = :date AND id in " +
+            "(SELECT rs.services_id FROM reservation_services rs WHERE rs.reservation_id in " +
+            "(SELECT r.id FROM reservation r WHERE r.status_of_reservation =\"Started\" " +
+            "AND r.id in (SELECT ur.reservation_id FROM user_reservation ur WHERE ur.user_id=:id)))", nativeQuery = true)
+    List<Long> findStartedCourtIdByDate(String date, Long id);
 
 }

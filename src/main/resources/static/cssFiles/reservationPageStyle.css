@@ -192,6 +192,16 @@ th{
     cursor: default;
 }
 
+.reservedNode{
+    background-color: green;
+    width: 140px;
+    border-radius: 0px;
+    margin: auto;
+    font-size: 12px;
+    border: 0px;
+    padding: 15px;
+}
+
 #makeReservation{
     width: 200px;
     height: 70px;

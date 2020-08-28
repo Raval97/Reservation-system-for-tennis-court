@@ -15,15 +15,12 @@ import tennisCourt.model.*;
 import tennisCourt.security.WebSecurityConfig;
 import tennisCourt.service.*;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class ControllerApi {
@@ -120,12 +117,19 @@ public class ControllerApi {
             LocalDateTime now = LocalDateTime.now();
             date = dtf.format(now);
         }
-        List<Time> timeList = servicesService.getTimeByDate(date);
-        List<Float> numberOfHoursList = servicesService.getNumberOfHoursByDate(date);
-        List<Long> courtIdList = servicesService.getCourtIdByDate(date);
-        model.addAttribute("timeList", timeList);
-        model.addAttribute("numberOfHoursList", numberOfHoursList);
-        model.addAttribute("courtIdList", courtIdList);
+        User user = userService.findUserByUsername(User.getUserName());
+        List<Time> reservedTimeList = servicesService.getReservedTimeByDate(date);
+        List<Float> reservedNumberOfHoursList = servicesService.getReservedNumberOfHoursByDate(date);
+        List<Long> reservedCourtIdList = servicesService.getReservedCourtIdByDate(date);
+        List<Time> startedTimeList = servicesService.getStartedTimeByDate(date, user.getId());
+        List<Float> startedNumberOfHoursList = servicesService.getStartedNumberOfHoursByDate(date, user.getId());
+        List<Long> startedCourtIdList = servicesService.getStartedCourtIdByDate(date, user.getId());
+        model.addAttribute("reservedTimeList", reservedTimeList);
+        model.addAttribute("reservedNumberOfHoursList", reservedNumberOfHoursList);
+        model.addAttribute("reservedCourtIdList", reservedCourtIdList);
+        model.addAttribute("startedTimeList", startedTimeList);
+        model.addAttribute("startedNumberOfHoursList", startedNumberOfHoursList);
+        model.addAttribute("startedCourtIdList", startedCourtIdList);
         model.addAttribute("date", date);
         return "reservationPage";
     }
@@ -138,16 +142,26 @@ public class ControllerApi {
             LocalDateTime now = LocalDateTime.now();
             date = dtf.format(now);
         }
+        User user = userService.findUserByUsername(User.getUserName());
         System.out.println("date= "+date);
-        List<Time> timeList = servicesService.getTimeByDate(date);
-        List<Float> numberOfHoursList = servicesService.getNumberOfHoursByDate(date);
-        List<Long> courtIdList = servicesService.getCourtIdByDate(date);
-        System.out.println(timeList);
-        System.out.println(numberOfHoursList);
-        System.out.println(courtIdList);
-        model.addAttribute("timeList", timeList);
-        model.addAttribute("numberOfHoursList", numberOfHoursList);
-        model.addAttribute("courtIdList", courtIdList);
+        List<Time> reservedTimeList = servicesService.getReservedTimeByDate(date);
+        List<Float> reservedNumberOfHoursList = servicesService.getReservedNumberOfHoursByDate(date);
+        List<Long> reservedCourtIdList = servicesService.getReservedCourtIdByDate(date);
+        List<Time> startedTimeList = servicesService.getStartedTimeByDate(date, user.getId());
+        List<Float> startedNumberOfHoursList = servicesService.getStartedNumberOfHoursByDate(date, user.getId());
+        List<Long> startedCourtIdList = servicesService.getStartedCourtIdByDate(date, user.getId());
+        System.out.println(reservedTimeList);
+        System.out.println(reservedNumberOfHoursList);
+        System.out.println(reservedCourtIdList);
+        System.out.println(startedTimeList);
+        System.out.println(startedNumberOfHoursList);
+        System.out.println(startedCourtIdList);
+        model.addAttribute("reservedTimeList", reservedTimeList);
+        model.addAttribute("reservedNumberOfHoursList", reservedNumberOfHoursList);
+        model.addAttribute("reservedCourtIdList", reservedCourtIdList);
+        model.addAttribute("startedTimeList", startedTimeList);
+        model.addAttribute("startedNumberOfHoursList", startedNumberOfHoursList);
+        model.addAttribute("startedCourtIdList", startedCourtIdList);
         model.addAttribute("date", date);
         return "reservationPage";
     }
@@ -171,8 +185,8 @@ public class ControllerApi {
         for (String selectNode: selectNodeList){
             date = LocalDate.of(2020, Integer.parseInt(selectNode.substring(4,6)), Integer.parseInt(selectNode.substring(1,3)));
             time =  LocalTime.of(Integer.parseInt(selectNode.substring(8,10)),Integer.parseInt(selectNode.substring(11,13)));
-//            court = courtService.get(selectNode.charAt(15));
-            court = courtService.get(3L);
+            court = courtService.get(Character.getNumericValue(selectNode.charAt(15)));
+//            court = courtService.get(3L);
             System.out.println(selectNode.charAt(15)+" court_id ");
             System.out.println(selectNode.charAt(15)+" court_id "+court.getId());
             reservationServices= new ReservationServices(reservation);

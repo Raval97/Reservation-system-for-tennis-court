@@ -6,13 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tennisCourt.model.Services;
 import tennisCourt.repo.ServicesRepository;
 
-import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -49,16 +44,28 @@ public class ServicesService {
         return repo.findAllByReservationId(id);
     }
 
-    public List<Time> getTimeByDate(String date){
-        return repo.findTimeByDate(date);
+    public List<Time> getReservedTimeByDate(String date){
+        return repo.findReservedTimeByDate(date);
     };
 
-    public List<Float> getNumberOfHoursByDate(String date){
-        return repo.findNumberOfHoursByDate(date);
+    public List<Float> getReservedNumberOfHoursByDate(String date){
+        return repo.findReservedNumberOfHoursByDate(date);
     };
 
-    public List<Long> getCourtIdByDate(String date){
-        return repo.findCourtIdByDate(date);
+    public List<Long> getReservedCourtIdByDate(String date){
+        return repo.findReservedCourtIdByDate(date);
+    };
+
+    public List<Time> getStartedTimeByDate(String date, Long id){
+        return repo.findStartedTimeByDate(date, id);
+    };
+
+    public List<Float> getStartedNumberOfHoursByDate(String date, Long id){
+        return repo.findStartedNumberOfHoursByDate(date, id);
+    };
+
+    public List<Long> getStartedCourtIdByDate(String date, Long id){
+        return repo.findStartedCourtIdByDate(date, id);
     };
 
 }
