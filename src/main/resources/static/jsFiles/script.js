@@ -2,6 +2,7 @@ var counter = 0;
 var weekday = new Array(7);
 var selectDay = null;
 var selectNodeArray = [];
+var removedNodeArray = [];
 weekday[0] = "Sunday";
 weekday[1] = "Monday";
 weekday[2] = "Tuesday";
@@ -30,6 +31,26 @@ function sendSelectNodeArrayWithAjax(dateUrlParameter){
     });
 }
 
+function sendRemovedNodeArrayWithAjax(dateUrlParameter){
+    $('.removedNode').each(function () {
+        removedNodeArray.push(this.id);
+    });
+    $.ajax({
+       type: "post",
+       url: "/saveRemovedDay",
+       contentType: "application/json",
+       dataType:"json",
+       data: JSON.stringify(removedNodeArray),
+       success: function(result) {
+            console.log("success: ", result);
+            sendSelectNodeArrayWithAjax(dateUrlParameter)
+       },
+       error: function(e){
+            console.log("ERROR: ", e);
+       }
+    });
+}
+
 $(document).ready(function () {
 
     //###################### calendar init ########################################
@@ -47,7 +68,8 @@ $(document).ready(function () {
         if (month < 10) month = "0" + month;
         var day = data.getUTCDate();
         if (day < 10) day = "0" + day;
-        newEle = $("<button class=\"calendarDay\" id=\"day" + i+"\">"+weekday[data.getDay()] + " " + day + "." + month+"</button>");
+        newEle = $("<button class=\"calendarDay\" id=\"day" + i+"\">"+weekday[data.getDay()] + " "+
+           day + "." + month+"."+ data.getFullYear()+"</button>");
         nextWeekButton = $('#nextWeek')[0];
         newEle.insertBefore(nextWeekButton);
     }
@@ -67,12 +89,12 @@ $(document).ready(function () {
         button = document.querySelector("#" + clickedButtonID);
         dateOfCalendar = button.innerText;
         dateOfCalendar = dateOfCalendar.split(" ")[1].split(".");
-        dateOfCalendar = "2020-"+dateOfCalendar[1]+"-"+dateOfCalendar[0];
-        sendSelectNodeArrayWithAjax(dateOfCalendar);
+        dateOfCalendar = dateOfCalendar[2]+"-"+dateOfCalendar[1]+"-"+dateOfCalendar[0];
+        sendRemovedNodeArrayWithAjax(dateOfCalendar);
     });
     document.querySelector("#"+clickedButtonID).className = "clickedButton";
     selectDay =$("#"+clickedButtonID).text().split(" ")[1].split(".");
-    selectDay = "d"+selectDay[0]+"m"+selectDay[1];
+    selectDay = "d"+selectDay[0]+"m"+selectDay[1]+"r"+selectDay[2];
 
     //###################### schedule init ########################################
     let d = new Date();
@@ -86,10 +108,10 @@ $(document).ready(function () {
         timeElement = "h"+hours+"m"+minute;
         markup = "<tr>" +
             "<td class=\"tableHour\" align=\"center\">"+d.getHours()+"."+minute+"</td>" +
-            "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c1\"></button></td>" +
-            "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c2\"></button></td>" +
-            "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c3\"></button></td>" +
-            "<td><button class=\"tableNode\" id=\""+selectDay+"_"+timeElement+"_c4\"></button></td>" +
+            "<td><button class=\"tableNode\" id=\""+selectDay+"_c1_"+timeElement+"\"></button></td>" +
+            "<td><button class=\"tableNode\" id=\""+selectDay+"_c2_"+timeElement+"\"></button></td>" +
+            "<td><button class=\"tableNode\" id=\""+selectDay+"_c3_"+timeElement+"\"></button></td>" +
+            "<td><button class=\"tableNode\" id=\""+selectDay+"_c4_"+timeElement+"\"></button></td>" +
             "</tr>";
         tableBody = $("#tableBody");
         tableBody.append(markup);
@@ -104,7 +126,7 @@ $(document).ready(function () {
            if (d.getHours()<10) hours = "0" + hours;
            timeElement = "h"+hours+"m"+d.getMinutes();
            if (d.getMinutes()<30) timeElement += "0";
-           var element = document.querySelector("#"+selectDay+"_"+timeElement+"_c"+reservedCourtIdList[i]);
+           var element = document.querySelector("#"+selectDay+"_c"+reservedCourtIdList[i]+"_"+timeElement);
            if(element !== null){
                element.className = "inaccessible";
                element.disabled = true;
@@ -122,21 +144,31 @@ $(document).ready(function () {
                if (d.getHours()<10) hours = "0" + hours;
                timeElement = "h"+hours+"m"+d.getMinutes();
                if (d.getMinutes()<30) timeElement += "0";
-               var element = document.querySelector("#"+selectDay+"_"+timeElement+"_c"+startedCourtIdList[i]);
-               if(element !== null){
+               var element = document.querySelector("#"+selectDay+"_c"+startedCourtIdList[i]+"_"+timeElement);
+               if(element !== null)
                    element.className = "reservedNode";
-                   element.disabled = true;
-               }
                d.setMinutes(d.getMinutes()+30);
             }
         }
 
-    $(".tableNode").click(function () {
+    $(document).on("click", ".tableNode", function(){
         this.className = "selectNode";
     });
 
+    $(document).on("click", ".selectNode", function(){
+        this.className = "tableNode";
+    });
+
+    $(document).on("click", ".removedNode", function(){
+        this.className = "reservedNode";
+    });
+
+    $(document).on("click", ".reservedNode", function(){
+        this.className = "removedNode";
+    });
+
     $("#refresh").click(function (){
-        sendSelectNodeArrayWithAjax(dateFromBackend);
+        sendRemovedNodeArrayWithAjax(dateFromBackend);
     });
 
     //###################### next or prev click ########################################
@@ -150,13 +182,13 @@ $(document).ready(function () {
                 for (let i = 0; i < 7; i++) {
                     el = document.querySelector("#day" + i);
                     text = el.textContent.split(" ")[1].split(".");
-                    data.setFullYear(data.getFullYear(), text[1]-1, text[0]);
+                    data.setFullYear(text[2], text[1]-1, text[0]);
                     data.setDate(data.getDate() + 7);
                     month = data.getMonth()+1;
                     if (month < 10) month = "0" + month;
                     var day = data.getUTCDate();
                     if (day < 10) day = "0" + day;
-                    el.innerText = weekday[data.getDay()] + " " + day + "." + month;
+                    el.innerText = weekday[data.getDay()] + " " + day + "." + month+"."+data.getFullYear();
                 }
                 counter++;
             }
@@ -166,13 +198,13 @@ $(document).ready(function () {
                 for (let i = 0; i < 7; i++) {
                     el = document.querySelector("#day" + i);
                     text = el.textContent.split(" ")[1].split(".");
-                    data.setFullYear(data.getFullYear(), text[1]-1, text[0]);
+                    data.setFullYear(text[2], text[1]-1, text[0]);
                     data.setDate(data.getDate() - 7);
                     month = data.getMonth()+1;
                     if (month < 10) month = "0" + month;
                     var day = data.getUTCDate();
                     if (day < 10) day = "0" + day;
-                    el.innerText = weekday[data.getDay()] + " " + day + "." + month;
+                    el.innerText = weekday[data.getDay()] + " " + day + "." + month+"."+data.getFullYear();
                 }
                 counter--;
             }

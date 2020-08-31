@@ -171,6 +171,24 @@ th{
     padding: 15px;
 }
 
+.selectNode:hover{
+    background-color: #eeeeb6;
+}
+
+.removedNode {
+    background-color: #6528b9;
+    width: 140px;
+    border-radius: 0px;
+    margin: auto;
+    font-size: 12px;
+    border: 0px;
+    padding: 15px;
+}
+
+.removedNode:hover{
+    background-color: #white;
+}
+
 .reservedNode{
     background-color: green;
     width: 140px;
@@ -179,6 +197,10 @@ th{
     font-size: 12px;
     border: 0px;
     padding: 15px;
+}
+
+.reservedNode:hover{
+    background-color: #1a9b1a;
 }
 
 .inaccessible{
