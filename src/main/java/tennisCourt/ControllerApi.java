@@ -137,40 +137,60 @@ public class ControllerApi {
     }
 
     ////////////////// Update Started Reservation ///////////////////////////////
-
     @ResponseBody
     @RequestMapping(value = "/saveRemovedDay", method = RequestMethod.POST)
     public ResponseEntity<?> saveRemovedDays(@RequestBody Object removedNodeArray) {
-        User user = userService.findUserByUsername(User.getUserName());
-        List<Services> startedReservation = servicesService.getInStartedReservationByUserId(user.getId());
-        Map<String, Float> reservedNoteMap = parseReservedReservationToMapFormat(startedReservation);
-        Map<String, Float> removedNoteMap = new HashMap<>();
-        ((List) removedNodeArray).forEach((ele) -> removedNoteMap.put((String) ele, 0.5F));
-        List<String> nodeIdList = new ArrayList<>(removedNoteMap.keySet());
-//        for (String nodeId: nodeIdList) {
-//            if()
-//        }
+        if(!((List) removedNodeArray).isEmpty()) {
+            User user = userService.findUserByUsername(User.getUserName());
+            List<Services> startedReservation = servicesService.getInStartedReservationByUserId(user.getId());
+            Map<String, Float> startedNoteMap = parseReservedReservationToMapFormat(startedReservation);
+            Map<String, Float> removedNoteMap = new HashMap<>();
+            ((List) removedNodeArray).forEach((ele) -> removedNoteMap.put((String) ele, 0.5F));
+            List<String> startedNodeIdList = new ArrayList<>(startedNoteMap.keySet());
+            List<String> removedNodeIdList = new ArrayList<>(removedNoteMap.keySet());
+            for (String startedNodeId : startedNodeIdList) {
+                LocalTime startedTime = LocalTime.of(Integer.parseInt(startedNodeId.substring(16, 18)),
+                        Integer.parseInt(startedNodeId.substring(19, 21)));
+                String nodeIdToRemove = startedNodeId;
+                Float hourOfReservation = startedNoteMap.get(nodeIdToRemove);
+                startedNoteMap.remove(nodeIdToRemove);
+                for (int i = 0; i < (2 * hourOfReservation); i++) {
+                    startedNoteMap.put(startedNodeId, 0.5F);
+                    startedTime = startedTime.plusMinutes(30L);
+                    String hour = (startedTime.getHour() > 9) ? String.valueOf(startedTime.getHour()) : "0" + startedTime.getHour();
+                    String minutes = (startedTime.getMinute() > 9) ? String.valueOf(startedTime.getMinute()) : "0" + startedTime.getMinute();
+                    startedNodeId = startedNodeId.substring(0, 16) + hour + "m" + minutes;
+                }
+            }
+            for (String removedNodeId : removedNodeIdList) {
+                startedNoteMap.remove(removedNodeId);
+            }
+            Reservation reservation = reservationService.getStartedReservationByUserId(user.getId());
+            TreeMap<String, Float> nodeTreeMap = connectToSingleReservation(startedNoteMap);
+            saveUpdatedServicesToStartedReservation(nodeTreeMap, reservation);
+        }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
     @ResponseBody
     @RequestMapping(value = "/saveSelectedDay", method = RequestMethod.POST)
     public ResponseEntity<?> saveSelectedDays(@RequestBody Object selectNodeArray) {
-        User user = userService.findUserByUsername(User.getUserName());
-        List<Services> startedReservation = servicesService.getInStartedReservationByUserId(user.getId());
-        Map<String, Float> reservedNoteMap = parseReservedReservationToMapFormat(startedReservation);
-        Map<String, Float> startedNoteMap = new HashMap<>();
-        ((List) selectNodeArray).forEach((ele) -> startedNoteMap.put((String) ele, 0.5F));
-        startedNoteMap.putAll(reservedNoteMap);
-        TreeMap<String, Float> nodeMap = connectToSingleReservation(startedNoteMap);
-        if (!reservationService.checkIfUserHasStartedReservation(user.getId())) {
-            UserReservation userReservation = new UserReservation(user);
-            reservationService.save(new Reservation(null, 0, "Started",
-                    null, null, null, userReservation));
+        if(!((List) selectNodeArray).isEmpty()) {
+            User user = userService.findUserByUsername(User.getUserName());
+            List<Services> startedReservation = servicesService.getInStartedReservationByUserId(user.getId());
+            Map<String, Float> reservedNoteMap = parseReservedReservationToMapFormat(startedReservation);
+            Map<String, Float> startedNoteMap = new HashMap<>();
+            ((List) selectNodeArray).forEach((ele) -> startedNoteMap.put((String) ele, 0.5F));
+            startedNoteMap.putAll(reservedNoteMap);
+            TreeMap<String, Float> nodeMap = connectToSingleReservation(startedNoteMap);
+            if (!reservationService.checkIfUserHasStartedReservation(user.getId())) {
+                UserReservation userReservation = new UserReservation(user);
+                reservationService.save(new Reservation(null, 0, "Started",
+                        null, null, null, userReservation));
+            }
+            Reservation reservation = reservationService.getStartedReservationByUserId(user.getId());
+            saveUpdatedServicesToStartedReservation(nodeMap, reservation);
         }
-        Reservation reservation = reservationService.getStartedReservationByUserId(user.getId());
-        saveUpdatedServicesToStartedReservation(nodeMap, reservation);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -211,9 +231,9 @@ public class ControllerApi {
                 if (finishTime.equals(time2)) {
                     LocalDate date = LocalDate.of(Integer.parseInt(nodeIdList.get(iter).substring(7, 11)),
                             Integer.parseInt(nodeIdList.get(iter).substring(4, 6)), Integer.parseInt(nodeIdList.get(iter).substring(1, 3)));
-                    if(checkIsPriceOfHourChange(date, time1, finishTime)) {
+                    if (checkIsPriceOfHourChange(date, time1, finishTime)) {
+                        nodeMap.replace(nodeIdList.get(iter), nodeMap.get(nodeIdList.get(iter)) + nodeMap.get(nodeIdList.get(iter + 1)));
                         nodeMap.remove(nodeIdList.get(iter + 1));
-                        nodeMap.replace(nodeIdList.get(iter), nodeMap.get(nodeIdList.get(iter)) + 0.5F);
                         nodeIdList.remove(iter + 1);
                         iter--;
                     }
@@ -228,16 +248,15 @@ public class ControllerApi {
         String startedTimeOfDay = timeOfDay(statedTime);
         String finishTimeOfDay = timeOfDay(finishTime);
         boolean isWeekend = date.getDayOfWeek().getValue() > 4;
-        if(!isWeekend)
+        if (!isWeekend)
             return startedTimeOfDay.equals(finishTimeOfDay);
-        else
-            if ((startedTimeOfDay.equals("Night") && finishTime.equals("Morning")) ||
-                    (startedTimeOfDay.equals("Afternoon") && finishTime.equals("Night")))
-                return false;
+        else if ((startedTimeOfDay.equals("Night") && finishTime.equals("Morning")) ||
+                (startedTimeOfDay.equals("Afternoon") && finishTime.equals("Night")))
+            return false;
         return true;
     }
 
-    private String  timeOfDay(LocalTime time){
+    private String timeOfDay(LocalTime time) {
         if (time.compareTo(LocalTime.of(14, 0)) >= 0 &&
                 time.compareTo(LocalTime.of(23, 0)) < 0)
             return "Afternoon";
@@ -268,20 +287,20 @@ public class ControllerApi {
     }
 
     private float getPriceByDateAndTime(LocalDate date, LocalTime time, float countOfHours) {
-        Boolean isAfternoon = time.compareTo(LocalTime.of(14, 0)) >= 0 &&
+        boolean isAfternoon = time.compareTo(LocalTime.of(14, 0)) >= 0 &&
                 time.compareTo(LocalTime.of(23, 0)) < 0;
-        Boolean isMorning = time.compareTo(LocalTime.of(6, 0)) >= 0 &&
+        boolean isMorning = time.compareTo(LocalTime.of(6, 0)) >= 0 &&
                 time.compareTo(LocalTime.of(14, 0)) < 0;
-        Boolean isWeekend = date.getDayOfWeek().getValue() > 4;
+        boolean isWeekend = date.getDayOfWeek().getValue() > 4;
         if (!isAfternoon && !isMorning)
             return 30F;
         else {
             if (isWeekend) {
-                if (countOfHours >= 10)
+                if (countOfHours >= 5)
                     return 40F;
                 return 45F;
             } else {
-                if (countOfHours == 10)
+                if (countOfHours >= 5)
                     return 30F;
                 if (isAfternoon)
                     return 50F;
