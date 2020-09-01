@@ -21,7 +21,6 @@
 }
 
 #orderList{
-    background: red;
     height: 400px;
     width: 40%;
     float: left;
@@ -36,7 +35,7 @@
     border-radius: 5px;
     border: 2px solid white;
     margin: 5px;
-    padding: 0px;
+    padding: 0px 15px;
 }
 
 .week{
@@ -63,7 +62,7 @@
     width: 10%;
     border-radius: 5px;
     margin: 5px;
-    padding: 0px;
+    padding: 0px 15px;
     cursor: default;
 }
 
@@ -225,14 +224,14 @@ th{
 
 #refresh{
     width: 200px;
-    height: 70px;
+    height: 60px;
     font-size: 20px;
     background: #11333f;
     border: 5px solid #12af12;
 }
 
 #refresh:hover{
-    background-color: yellow;
+    background-color: green;
 }
 
 #makeReservation{

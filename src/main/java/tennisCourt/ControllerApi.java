@@ -125,6 +125,7 @@ public class ControllerApi {
         List<Float> startedNumberOfHoursList = servicesService.getStartedNumberOfHoursByDate(date, user.getId());
         List<Long> startedCourtIdList = servicesService.getStartedCourtIdByDate(date, user.getId());
         List<Services> startedReservationServices = servicesService.getInStartedReservationByUserId(user.getId());
+        Reservation startedReservation = reservationService.getStartedReservationByUserId(user.getId());
         model.addAttribute("reservedTimeList", reservedTimeList);
         model.addAttribute("reservedNumberOfHoursList", reservedNumberOfHoursList);
         model.addAttribute("reservedCourtIdList", reservedCourtIdList);
@@ -132,6 +133,7 @@ public class ControllerApi {
         model.addAttribute("startedNumberOfHoursList", startedNumberOfHoursList);
         model.addAttribute("startedCourtIdList", startedCourtIdList);
         model.addAttribute("startedReservationServices", startedReservationServices);
+        model.addAttribute("startedReservation", startedReservation);
         model.addAttribute("date", date);
         return "reservationPage";
     }
@@ -274,6 +276,7 @@ public class ControllerApi {
         final LocalTime[] time = {null};
         final Court[] court = {null};
         final float[] price = {0};
+        final float[] finalPrice = {0};
         nodeMap.forEach((k, v) -> {
             date[0] = LocalDate.of(Integer.parseInt(k.substring(7, 11)),
                     Integer.parseInt(k.substring(4, 6)), Integer.parseInt(k.substring(1, 3)));
@@ -283,7 +286,10 @@ public class ControllerApi {
             reservationServices[0] = new ReservationServices(reservation);
             servicesService.save(new Services(date[0], (v), time[0], price[0], false,
                     false, false, (v * price[0]), reservationServices[0], court[0]));
+            finalPrice[0]+=v*price[0];
         });
+        reservation.setFinalPrice(finalPrice[0]);
+        reservationService.save(reservation);
     }
 
     private float getPriceByDateAndTime(LocalDate date, LocalTime time, float countOfHours) {
@@ -309,9 +315,23 @@ public class ControllerApi {
             }
         }
     }
-
     ////////////////// Update Started Reservation ///////////////////////////////
 
+    @RequestMapping("/OurTennis/makeReservation")
+    public String viewMakeReservationPage(Model model) {
+        User user = userService.findUserByUsername(User.getUserName());
+        List<Services> servicesList = servicesService.getInStartedReservationByUserId(user.getId());
+        Reservation reservation = reservationService.getStartedReservationByUserId(user.getId());
+        model.addAttribute("servicesList", servicesList);
+        model.addAttribute("reservation", reservation);
+        return "clientMakeReservationPage";
+    }
+
+    @RequestMapping("/OurTennis/confirmReservation")
+    public String confirmReservation(Model model) {
+
+        return "redirect:/OurTennis/clientReservation";
+    }
 
     //############## CLIENT ACCOUNT ##########################################
 

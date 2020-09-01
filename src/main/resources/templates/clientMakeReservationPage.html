@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OurTennis | my_reserve_details</title>
+    <title>OurTennis | make_reserve</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
@@ -20,8 +20,8 @@
             <h1>Logo</h1>
         </div>
         <div id="topMenu">
-            <a th:href="@{'/OurTennis'}">
-                <button type="button" id="back">BACK</button>
+            <a th:href="@{'/OurTennis/account/1'}">
+                <button type="button" id="account">ACCOUNT</button>
             </a>
             <a th:href="@{'/logout'}">
                 <button type="button" id="logout">LOG OUT</button>
@@ -32,33 +32,19 @@
     <div id="center">
         <div class="menu_div">
             <ul>
-                <li><a href="/OurTennis">Application</a></li>
-                <li><a href="/OurTennis/account/1">Personal Data</a></li>
-                <li><a href="/OurTennis/clientReservation">My Reservation</a>
+                <li><a href="/OurTennis">About US</a></li>
+                <li id="active"><a href="/OurTennis/reservation">Reservation</a></li>
                     <ul>
-                        <li id="active">Details</li>
+                        <li id="active">Make Reserve</li>
                     </ul>
-                </li>
-                <li><a href="/OurTennis/payment">Payment</a></li>
+                <li><a href="/OurTennis/priceList">Price-List</a></li>
+                <li><a href="/OurTennis/gallery">Gallery</a></li>
+                <li><a href="/OurTennis/contact">Contact</a></li>
             </ul>
         </div>
         <div id="content">
             <div id="clientReservations">
-                <h2>Reservation Details</h2>
-                <table class="reservationDate">
-                    <tr>
-                        <td>ID</td>
-                        <td th:text="${reservation.id}"></td>
-                    </tr>
-                    <tr>
-                        <td>Date Of Reservation</td>
-                        <td th:text="${reservation.dateOfReservation}"></td>
-                    </tr>
-                    <tr>
-                        <td>Status of Reservation</td>
-                        <td th:text="${reservation.statusOfReservation}"></td>
-                    </tr>
-                </table>
+                <h2>Complete Your Reservation</h2>
 
                 </br> </br>
 
@@ -111,18 +97,10 @@
                         <td>Type Of Paying</td>
                         <td th:text="${reservation.typeOfPaying}"></td>
                     </tr>
-                    <tr>
-                        <td>Status Of Paying</td>
-                        <td th:text="${reservation.statusPaying}"></td>
-                    </tr>
-                    <tr th:if="${#strings.toString(reservation.statusPaying)} == 'To Pay'">
-                        <td>Final Payment Date</td>
-                        <td th:text="${reservation.finalPaymentDate}"></td>
-                    </tr>
                 </table>
             </div>
-            <a th:href="@{'/OurTennis/cancelReservation/'+${reservation.id}}">
-                <button type="submit" class="option" id="cancelReservation">Cancel Reservation</button>
+            <a th:href="@{'/OurTennis/confirmReservation'}">
+                <button type="submit" class="option" id="cancelReservation">Confirm Reservation</button>
             </a>
         </div>
 

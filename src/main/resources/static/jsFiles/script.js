@@ -173,6 +173,10 @@ $(document).ready(function () {
         sendRemovedNodeArrayWithAjax(dateFromBackend);
     });
 
+    $("#makeReservation").click(function (){
+        window.location='/OurTennis/makeReservation';
+    });
+
     //###################### next or prev click ########################################
     let changedWeek = false;
     $(".week").click(function () {

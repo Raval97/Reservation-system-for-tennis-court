@@ -80,7 +80,7 @@
 
                 <div id="orderList">
                     <button id="refresh" align="center">Refresh</button>
-                    </br>
+                    </br></br>
                     <table>
                         <thead class="SummaryTHead">
                         <tr>
@@ -105,29 +105,30 @@
                         </tr>
                         </tbody>
                     </table>
-                    </br>
-                    <div id="additions" align="center">
-                        <div class="addition">Rent a rockets
-                            <label class="switch">
-                                <input type="checkbox"><span class="slider round" id="rentRockets"></span>
-                            </label>
-                        </div>
-                        </br>
-                        <div class="addition">Rent a shoes
-                            <label class="switch">
-                                <input type="checkbox"><span class="slider round" id="rentShoes"></span>
-                            </label>
-                        </div>
-                        </br>
-                        <div class="addition">Rent a balls
-                            <label class="switch">
-                                <input type="checkbox"><span class="slider round" id="rentBalls"></span>
-                            </label>
-                        </div>
-                        </br>
-                    </div>
-                    </br>
+                    </br></br>
+                    <span th:text="'Final Price: '+${startedReservation.finalPrice}+'PLN'" align="center" style="font-size:22; font-weight: 700"></span>
+                    </br></br>
                     <button id="makeReservation" align="center">Reserve It</button>
+<!--                    <div id="additions" align="center">-->
+<!--                        <div class="addition">Rent a rockets-->
+<!--                            <label class="switch">-->
+<!--                                <input type="checkbox"><span class="slider round" id="rentRockets"></span>-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        </br>-->
+<!--                        <div class="addition">Rent a shoes-->
+<!--                            <label class="switch">-->
+<!--                                <input type="checkbox"><span class="slider round" id="rentShoes"></span>-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        </br>-->
+<!--                        <div class="addition">Rent a balls-->
+<!--                            <label class="switch">-->
+<!--                                <input type="checkbox"><span class="slider round" id="rentBalls"></span>-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        </br>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
