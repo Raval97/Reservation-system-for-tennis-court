@@ -99,7 +99,7 @@ $(document).ready(function () {
     //###################### schedule init ########################################
     let d = new Date();
     d.setHours(5, 30, 0);
-    for (let i = 0; i < 34; i++) {
+    for (let i = 0; i < 48; i++) {
         d.setMinutes(d.getMinutes()+30);
         var minute = d.getMinutes();
         if (d.getMinutes()<30) minute += "0";
@@ -115,6 +115,8 @@ $(document).ready(function () {
             "</tr>";
         tableBody = $("#tableBody");
         tableBody.append(markup);
+        if(i==15 || i==33)
+            tableBody.append("</br>");
     }
 
     // set node elements to inaccessible where the reservation was made

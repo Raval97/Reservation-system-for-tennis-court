@@ -54,7 +54,14 @@
             </div>
 
             <div id="choiceOption">
-
+                <div id="legendColor">
+                    <div class="legend" style="background-color: #7b38d8">Free For </br> Reservation</div>
+                    <div class="legend" style="background-color: red">Reserved</div>
+                    <div class="legend" style="background-color: yellow">Your Suggestion Of Reservation</div>
+                    <div class="legend" style="background-color: green">Saved Suggestion Of Reservation</div>
+                    <div class="legend" style="background-color: #6528b9">Your Suggestion Of Reservation To Delete</div>
+                    <div style="clear:both"></div>
+                </div>
                 <div id="schedule" align="center">
                     <table id = "tblEntAttributes">
                         <thead>
@@ -75,18 +82,20 @@
                     <button id="refresh" align="center">Refresh</button>
                     </br>
                     <table>
-                        <thead>
+                        <thead class="SummaryTHead">
                         <tr>
+                            <th>No.</th>
                             <th>Court</th>
                             <th>Date</th>
-                            <th>Hour<br>[start time]</th>
+                            <th>Hour<br>[start]</th>
                             <th>Time</br>[h]</th>
-                            <th>Cost</br>[per Hour]</th>
+                            <th>Unit</br>Cost</th>
                             <th>Price</br>[PLN]</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="SummaryTBody">
                         <tr th:each="element,iter : ${startedReservationServices}">
+                            <td th:text="${(iter.index+1)}"></td>
                             <td th:text="${element.court.id}"></td>
                             <td th:text="${element.date}"></td>
                             <td th:text="${element.time}"></td>
@@ -118,7 +127,7 @@
                         </br>
                     </div>
                     </br>
-                    <button id="makeReservation" align="center">Select</button>
+                    <button id="makeReservation" align="center">Reserve It</button>
                 </div>
             </div>
         </div>
