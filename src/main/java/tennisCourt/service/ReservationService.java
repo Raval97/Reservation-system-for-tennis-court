@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tennisCourt.model.Reservation;
 import tennisCourt.repo.ReservationRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -45,5 +46,17 @@ public class ReservationService {
 
     public Reservation getStartedReservationByUserId(Long id) {
         return  repo.findStartedReservationByUserId(id);
+    }
+
+    public Reservation getStartedReservationByUserId2(Long id) {
+        return  repo.findStartedReservationByUserId2(id).get(0);
+    }
+
+    public void update(Long id, String status_of_reservation, String status_of_paying, String typeOfPaying, LocalDate date) {
+        repo.update(id, status_of_reservation,  status_of_paying, typeOfPaying, date);
+    }
+
+    public void updatePrice(Long id, float price) {
+        repo.updatePrice(id, price);
     }
 }

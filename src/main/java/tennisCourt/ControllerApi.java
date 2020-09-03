@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
@@ -317,20 +318,74 @@ public class ControllerApi {
     }
     ////////////////// Update Started Reservation ///////////////////////////////
 
+
     @RequestMapping("/OurTennis/makeReservation")
     public String viewMakeReservationPage(Model model) {
         User user = userService.findUserByUsername(User.getUserName());
         List<Services> servicesList = servicesService.getInStartedReservationByUserId(user.getId());
         Reservation reservation = reservationService.getStartedReservationByUserId(user.getId());
+        List<LocalDate> dates =  new ArrayList<>();
+        servicesList.forEach((x) -> dates.add(x.getDate()));
+        LocalDate minDate = Collections.min(dates);
+        reservation.setFinalPaymentDate(minDate);
+        reservationService.save(reservation);
         model.addAttribute("servicesList", servicesList);
         model.addAttribute("reservation", reservation);
         return "clientMakeReservationPage";
     }
 
-    @RequestMapping("/OurTennis/confirmReservation")
-    public String confirmReservation(Model model) {
+    @RequestMapping(value = "/OurTennis/confirmReservation",  method = RequestMethod.POST)
+    public String confirmReservation(@ModelAttribute Reservation reservation) {
+        User user = userService.findUserByUsername(User.getUserName());
+        Reservation startedReservation = reservationService.getStartedReservationByUserId(user.getId());
+        reservationService.update(startedReservation.getId(), "Reserved", "To Pay",
+                reservation.getTypeOfPaying(), LocalDate.now());
 
         return "redirect:/OurTennis/clientReservation";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateIfBalls/{id}", method = RequestMethod.POST)
+    public  ResponseEntity<?> updateIfBallsOfService(@PathVariable(name = "id") Long id,
+                                                     @RequestBody Object ifBalls) {
+        Boolean decision = ifBalls.equals("1");
+        servicesService.updateIfBalls(id, decision);
+        updatePrices(id, 2, decision);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateIfRocket/{id}", method = RequestMethod.POST)
+    public  ResponseEntity<?> updateIfRocketOfService(@PathVariable(name = "id") Long id,
+                                                     @RequestBody Object isRocket) {
+        Boolean decision = isRocket.equals("1");
+        servicesService.updateIfRocket(id, decision);
+        updatePrices(id, 5, decision);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateIfShoes/{id}", method = RequestMethod.POST)
+    public  ResponseEntity<?> updateIfShoesOfService(@PathVariable(name = "id") Long id,
+                                                     @RequestBody Object ifShoes) {
+        Boolean decision = ifShoes.equals("1");
+        servicesService.updateIfShoes(id, decision);
+        updatePrices(id, 2, decision);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    void updatePrices(Long servicesId, float price, boolean selected){
+        User user = userService.findUserByUsername(User.getUserName());
+        Reservation startedReservation = reservationService.getStartedReservationByUserId(user.getId());
+        Services services = servicesService.get(servicesId);
+        if(selected) {
+            servicesService.updatePrice(servicesId, services.getPrice() + price);
+            reservationService.updatePrice(startedReservation.getId(), startedReservation.getFinalPrice()+price);
+        }
+        else{
+            servicesService.updatePrice(servicesId, services.getPrice() - price);
+            reservationService.updatePrice(startedReservation.getId(), startedReservation.getFinalPrice()-price);
+        }
     }
 
     //############## CLIENT ACCOUNT ##########################################

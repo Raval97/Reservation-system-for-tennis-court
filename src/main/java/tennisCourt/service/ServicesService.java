@@ -72,4 +72,19 @@ public class ServicesService {
         return repo.findInStartedReservationByUserId(id);
     }
 
+    public void updateIfBalls(Long id, Boolean ifBalls) {
+        repo.updateIfBalls(id, ifBalls);
+    }
+
+    public void updateIfRocket(Long id, Boolean ifRocket) {
+        repo.updateIfRocket(id,ifRocket);
+    }
+
+    public void updateIfShoes(Long id, Boolean ifShoes) {
+        repo.updateIfShoes(id, ifShoes);
+    }
+
+    public void updatePrice(Long id, float price) {
+        repo.updatePrice(id, price);
+    }
 }

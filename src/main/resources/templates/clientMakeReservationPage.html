@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
     <link rel="stylesheet" th:href="@{/cssFiles/clientReservationDetailsPageStale.css}">
-    <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
+    <script type="text/javascript" th:src="@{/jsFiles/updateAdditionsScript.js}"></script>
 
 </head>
 <body onload="time(); setInterval(time,1000);">
@@ -17,7 +17,7 @@
 <div id="container">
     <div id="top">
         <div id="logo">
-            <h1>Logo</h1>
+            <h1>Our Tennis</h1>
         </div>
         <div id="topMenu">
             <a th:href="@{'/OurTennis/account/1'}">
@@ -34,74 +34,115 @@
             <ul>
                 <li><a href="/OurTennis">About US</a></li>
                 <li id="active"><a href="/OurTennis/reservation">Reservation</a></li>
-                    <ul>
-                        <li id="active">Make Reserve</li>
-                    </ul>
+                <ul>
+                    <li id="active">Make Reserve</li>
+                </ul>
                 <li><a href="/OurTennis/priceList">Price-List</a></li>
                 <li><a href="/OurTennis/gallery">Gallery</a></li>
                 <li><a href="/OurTennis/contact">Contact</a></li>
             </ul>
         </div>
         <div id="content">
-            <div id="clientReservations">
-                <h2>Complete Your Reservation</h2>
+            <form action="#" th:action="@{'/OurTennis/confirmReservation'}" method="post">
+                <div id="clientReservations">
+                    <h2>Complete Your Reservation</h2>
 
-                </br> </br>
+                    </br> </br>
 
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Court</th>
-                        <th>Date</th>
-                        <th>Hour<br>[start time]</th>
-                        <th>Time</br>[h]</th>
-                        <th>Cost</br>[per Hour]</th>
-                        <th>Price</br>[PLN]</th>
-                        <th>Balls</th>
-                        <th>Rockets</th>
-                        <th>Shoes</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="element,iter : ${servicesList}">
-                        <td th:text="${element.court.id}"></td>
-                        <td th:text="${element.date}"></td>
-                        <td th:text="${element.time}"></td>
-                        <td th:text="${element.numberOfHours}"></td>
-                        <td th:text="${element.unitCost}"></td>
-                        <td th:text="${element.price}"></td>
-                        <td>
-                            <span th:if="${#bools.isTrue(element.ifBalls)}">YES</span>
-                            <span th:if="${#bools.isFalse(element.ifBalls)}">NO</span>
-                        </td>
-                        <td>
-                            <span th:if="${#bools.isTrue(element.ifRocket)}">YES</span>
-                            <span th:if="${#bools.isFalse(element.ifRocket)}">NO</span>
-                        </td>
-                        <td>
-                            <span th:if="${#bools.isTrue(element.ifShoes)}">YES</span>
-                            <span th:if="${#bools.isFalse(element.ifShoes)}">NO</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Court</th>
+                            <th>Date</th>
+                            <th>Hour<br>[start time]</th>
+                            <th>Time</br>[h]</th>
+                            <th>Cost</br>[per Hour]</th>
+                            <th>Price</br>[PLN]</th>
+                            <th>Balls</th>
+                            <th>Rockets</th>
+                            <th>Shoes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="element,iter : *{servicesList}">
+                            <td th:text="${element.court.id}"></td>
+                            <td th:text="${element.date}"></td>
+                            <td th:text="${element.time}"></td>
+                            <td th:text="${element.numberOfHours}"></td>
+                            <td th:text="${element.unitCost}"></td>
+                            <td th:text="${element.price}"></td>
+                            <td>
+                                <span th:if="${#bools.isTrue(element.ifBalls)}">
+                                     <select class="changeAdditions"  th:id="'ifBalls_'+${element.id}" th:object="${element.ifBalls}">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                     </select>
+                                </span>
+                                <span th:if="${#bools.isFalse(element.ifBalls)}">
+                                     <select class="changeAdditions"  th:id="'ifBalls_'+${element.id}" th:object="${element.ifBalls}">
+                                        <option value="0">NO</option>
+                                        <option value="1">YES</option>
+                                     </select>
+                                </span>
+                            </td>
+                            <td>
+                                <span th:if="${#bools.isTrue(element.ifRocket)}">
+                                    <select  class="changeAdditions"  th:id="'ifRocket_'+${element.id}" th:object="${element.ifRocket}">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                    </select>
+                                </span>
+                                <span th:if="${#bools.isFalse(element.ifRocket)}">
+                                    <select  class="changeAdditions"  th:id="'ifRocket_'+${element.id}" th:object="${element.ifRocket}">
+                                        <option value="0">NO</option>
+                                        <option value="1">YES</option>
+                                    </select>
+                                </span>
+                            </td>
+                            <td>
+                                <span th:if="${#bools.isTrue(element.ifShoes)}">
+                                     <select class="changeAdditions" th:id="'ifShoes_'+${element.id}" th:object="${element.ifShoes}">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                     </select>
+                                </span>
+                                <span th:if="${#bools.isFalse(element.ifShoes)}">
+                                     <select class="changeAdditions" th:id="'ifShoes_'+${element.id}" th:object="${element.ifShoes}">
+                                        <option value="0">NO</option>
+                                        <option value="1">YES</option>
+                                     </select>
+                                </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-                </br> </br>
+                    </br> </br>
 
-                <table class="reservationDate">
-                    <tr>
-                        <td>Final Price</td>
-                        <td th:text="${reservation.finalPrice}"></td>
-                    </tr>
-                    <tr>
-                        <td>Type Of Paying</td>
-                        <td th:text="${reservation.typeOfPaying}"></td>
-                    </tr>
-                </table>
-            </div>
-            <a th:href="@{'/OurTennis/confirmReservation'}">
-                <button type="submit" class="option" id="cancelReservation">Confirm Reservation</button>
-            </a>
+                    <table class="reservationDate">
+                        <tr>
+                            <td>Final Price</td>
+                            <td th:text="${reservation.finalPrice}" style="font-size: 25px; font-weight: 900; color: yellow;"></td>
+                        </tr>
+                        <tr>
+                            <td>Final Payment Date</td>
+                            <td th:text="${reservation.finalPaymentDate}"></td>
+                        </tr>
+                        <tr th:object="${reservation}">
+                            <td>Type Of Paying</td>
+                            <td>
+                                <select id="typeOfPaying" th:field="*{typeOfPaying}">
+                                    <option value="online">Online</option>
+                                    <option value="offline">Payment on the spot</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <a>
+                    <button type="submit" class="option" id="cancelReservation">Confirm Reservation</button>
+                </a>
+            </form>
         </div>
 
         </br> </br>

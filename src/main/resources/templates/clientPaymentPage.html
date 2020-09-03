@@ -16,7 +16,7 @@
 <div id="container">
     <div id="top">
         <div id="logo">
-            <h1>Logo</h1>
+            <h1>Our Tennis</h1>
         </div>
         <div id="topMenu">
             <a th:href="@{'/OurTennis'}">
@@ -58,10 +58,12 @@
                         <td th:text="${element.finalPrice}"></td>
                         <td th:text="${element.typeOfPaying}"></td>
                         <td th:text="${element.statusPaying}"></td>
-                        <td th:if="${#strings.toString(element.statusPaying)} == 'To Pay'">
+                        <td th:if="${#strings.toString(element.statusPaying)} == 'To Pay'
+                            and ${#strings.toString(element.typeOfPaying)} == 'online' ">
                             <a class="pay" th:href="@{'/bankSimulator/'+${element.id}}" style="color: yellow">Pay</a>
                         </td>
-                        <td th:if="${#strings.toString(element.statusPaying)} == 'Paid'">-----</td>
+                        <td th:if="${#strings.toString(element.statusPaying)} == 'Paid'
+                            or ${#strings.toString(element.typeOfPaying)} == 'offline' ">-----</td>
                     </tr>
                     </tbody>
                 </table>

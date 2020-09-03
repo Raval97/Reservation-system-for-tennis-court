@@ -17,7 +17,7 @@
 <div id="container">
     <div id="top">
         <div id="logo">
-            <h1>Logo</h1>
+            <h1>Our Tennis</h1>
         </div>
         <div id="topMenu">
             <a th:href="@{'/OurTennis'}">
@@ -121,7 +121,7 @@
                     </tr>
                 </table>
             </div>
-            <a th:href="@{'/OurTennis/cancelReservation/'+${reservation.id}}">
+            <a  th:if="${#strings.toString(reservation.statusPaying)} == 'To Pay'" th:href="@{'/OurTennis/cancelReservation/'+${reservation.id}}">
                 <button type="submit" class="option" id="cancelReservation">Cancel Reservation</button>
             </a>
         </div>

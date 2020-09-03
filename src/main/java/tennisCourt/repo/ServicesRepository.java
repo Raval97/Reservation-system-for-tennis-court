@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import tennisCourt.model.Reservation;
 import tennisCourt.model.Services;
 
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.sql.Time;
@@ -70,4 +71,24 @@ public interface ServicesRepository extends JpaRepository<Services, Long> {
             "(SELECT r.id FROM reservation r WHERE r.status_of_reservation =\"Started\" " +
             "AND r.id in (SELECT ur.reservation_id FROM user_reservation ur WHERE ur.user_id=:id)))", nativeQuery = true)
     List<Services> findInStartedReservationByUserId(Long id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE services SET if_balls = :if_balls WHERE services.id = :id", nativeQuery = true)
+    void updateIfBalls (@Param("id")Long id, @Param("if_balls")Boolean if_balls);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE services SET if_rocket = :if_rocket WHERE services.id = :id", nativeQuery = true)
+    void updateIfRocket (@Param("id")Long id, @Param("if_rocket")Boolean if_balls);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE services SET if_shoes = :if_shoes WHERE services.id = :id", nativeQuery = true)
+    void updateIfShoes (@Param("id")Long id, @Param("if_shoes")Boolean if_balls);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE services SET price = :price WHERE services.id = :id", nativeQuery = true)
+    void updatePrice (@Param("id")Long id, @Param("price")float price);
 }
