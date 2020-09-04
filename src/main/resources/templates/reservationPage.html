@@ -106,9 +106,11 @@
                         </tbody>
                     </table>
                     </br></br>
-                    <span th:text="'Final Price: '+${startedReservation.finalPrice}+'PLN'" align="center" style="font-size:22; font-weight: 700"></span>
-                    </br></br>
-                    <button id="makeReservation" align="center">Reserve It</button>
+                    <div id="summaryDiv" style = "display:none;">
+                        <span th:text="'Final Price: '+${startedReservation.finalPrice}+'PLN'" align="center" style="font-size:22; font-weight: 700"></span>
+                        </br></br>
+                        <button id="makeReservation" align="center">Reserve It</button>
+                    </div>
                 </div>
             </div>
         </div>

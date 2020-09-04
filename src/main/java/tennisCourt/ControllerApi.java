@@ -113,30 +113,45 @@ public class ControllerApi {
     @RequestMapping("/OurTennis/reservation")
     public String viewReservationPage(Model model,
                                       @RequestParam(value = "date", required = false) String date) {
-        if (date == null) {
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDateTime now = LocalDateTime.now();
+        Boolean correctParameter = true;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate now = LocalDate.now();
+        if (date == null)
             date = dtf.format(now);
+        else {
+            try {
+                LocalDate localDate = LocalDate.parse(date);
+                if(localDate.compareTo(now)>=0 && localDate.compareTo(now.plusDays(27))<=0)
+                    date = dtf.format(localDate);
+                else
+                    correctParameter = false;
+            } catch (Exception e) {
+                correctParameter = false;
+            }
         }
-        User user = userService.findUserByUsername(User.getUserName());
-        List<Time> reservedTimeList = servicesService.getReservedTimeByDate(date);
-        List<Float> reservedNumberOfHoursList = servicesService.getReservedNumberOfHoursByDate(date);
-        List<Long> reservedCourtIdList = servicesService.getReservedCourtIdByDate(date);
-        List<Time> startedTimeList = servicesService.getStartedTimeByDate(date, user.getId());
-        List<Float> startedNumberOfHoursList = servicesService.getStartedNumberOfHoursByDate(date, user.getId());
-        List<Long> startedCourtIdList = servicesService.getStartedCourtIdByDate(date, user.getId());
-        List<Services> startedReservationServices = servicesService.getInStartedReservationByUserId(user.getId());
-        Reservation startedReservation = reservationService.getStartedReservationByUserId(user.getId());
-        model.addAttribute("reservedTimeList", reservedTimeList);
-        model.addAttribute("reservedNumberOfHoursList", reservedNumberOfHoursList);
-        model.addAttribute("reservedCourtIdList", reservedCourtIdList);
-        model.addAttribute("startedTimeList", startedTimeList);
-        model.addAttribute("startedNumberOfHoursList", startedNumberOfHoursList);
-        model.addAttribute("startedCourtIdList", startedCourtIdList);
-        model.addAttribute("startedReservationServices", startedReservationServices);
-        model.addAttribute("startedReservation", startedReservation);
-        model.addAttribute("date", date);
-        return "reservationPage";
+        if(correctParameter) {
+            User user = userService.findUserByUsername(User.getUserName());
+            List<Time> reservedTimeList = servicesService.getReservedTimeByDate(date);
+            List<Float> reservedNumberOfHoursList = servicesService.getReservedNumberOfHoursByDate(date);
+            List<Long> reservedCourtIdList = servicesService.getReservedCourtIdByDate(date);
+            List<Time> startedTimeList = servicesService.getStartedTimeByDate(date, user.getId());
+            List<Float> startedNumberOfHoursList = servicesService.getStartedNumberOfHoursByDate(date, user.getId());
+            List<Long> startedCourtIdList = servicesService.getStartedCourtIdByDate(date, user.getId());
+            List<Services> startedReservationServices = servicesService.getInStartedReservationByUserId(user.getId());
+            Reservation startedReservation = reservationService.getStartedReservationByUserId(user.getId());
+            model.addAttribute("reservedTimeList", reservedTimeList);
+            model.addAttribute("reservedNumberOfHoursList", reservedNumberOfHoursList);
+            model.addAttribute("reservedCourtIdList", reservedCourtIdList);
+            model.addAttribute("startedTimeList", startedTimeList);
+            model.addAttribute("startedNumberOfHoursList", startedNumberOfHoursList);
+            model.addAttribute("startedCourtIdList", startedCourtIdList);
+            model.addAttribute("startedReservationServices", startedReservationServices);
+            model.addAttribute("startedReservation", startedReservation);
+            model.addAttribute("date", date);
+            return "reservationPage";
+        }
+        else
+            return "redirect:/OurTennis/reservation";
     }
 
     ////////////////// Update Started Reservation ///////////////////////////////
@@ -298,7 +313,7 @@ public class ControllerApi {
                 time.compareTo(LocalTime.of(23, 0)) < 0;
         boolean isMorning = time.compareTo(LocalTime.of(6, 0)) >= 0 &&
                 time.compareTo(LocalTime.of(14, 0)) < 0;
-        boolean isWeekend = date.getDayOfWeek().getValue() > 4;
+        boolean isWeekend = date.getDayOfWeek().getValue() > 5;
         if (!isAfternoon && !isMorning)
             return 30F;
         else {
@@ -316,8 +331,8 @@ public class ControllerApi {
             }
         }
     }
-    ////////////////// Update Started Reservation ///////////////////////////////
 
+    ////////////////// Make Reservation ///////////////////////////////
 
     @RequestMapping("/OurTennis/makeReservation")
     public String viewMakeReservationPage(Model model) {
