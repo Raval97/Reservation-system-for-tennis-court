@@ -17,7 +17,7 @@
 <div id="container">
     <div id="top">
         <div id="logo">
-            <h1>Our Tennis</h1>
+            <img th:src="@{/logo1.png}"/>
         </div>
         <div id="topMenu">
             <a th:href="@{'/OurTennis'}">
@@ -45,7 +45,7 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Date Of  Reservation</th>
+                        <th>Date Of Reservation</th>
                         <th>Status Of </br>Reservation</th>
                         <th>Price</th>
                         <th>Type Of </br>Paying</th>
@@ -61,7 +61,8 @@
                         <td th:text="${element.finalPrice}"></td>
                         <td th:text="${element.typeOfPaying}"></td>
                         <td th:text="${element.statusPaying}"></td>
-                        <td><a class="details" th:href="@{'/OurTennis/clientReservation/'+${element.id}}" style="color: yellow">Details</a></td>
+                        <td><a class="details" th:href="@{'/OurTennis/clientReservation/'+${element.id}}"
+                               style="color: yellow">Details</a></td>
                     </tr>
                     </tbody>
                 </table>

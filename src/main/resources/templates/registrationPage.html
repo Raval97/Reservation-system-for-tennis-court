@@ -16,11 +16,15 @@
 <div id="container">
     <div id="top">
         <div id="logo">
-            <h1>Our Tennis</h1>
+            <img th:src="@{/logo1.png}"/>
         </div>
         <div id="topMenu">
-            <a th:href="@{'/ourTennis'}"><button type="button" id="back">BACK</button></a>
-            <a th:href="@{'/login'}"><button type="button" id="login">LOG IN</button></a>
+            <a th:href="@{'/ourTennis'}">
+                <button type="button" id="back">BACK</button>
+            </a>
+            <a th:href="@{'/login'}">
+                <button type="button" id="login">LOG IN</button>
+            </a>
         </div>
     </div>
 
@@ -39,30 +43,32 @@
                 <form action="#" th:action="@{/add-user}" th:object="${client}" method="post">
                     <tr>
                         <td>First Name:</td>
-                        <td><input type="text"  th:field="*{name}" /></td>
+                        <td><input type="text" th:field="*{name}"/></td>
                     </tr>
                     <tr>
                         <td>Second Name:</td>
-                        <td><input type="text"  th:field="*{surname}" /></td>
+                        <td><input type="text" th:field="*{surname}"/></td>
                     </tr>
                     <tr>
                         <td>Email Address:</td>
-                        <td><input type="text"  th:field="*{emailAddress}" /></td>
+                        <td><input type="text" th:field="*{emailAddress}"/></td>
                     </tr>
                     <tr>
                         <td>Phone Number:</td>
-                        <td><input type="text"  th:field="*{phoneNumber}" /></td>
+                        <td><input type="text" th:field="*{phoneNumber}"/></td>
                     </tr>
                     <tr th:object="${user}">
                         <td>Login:</td>
-                        <td><input type="text"  th:field="*{username}" /></td>
+                        <td><input type="text" th:field="*{username}"/></td>
                     </tr>
                     <tr th:object="${user}">
                         <td>Password:</td>
-                        <td><input type="text"  th:field="*{password}" /></td>
+                        <td><input type="text" th:field="*{password}"/></td>
                     </tr>
                     <tr align="center">
-                        <td colspan="2"><button class="registerNewUser" type="submit">REGISTER</button> </td>
+                        <td colspan="2">
+                            <button class="registerNewUser" type="submit">REGISTER</button>
+                        </td>
                     </tr>
                 </form>
             </table>

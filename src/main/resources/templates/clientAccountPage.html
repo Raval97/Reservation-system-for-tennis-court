@@ -16,7 +16,7 @@
 <div id="container">
     <div id="top">
         <div id="logo">
-            <h1>Our Tennis</h1>
+            <img th:src="@{/logo1.png}"/>
         </div>
         <div id="topMenu">
             <a th:href="@{'/OurTennis'}">
@@ -39,7 +39,8 @@
         </div>
         <div id="content">
             <!-- CHANGE DATA -->
-            <form  th:if="${type >=1 && type < 2}" action="#" th:action="@{'/OurTennis/client/edit_data/'+${user.id}}" method="post">
+            <form th:if="${type >=1 && type < 2}" action="#" th:action="@{'/OurTennis/client/edit_data/'+${user.id}}"
+                  method="post">
                 <div id="clientData">
                     <table border="0" cellpadding="10" style="margin: auto;">
                         <h2 th:if="${type == 1}">Your account</h2>
@@ -68,32 +69,42 @@
                     </table>
                 </div>
                 <div id="optionClientAccount" align="center">
-                    <a th:href="@{'/OurTennis/account/2'}" >
-                        <button type="button" style="background-color: gray;" class="option" id="changePassword">CHANGE PASSWORD</button>
+                    <a th:href="@{'/OurTennis/account/2'}">
+                        <button type="button" style="background-color: gray;" class="option" id="changePassword">CHANGE
+                            PASSWORD
+                        </button>
                     </a>
                     <a>
                         <button type="submit" class="option" id="editClientData">EDIT DATA</button>
                     </a>
-                    <a th:href="@{'/OurTennis/account/3'}" >
-                        <button type="button" style="background-color: gray;" class="option" id="deleteClient">DELETE ACCOUNT</button>
+                    <a th:href="@{'/OurTennis/account/3'}">
+                        <button type="button" style="background-color: gray;" class="option" id="deleteClient">DELETE
+                            ACCOUNT
+                        </button>
                     </a>
                 </div>
             </form>
             <!-- CHANGE PASSWORD -->
-            <form  th:if="${type >=2 && type <3}" action="#" th:action="@{'/OurTennis/client/changePassword/'+${user.id}}" method="post">
+            <form th:if="${type >=2 && type <3}" action="#"
+                  th:action="@{'/OurTennis/client/changePassword/'+${user.id}}"
+                  method="post">
                 <div id="clientData">
                     <table border="0" cellpadding="10" style="margin: auto;">
                         <h2 th:if="${type == 2}">Set New Password</h2>
                         <h2 th:if="${type == 2.1}" style="color: green; font-size: 30px">Password Change SUCCESSFUL</h2>
-                        <h2 th:if="${type == 2.2}" style="color: red; font-size: 30px">Password Change FILED </br> (incorrect repeat new password)</h2>
-                        <h2 th:if="${type == 2.3}" style="color: red; font-size: 30px">Password Change FILED </br> (incorrect old password)</h2>
+                        <h2 th:if="${type == 2.2}" style="color: red; font-size: 30px">Password Change FILED </br>
+                            (incorrect
+                            repeat new password)</h2>
+                        <h2 th:if="${type == 2.3}" style="color: red; font-size: 30px">Password Change FILED </br>
+                            (incorrect
+                            old password)</h2>
                         <tr th:object="${user}">
                             <td>Old Password:</td>
-                            <td><input type="text"  th:value="${oldPassword}" name="oldPassword"/></td>
+                            <td><input type="text" th:value="${oldPassword}" name="oldPassword"/></td>
                         </tr>
                         <tr th:object="${client}">
                             <td>New Password:</td>
-                            <td><input type="text"  th:value="${newPassword}" name="newPassword"/></td>
+                            <td><input type="text" th:value="${newPassword}" name="newPassword"/></td>
                         </tr>
                         <tr th:object="${client}">
                             <td>Repeat New Password:</td>
@@ -103,18 +114,23 @@
                 </div>
                 <div id="optionClientAccount" align="center">
                     <a th:href="@{'/OurTennis/account/1'}">
-                        <button type="button" style="background-color: gray;" class="option" id="editClientData">EDIT DATA</button>
+                        <button type="button" style="background-color: gray;" class="option" id="editClientData">EDIT
+                            DATA
+                        </button>
                     </a>
                     <a>
                         <button type="submit" class="option" id="changePassword">CHANGE PASSWORD</button>
                     </a>
                     <a th:href="@{'/OurTennis/account/3'}">
-                        <button type="button" style="background-color: gray;" class="option" id="deleteClient">DELETE ACCOUNT</button>
+                        <button type="button" style="background-color: gray;" class="option" id="deleteClient">DELETE
+                            ACCOUNT
+                        </button>
                     </a>
                 </div>
             </form>
             <!-- DELETE ACCOUNT-->
-            <form  th:if="${type >= 3}" action="#" th:action="@{'/OurTennis/client/deleteAccount/'+${user.id}}" method="post">
+            <form th:if="${type >= 3}" action="#" th:action="@{'/OurTennis/client/deleteAccount/'+${user.id}}"
+                  method="post">
                 <div id="clientData">
                     <table border="0" cellpadding="10" style="margin: auto;">
                         <h2>DELETE ACCOUNT</h2>
@@ -134,13 +150,19 @@
                 </div>
                 <div id="optionClientAccount" align="center">
                     <a th:href="@{'/OurTennis/account/1'}">
-                        <button type="button" style="background-color: gray;" class="option" id="editClientData">EDIT DATA</button>
+                        <button type="button" style="background-color: gray;" class="option" id="editClientData">EDIT
+                            DATA
+                        </button>
                     </a>
                     <a>
-                        <button type="submit" disabled="true" style="background-color: red;" class="option" id="deleteClient">DELETE ACCOUNT</button>
+                        <button type="submit" disabled="true" style="background-color: red;" class="option"
+                                id="deleteClient">DELETE ACCOUNT
+                        </button>
                     </a>
                     <a th:href="@{'/OurTennis/account/2'}">
-                        <button type="submit" style="background-color: gray;" class="option" id="changePassword">CHANGE PASSWORD</button>
+                        <button type="submit" style="background-color: gray;" class="option" id="changePassword">CHANGE
+                            PASSWORD
+                        </button>
                     </a>
                 </div>
             </form>

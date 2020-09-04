@@ -11,14 +11,13 @@
     <link rel="stylesheet" th:href="@{/cssFiles/contactPageStale.css}">
     <script type="text/javascript" th:src="@{/jsFiles/script.js}"></script>
 
-
 </head>
 <body onload="time(); setInterval(time,1000);">
 
 <div id="container">
     <div id="top">
         <div id="logo">
-            <h1>Our Tennis</h1>
+            <img th:src="@{/logo1.png}"/>
         </div>
         <div id="topMenu" th:if="${logged == true}">
             <a th:href="@{'/OurTennis/account/1'}">

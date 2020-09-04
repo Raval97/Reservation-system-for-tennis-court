@@ -17,7 +17,7 @@
 <div id="container">
     <div id="top">
         <div id="logo">
-            <h1>Our Tennis</h1>
+            <img th:src="@{/logo1.png}"/>
         </div>
         <div id="topMenu">
             <a th:href="@{'/OurTennis/account/1'}">
@@ -73,13 +73,15 @@
                             <td th:text="${element.price}"></td>
                             <td>
                                 <span th:if="${#bools.isTrue(element.ifBalls)}">
-                                     <select class="changeAdditions"  th:id="'ifBalls_'+${element.id}" th:object="${element.ifBalls}">
+                                     <select class="changeAdditions" th:id="'ifBalls_'+${element.id}"
+                                             th:object="${element.ifBalls}">
                                         <option value="1">YES</option>
                                         <option value="0">NO</option>
                                      </select>
                                 </span>
                                 <span th:if="${#bools.isFalse(element.ifBalls)}">
-                                     <select class="changeAdditions"  th:id="'ifBalls_'+${element.id}" th:object="${element.ifBalls}">
+                                     <select class="changeAdditions" th:id="'ifBalls_'+${element.id}"
+                                             th:object="${element.ifBalls}">
                                         <option value="0">NO</option>
                                         <option value="1">YES</option>
                                      </select>
@@ -87,13 +89,15 @@
                             </td>
                             <td>
                                 <span th:if="${#bools.isTrue(element.ifRocket)}">
-                                    <select  class="changeAdditions"  th:id="'ifRocket_'+${element.id}" th:object="${element.ifRocket}">
+                                    <select class="changeAdditions" th:id="'ifRocket_'+${element.id}"
+                                            th:object="${element.ifRocket}">
                                         <option value="1">YES</option>
                                         <option value="0">NO</option>
                                     </select>
                                 </span>
                                 <span th:if="${#bools.isFalse(element.ifRocket)}">
-                                    <select  class="changeAdditions"  th:id="'ifRocket_'+${element.id}" th:object="${element.ifRocket}">
+                                    <select class="changeAdditions" th:id="'ifRocket_'+${element.id}"
+                                            th:object="${element.ifRocket}">
                                         <option value="0">NO</option>
                                         <option value="1">YES</option>
                                     </select>
@@ -101,13 +105,15 @@
                             </td>
                             <td>
                                 <span th:if="${#bools.isTrue(element.ifShoes)}">
-                                     <select class="changeAdditions" th:id="'ifShoes_'+${element.id}" th:object="${element.ifShoes}">
+                                     <select class="changeAdditions" th:id="'ifShoes_'+${element.id}"
+                                             th:object="${element.ifShoes}">
                                         <option value="1">YES</option>
                                         <option value="0">NO</option>
                                      </select>
                                 </span>
                                 <span th:if="${#bools.isFalse(element.ifShoes)}">
-                                     <select class="changeAdditions" th:id="'ifShoes_'+${element.id}" th:object="${element.ifShoes}">
+                                     <select class="changeAdditions" th:id="'ifShoes_'+${element.id}"
+                                             th:object="${element.ifShoes}">
                                         <option value="0">NO</option>
                                         <option value="1">YES</option>
                                      </select>
@@ -122,7 +128,8 @@
                     <table class="reservationDate">
                         <tr>
                             <td>Final Price</td>
-                            <td th:text="${reservation.finalPrice}" style="font-size: 25px; font-weight: 900; color: yellow;"></td>
+                            <td th:text="${reservation.finalPrice}"
+                                style="font-size: 25px; font-weight: 900; color: yellow;"></td>
                         </tr>
                         <tr>
                             <td>Final Payment Date</td>

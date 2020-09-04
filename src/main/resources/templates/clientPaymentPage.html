@@ -16,7 +16,7 @@
 <div id="container">
     <div id="top">
         <div id="logo">
-            <h1>Our Tennis</h1>
+            <img th:src="@{/logo1.png}"/>
         </div>
         <div id="topMenu">
             <a th:href="@{'/OurTennis'}">
@@ -63,7 +63,8 @@
                             <a class="pay" th:href="@{'/bankSimulator/'+${element.id}}" style="color: yellow">Pay</a>
                         </td>
                         <td th:if="${#strings.toString(element.statusPaying)} == 'Paid'
-                            or ${#strings.toString(element.typeOfPaying)} == 'offline' ">-----</td>
+                            or ${#strings.toString(element.typeOfPaying)} == 'offline' ">-----
+                        </td>
                     </tr>
                     </tbody>
                 </table>
