@@ -10,17 +10,22 @@
      maintenance and recognition of the logged in user's access type
     
 ## Example Of Working
-
+    Homepage & Price-List Page for a user who is not logged in
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/1.png?raw=true)
 
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/2.png?raw=true)
 
+    Login page
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/3.png?raw=true)
 
+    Reservation Page (available only after login verification)
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/4.png?raw=true)
 
+    Page of summary of Reservation before confirm it.
+    Here, the user specifies whether to rent additional equipment and the form of payment
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/5.png?raw=true)
 
+    User Account subpages
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/6.png?raw=true)
 
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/7.png?raw=true)
@@ -33,4 +38,8 @@
 
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/11.png?raw=true)
 
-    
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/12.png?raw=true)
+
+## Databse Structure (Diagram ERD) 
+
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/database.png?raw=true)
