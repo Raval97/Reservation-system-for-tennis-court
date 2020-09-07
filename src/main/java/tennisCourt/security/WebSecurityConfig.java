@@ -11,8 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import tennisCourt.model.Client;
+import tennisCourt.model.PriceList;
 import tennisCourt.model.User;
 import tennisCourt.repo.ClientRepository;
+import tennisCourt.repo.PriceListRepository;
 import tennisCourt.repo.UserRepository;
 import tennisCourt.service.UserService;
 
@@ -22,12 +24,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userDetailsService;
     private UserRepository userRepository;
     private ClientRepository clientRepository;
+    private PriceListRepository priceListRepository;
 
     @Autowired
-    public WebSecurityConfig(UserService userDetailsService, UserRepository userRepository, ClientRepository clientRepository) {
+    public WebSecurityConfig(UserService userDetailsService, UserRepository userRepository,
+                             ClientRepository clientRepository, PriceListRepository priceListRepository) {
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
+        this.priceListRepository = priceListRepository;
     }
 
     @Override
@@ -52,6 +57,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public static PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+        @EventListener(ApplicationReadyEvent.class)
+    public void get() {
+        Client client = new Client("Adam", "Malysz", "adam.malysz@gmail.com", 123456789);
+        User appUserClient1 = new User("user", passwordEncoder().encode("user"), "ROLE_USER", client);
+        userRepository.save(appUserClient1);
+        PriceList p1 = new PriceList(1,"morning", "6.00-14.00", 40F);
+        PriceList p2 = new PriceList(1,"afternoon", "14.00-23.00", 50F);
+        PriceList p3 = new PriceList(1,"night", "14.00-23.00", 30F);
+        priceListRepository.save(p1);
+        priceListRepository.save(p2);
+        priceListRepository.save(p3);
     }
 
 }
