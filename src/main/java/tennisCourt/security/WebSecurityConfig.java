@@ -59,14 +59,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-        @EventListener(ApplicationReadyEvent.class)
+    @EventListener(ApplicationReadyEvent.class)
     public void get() {
         Client client = new Client("Adam", "Malysz", "adam.malysz@gmail.com", 123456789);
         User appUserClient1 = new User("user", passwordEncoder().encode("user"), "ROLE_USER", client);
         userRepository.save(appUserClient1);
-        PriceList p1 = new PriceList(1,"morning", "6.00-14.00", 40F);
-        PriceList p2 = new PriceList(1,"afternoon", "14.00-23.00", 50F);
-        PriceList p3 = new PriceList(1,"night", "14.00-23.00", 30F);
+        PriceList p1 = new PriceList(1L,"morning", "6.00-14.00", 40F);
+        PriceList p2 = new PriceList(1L,"afternoon", "14.00-23.00", 50F);
+        PriceList p3 = new PriceList(1L,"night", "14.00-23.00", 30F);
         priceListRepository.save(p1);
         priceListRepository.save(p2);
         priceListRepository.save(p3);
