@@ -471,7 +471,7 @@ public class ControllerApi {
         User user = userService.findUserByUsername(User.getUserName());
         List<Reservation> reservationList = reservationService.listAllByUserId(user.getId());
         model.addAttribute("reservationList", reservationList);
-        return "clientReservationPage";
+        return "clientRleservationPage";
     }
 
     @RequestMapping("/OurTennis/clientReservation/{id}")
