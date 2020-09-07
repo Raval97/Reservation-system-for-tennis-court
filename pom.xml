@@ -5,14 +5,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.3.RELEASE</version>
-		<relativePath/>
-		<!--  lookup parent from repository  -->
+		<version>2.3.2.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>WebApi</groupId>
+	<groupId>tennisCourt</groupId>
 	<artifactId>TennisCourtReservation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>TennisCourtReservation</name>
+	<name>WebApi</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -36,12 +35,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -68,7 +65,6 @@
 			<artifactId>spring-beans</artifactId>
 			<version>5.2.8.RELEASE</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
