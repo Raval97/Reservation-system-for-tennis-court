@@ -9,6 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>tennisCourt</groupId>
+	<artifactId>TennisCourtReservation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>WebApi</name>
 	<description>Demo project for Spring Boot</description>
