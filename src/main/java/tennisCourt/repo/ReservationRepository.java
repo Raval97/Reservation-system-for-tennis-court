@@ -19,17 +19,17 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Reservation findByIdReservation(@Param("id") Long id);
 
     @Query(value = "SELECT r.* FROM reservation r " +
-            "LEFT JOIN user_reservation ur on ur.reservation_id=r.id " +
-            "LEFT JOIN user u on ur.user_id=u.id WHERE u.id=:id AND r.status_of_reservation = \"Reserved\"", nativeQuery = true)
+            "LEFT JOIN user_reservation ur on ur.reservation=r.id " +
+            "LEFT JOIN users u on ur.users=u.id WHERE u.id=:id AND r.status_of_reservation = \'Reserved\'", nativeQuery = true)
     List<Reservation> findAllByIdUser(Long id);
 
     @Query(value = "SELECT case when count(distinct id) > 0 then 'true' else 'false' end as bool\n" +
-            "FROM `reservation` WHERE status_of_reservation=\"Started\" " +
-            "AND id in (SELECT ur.reservation_id from user_reservation ur WHERE ur.user_id = :id)", nativeQuery = true)
+            "FROM reservation WHERE status_of_reservation=\'Started\' " +
+            "AND id in (SELECT ur.reservation from user_reservation ur WHERE ur.users = :id)", nativeQuery = true)
     Boolean findIfUserHasStartedReservation(Long id);
 
-    @Query(value = "SELECT * FROM reservation r WHERE r.status_of_reservation=\"Started\" AND r.id in " +
-            "(SELECT ur.reservation_id FROM user_reservation ur WHERE ur.user_id=:id) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM reservation r WHERE r.status_of_reservation=\'Started\' AND r.id in " +
+            "(SELECT ur.reservation FROM user_reservation ur WHERE ur.users=:id) ", nativeQuery = true)
     Reservation findStartedReservationByUserId(Long id);
 
     @Transactional

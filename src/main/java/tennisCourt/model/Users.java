@@ -20,34 +20,34 @@ import java.util.stream.Stream;
 
 @Data
 @Entity
-@Table(name="user")
-public class User implements UserDetails{
+@Table(name="users")
+public class Users implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
     private String role;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
     private Client client;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private Set<UserReservation> userReservations;
 
-    public User() {
+    public Users() {
     }
 
-    public User(String username, String password, String role) {
+    public Users(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
-    public User(String username, String password, String role, Client client) {
+    public Users(String username, String password, String role, Client client) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.client=client;
-        this.client.setUser(this);
+        this.client.setUsers(this);
     }
 
     public void setPassword(String password) {

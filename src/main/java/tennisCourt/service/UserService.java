@@ -5,8 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import tennisCourt.model.User;
+import tennisCourt.model.Users;
 import tennisCourt.repo.UserRepository;
 
 import java.util.List;
@@ -21,15 +20,15 @@ public class UserService implements UserDetailsService {
         this.repo = userRepository;
     }
 
-    public List<User> listAll() {
+    public List<Users> listAll() {
         return repo.findAll();
     }
 
-    public User get(long id) {
+    public Users get(long id) {
         return repo.findByIdUser(id);
     }
 
-    public void save(User user){
+    public void save(Users user){
         repo.save(user);
     }
 
@@ -42,7 +41,7 @@ public class UserService implements UserDetailsService {
         return repo.findByUsername(s);
     }
 
-    public User findUserByUsername(String s) {
+    public Users findUserByUsername(String s) {
         return repo.findByUsername(s);
     }
 }

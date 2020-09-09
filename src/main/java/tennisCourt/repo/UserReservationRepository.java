@@ -12,6 +12,6 @@ import tennisCourt.model.UserReservation;
 public interface UserReservationRepository extends JpaRepository<UserReservation, Long> {
 
     @Query(value = "Select * FROM user_reservation " +
-            "WHERE reservation_id=:id", nativeQuery = true)
+            "WHERE reservation=:id", nativeQuery = true)
     UserReservation findByReservationId(Long id);
 }

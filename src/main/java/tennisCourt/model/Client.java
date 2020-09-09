@@ -16,7 +16,7 @@ public class Client {
     private int phoneNumber;
     @OneToOne
     @MapsId
-    private User user;
+    private Users users;
 
     public Client() {
     }
