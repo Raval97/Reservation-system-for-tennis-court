@@ -7,10 +7,11 @@
 
     -Java: Spring Boot
     -Frontend: HTML + CSS + Jquery with using Thymleaf
-    -database: MySQL
+    -database: PostgreSQL/MySQL(*)
     
     -application use WebSecurityConfigurerAdapter to session 
      maintenance and recognition of the logged in user's access type
+    * postgres database is used on branch heroku to compatibility with Heroku platform, on branch master is used MySQL
     
 ## Example Of Working
     Homepage & Price-List Page for a user who is not logged in
