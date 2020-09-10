@@ -63,6 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+
     @EventListener(ApplicationReadyEvent.class)
     public void get() {
         PriceList p1 = new PriceList(1L,"From Monday to Friday[1h]", "6.00-14.00", 40F);
