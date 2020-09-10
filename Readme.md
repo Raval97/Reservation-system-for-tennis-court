@@ -1,7 +1,7 @@
 # Web Application for: <br/> Reservation system for tennis court
 
-# Heroku link:
-    https://tennis-main.herokuapp.com/ourTennis 
+## Heroku link:
+   [https://tennis-court-reservation.herokuapp.com/ourTennis](https://tennis-court-reservation.herokuapp.com/ourTennis) 
 
 ## Technologies:
 
