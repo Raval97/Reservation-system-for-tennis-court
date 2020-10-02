@@ -20,12 +20,19 @@
             <img th:src="@{/logo1.png}"/>
         </div>
         <div id="topMenu">
-            <a th:href="@{'/OurTennis/account/1'}">
-                <button type="button" id="account">ACCOUNT</button>
-            </a>
-            <a th:href="@{'/logout'}">
-                <button type="button" id="logout">LOG OUT</button>
-            </a>
+            <div id="forNormalUser">
+                <a th:href="@{'/OurTennis/account/1'}">
+                    <button type="button" id="account">ACCOUNT</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button type="button" id="logout">LOG OUT</button>
+                </a>
+            </div>
+            <div id="forAdmin" th:if="${isAdmin == true}">
+                <a th:href="@{'/administration'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION</button>
+                </a>
+            </div>
         </div>
     </div>
 

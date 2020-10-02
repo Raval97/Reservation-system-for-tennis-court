@@ -14,6 +14,7 @@ import tennisCourt.model.*;
 import tennisCourt.security.WebSecurityConfig;
 import tennisCourt.service.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -53,65 +54,77 @@ public class ControllerApi {
     public ControllerApi() {
     }
 
+    //############## ADMIN ##########################################
+
+
     //############## USER ##########################################
     @RequestMapping("/ourTennis")
-    public String viewStartPage(Model model) {
-        model.addAttribute("logged", false);
-        return "startPage";
+    public String viewStartPage(Model model, HttpServletRequest request) {
+        boolean logged = false;
+        boolean isAdmin = false;
+        if (request.isUserInRole("USER"))
+            logged = true;
+        if (request.isUserInRole("ADMIN")) {
+            logged = true;
+            isAdmin = true;
+        }
+        model.addAttribute("logged", logged);
+        model.addAttribute("isAdmin", isAdmin);
+        return "defaultUser/startPage";
     }
 
     @RequestMapping("/ourTennis/priceList")
-    public String viewPriceListPage(Model model) {
+    public String viewPriceListPage(Model model, HttpServletRequest request) {
+        boolean logged = false;
+        boolean isAdmin = false;
+        if (request.isUserInRole("USER"))
+            logged = true;
+        if (request.isUserInRole("ADMIN")) {
+            logged = true;
+            isAdmin = true;
+        }
+        model.addAttribute("logged", logged);
+        model.addAttribute("isAdmin", isAdmin);
         List<PriceList> priceList;
         priceList = priceListService.listAll();
         model.addAttribute("priceList", priceList);
-        model.addAttribute("logged", false);
-        return "priceListPage";
+        return "defaultUser/priceListPage";
     }
 
     @RequestMapping("/ourTennis/contact")
-    public String viewContactPage(Model model) {
-        model.addAttribute("logged", false);
-        return "contactPage";
+    public String viewContactPage(Model model, HttpServletRequest request) {
+        boolean logged = false;
+        boolean isAdmin = false;
+        if (request.isUserInRole("USER"))
+            logged = true;
+        if (request.isUserInRole("ADMIN")) {
+            logged = true;
+            isAdmin = true;
+        }
+        model.addAttribute("logged", logged);
+        model.addAttribute("isAdmin", isAdmin);
+        return "defaultUser/contactPage";
     }
 
     @RequestMapping("/ourTennis/gallery")
-    public String viewGalleryPage(Model model) {
-        model.addAttribute("logged", false);
-        return "galleryPage";
+    public String viewGalleryPage(Model model, HttpServletRequest request) {
+        boolean logged = false;
+        boolean isAdmin = false;
+        if (request.isUserInRole("USER"))
+            logged = true;
+        if (request.isUserInRole("ADMIN")) {
+            logged = true;
+            isAdmin = true;
+        }
+        model.addAttribute("logged", logged);
+        model.addAttribute("isAdmin", isAdmin);
+        return "defaultUser/galleryPage";
     }
 
     //############## CLIENT ##########################################
-    @RequestMapping("/OurTennis")
-    public String viewClientPage(Model model) {
-        model.addAttribute("logged", true);
-        return "startPage";
-    }
-
-    @RequestMapping("/OurTennis/priceList")
-    public String viewClientPriceListPage(Model model) {
-        List<PriceList> priceList;
-        priceList = priceListService.listAll();
-        model.addAttribute("priceList", priceList);
-        model.addAttribute("logged", true);
-        return "priceListPage";
-    }
-
-    @RequestMapping("/OurTennis/contact")
-    public String viewClientContactPage(Model model) {
-        model.addAttribute("logged", true);
-        return "contactPage";
-    }
-
-    @RequestMapping("/OurTennis/gallery")
-    public String viewClientGalleryPage(Model model) {
-        model.addAttribute("logged", true);
-        return "galleryPage";
-    }
-
 
     @RequestMapping("/OurTennis/reservation")
-    public String viewReservationPage(Model model,
+    public String viewReservationPage(Model model, HttpServletRequest request,
                                       @RequestParam(value = "date", required = false) String date) {
         Boolean correctParameter = true;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -121,7 +134,7 @@ public class ControllerApi {
         else {
             try {
                 LocalDate localDate = LocalDate.parse(date);
-                if(localDate.compareTo(now)>=0 && localDate.compareTo(now.plusDays(27))<=0)
+                if (localDate.compareTo(now) >= 0 && localDate.compareTo(now.plusDays(27)) <= 0)
                     date = dtf.format(localDate);
                 else
                     correctParameter = false;
@@ -129,7 +142,11 @@ public class ControllerApi {
                 correctParameter = false;
             }
         }
-        if(correctParameter) {
+        if (correctParameter) {
+            boolean isAdmin = false;
+            if (request.isUserInRole("ADMIN"))
+                isAdmin = true;
+            model.addAttribute("isAdmin", isAdmin);
             User user = userService.findUserByUsername(User.getUserName());
             List<Time> reservedTimeList = servicesService.getReservedTimeByDate(date);
             List<Float> reservedNumberOfHoursList = servicesService.getReservedNumberOfHoursByDate(date);
@@ -148,9 +165,8 @@ public class ControllerApi {
             model.addAttribute("startedReservationServices", startedReservationServices);
             model.addAttribute("startedReservation", startedReservation);
             model.addAttribute("date", date);
-            return "reservationPage";
-        }
-        else
+            return "loggedUser/reservationPage";
+        } else
             return "redirect:/OurTennis/reservation";
     }
 
@@ -158,7 +174,7 @@ public class ControllerApi {
     @ResponseBody
     @RequestMapping(value = "/saveRemovedDay", method = RequestMethod.POST)
     public ResponseEntity<?> saveRemovedDays(@RequestBody Object removedNodeArray) {
-        if(!((List) removedNodeArray).isEmpty()) {
+        if (!((List) removedNodeArray).isEmpty()) {
             User user = userService.findUserByUsername(User.getUserName());
             List<Services> startedReservation = servicesService.getInStartedReservationByUserId(user.getId());
             Map<String, Float> startedNoteMap = parseReservedReservationToMapFormat(startedReservation);
@@ -193,7 +209,7 @@ public class ControllerApi {
     @ResponseBody
     @RequestMapping(value = "/saveSelectedDay", method = RequestMethod.POST)
     public ResponseEntity<?> saveSelectedDays(@RequestBody Object selectNodeArray) {
-        if(!((List) selectNodeArray).isEmpty()) {
+        if (!((List) selectNodeArray).isEmpty()) {
             User user = userService.findUserByUsername(User.getUserName());
             List<Services> startedReservation = servicesService.getInStartedReservationByUserId(user.getId());
             Map<String, Float> reservedNoteMap = parseReservedReservationToMapFormat(startedReservation);
@@ -302,7 +318,7 @@ public class ControllerApi {
             reservationServices[0] = new ReservationServices(reservation);
             servicesService.save(new Services(date[0], (v), time[0], price[0], false,
                     false, false, (v * price[0]), reservationServices[0], court[0]));
-            finalPrice[0]+=v*price[0];
+            finalPrice[0] += v * price[0];
         });
         reservation.setFinalPrice(finalPrice[0]);
         reservationService.save(reservation);
@@ -339,17 +355,17 @@ public class ControllerApi {
         User user = userService.findUserByUsername(User.getUserName());
         List<Services> servicesList = servicesService.getInStartedReservationByUserId(user.getId());
         Reservation reservation = reservationService.getStartedReservationByUserId(user.getId());
-        List<LocalDate> dates =  new ArrayList<>();
+        List<LocalDate> dates = new ArrayList<>();
         servicesList.forEach((x) -> dates.add(x.getDate()));
         LocalDate minDate = Collections.min(dates);
         reservation.setFinalPaymentDate(minDate);
         reservationService.save(reservation);
         model.addAttribute("servicesList", servicesList);
         model.addAttribute("reservation", reservation);
-        return "clientMakeReservationPage";
+        return "loggedUser/clientMakeReservationPage";
     }
 
-    @RequestMapping(value = "/OurTennis/confirmReservation",  method = RequestMethod.POST)
+    @RequestMapping(value = "/OurTennis/confirmReservation", method = RequestMethod.POST)
     public String confirmReservation(@ModelAttribute Reservation reservation) {
         User user = userService.findUserByUsername(User.getUserName());
         Reservation startedReservation = reservationService.getStartedReservationByUserId(user.getId());
@@ -361,8 +377,8 @@ public class ControllerApi {
 
     @ResponseBody
     @RequestMapping(value = "/updateIfBalls/{id}", method = RequestMethod.POST)
-    public  ResponseEntity<?> updateIfBallsOfService(@PathVariable(name = "id") Long id,
-                                                     @RequestBody Object ifBalls) {
+    public ResponseEntity<?> updateIfBallsOfService(@PathVariable(name = "id") Long id,
+                                                    @RequestBody Object ifBalls) {
         Boolean decision = ifBalls.equals("1");
         servicesService.updateIfBalls(id, decision);
         updatePrices(id, 2, decision);
@@ -371,7 +387,7 @@ public class ControllerApi {
 
     @ResponseBody
     @RequestMapping(value = "/updateIfRocket/{id}", method = RequestMethod.POST)
-    public  ResponseEntity<?> updateIfRocketOfService(@PathVariable(name = "id") Long id,
+    public ResponseEntity<?> updateIfRocketOfService(@PathVariable(name = "id") Long id,
                                                      @RequestBody Object isRocket) {
         Boolean decision = isRocket.equals("1");
         servicesService.updateIfRocket(id, decision);
@@ -381,32 +397,35 @@ public class ControllerApi {
 
     @ResponseBody
     @RequestMapping(value = "/updateIfShoes/{id}", method = RequestMethod.POST)
-    public  ResponseEntity<?> updateIfShoesOfService(@PathVariable(name = "id") Long id,
-                                                     @RequestBody Object ifShoes) {
+    public ResponseEntity<?> updateIfShoesOfService(@PathVariable(name = "id") Long id,
+                                                    @RequestBody Object ifShoes) {
         Boolean decision = ifShoes.equals("1");
         servicesService.updateIfShoes(id, decision);
         updatePrices(id, 2, decision);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    void updatePrices(Long servicesId, float price, boolean selected){
+    void updatePrices(Long servicesId, float price, boolean selected) {
         User user = userService.findUserByUsername(User.getUserName());
         Reservation startedReservation = reservationService.getStartedReservationByUserId(user.getId());
         Services services = servicesService.get(servicesId);
-        if(selected) {
+        if (selected) {
             servicesService.updatePrice(servicesId, services.getPrice() + price);
-            reservationService.updatePrice(startedReservation.getId(), startedReservation.getFinalPrice()+price);
-        }
-        else{
+            reservationService.updatePrice(startedReservation.getId(), startedReservation.getFinalPrice() + price);
+        } else {
             servicesService.updatePrice(servicesId, services.getPrice() - price);
-            reservationService.updatePrice(startedReservation.getId(), startedReservation.getFinalPrice()-price);
+            reservationService.updatePrice(startedReservation.getId(), startedReservation.getFinalPrice() - price);
         }
     }
 
     //############## CLIENT ACCOUNT ##########################################
 
     @RequestMapping("/OurTennis/account/{type}")
-    public String viewClientAccount(@PathVariable(name = "type") Double type, Model model) {
+    public String viewClientAccount(@PathVariable(name = "type") Double type, Model model, HttpServletRequest request) {
+        boolean isAdmin = false;
+        if (request.isUserInRole("ADMIN"))
+            isAdmin = true;
+        model.addAttribute("isAdmin", isAdmin);
         User user = userService.findUserByUsername(User.getUserName());
         Client client = clientService.get(user.getId());
         model.addAttribute("client", client);
@@ -420,7 +439,7 @@ public class ControllerApi {
         model.addAttribute("repeatNewPassword", repeatNewPassword);
         String ifDeleteAccount = "NO";
         model.addAttribute("ifDeleteAccount", ifDeleteAccount);
-        return "clientAccountPage";
+        return "loggedUser/clientAccountPage";
     }
 
     @RequestMapping(value = "/OurTennis/client/edit_data/{id}", method = RequestMethod.POST)
@@ -467,21 +486,29 @@ public class ControllerApi {
     }
 
     @RequestMapping("/OurTennis/clientReservation")
-    public String viewClientReservationPage(Model model) {
+    public String viewClientReservationPage(Model model, HttpServletRequest request) {
+        boolean isAdmin = false;
+        if (request.isUserInRole("ADMIN"))
+            isAdmin = true;
+        model.addAttribute("isAdmin", isAdmin);
         User user = userService.findUserByUsername(User.getUserName());
         List<Reservation> reservationList = reservationService.listAllByUserId(user.getId());
         model.addAttribute("reservationList", reservationList);
-        return "clientRleservationPage";
+        return "loggedUser/clientReservationPage";
     }
 
     @RequestMapping("/OurTennis/clientReservation/{id}")
-    public String viewClientReservationDetailsPage(Model model,
+    public String viewClientReservationDetailsPage(Model model, HttpServletRequest request,
                                                    @PathVariable(name = "id") Long id) {
+        boolean isAdmin = false;
+        if (request.isUserInRole("ADMIN"))
+            isAdmin = true;
+        model.addAttribute("isAdmin", isAdmin);
         Reservation reservation = reservationService.get(id);
         List<Services> servicesList = servicesService.listAllByReservationId(id);
         model.addAttribute("reservation", reservation);
         model.addAttribute("servicesList", servicesList);
-        return "clientReservationDetailsPage";
+        return "loggedUser/clientReservationDetailsPage";
     }
 
     @RequestMapping("/OurTennis/cancelReservation/{id}")
@@ -493,18 +520,26 @@ public class ControllerApi {
     }
 
     @RequestMapping("/OurTennis/payment")
-    public String viewClientPaymentPage(Model model) {
+    public String viewClientPaymentPage(Model model, HttpServletRequest request) {
+        boolean isAdmin = false;
+        if (request.isUserInRole("ADMIN"))
+            isAdmin = true;
+        model.addAttribute("isAdmin", isAdmin);
         User user = userService.findUserByUsername(User.getUserName());
         List<Reservation> reservationList = reservationService.listAllByUserId(user.getId());
         model.addAttribute("reservationList", reservationList);
-        return "clientPaymentPage";
+        return "loggedUser/clientPaymentPage";
     }
 
     @RequestMapping("/bankSimulator/{id}")
-    public String viewBankSimulatorPage(Model model,
+    public String viewBankSimulatorPage(Model model, HttpServletRequest request,
                                         @PathVariable(name = "id") Long id) {
+        boolean isAdmin = false;
+        if (request.isUserInRole("ADMIN"))
+            isAdmin = true;
+        model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("reservationID", id);
-        return "bankSimulatorPage";
+        return "loggedUser/bankSimulatorPage";
     }
 
     @RequestMapping("/payForReservation/{id}")
@@ -522,7 +557,7 @@ public class ControllerApi {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("client", new Client());
-        return "registrationPage";
+        return "defaultUser/registrationPage";
     }
 
     @PostMapping("/add-user")

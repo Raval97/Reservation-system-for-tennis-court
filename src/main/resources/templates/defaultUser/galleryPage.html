@@ -21,12 +21,19 @@
             <img th:src="@{/logo1.png}"/>
         </div>
         <div id="topMenu" th:if="${logged == true}">
-            <a th:href="@{'/OurTennis/account/1'}">
-                <button type="button" id="account">ACCOUNT</button>
-            </a>
-            <a th:href="@{'/logout'}">
-                <button type="button" id="logout">LOG OUT</button>
-            </a>
+            <div id="forNormalUser">
+                <a th:href="@{'/OurTennis/account/1'}">
+                    <button type="button" id="account">ACCOUNT</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button type="button" id="logout">LOG OUT</button>
+                </a>
+            </div>
+            <div id="forAdmin" th:if="${isAdmin == true}">
+                <a th:href="@{'/administration'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION</button>
+                </a>
+            </div>
         </div>
         <div id="topMenu" th:if="${logged == false}">
             <a th:href="@{'/registration'}">
@@ -40,17 +47,11 @@
 
     <div id="center" class="center2">
         <div class="menu_div">
-            <ul th:if="${logged == true}">
-                <li><a href="/OurTennis">About US</a></li>
-                <li><a href="/OurTennis/reservation">Reservation</a></li>
-                <li><a href="/OurTennis/priceList">Price-List</a></li>
-                <li id="active"><a href="/OurTennis/gallery">Gallery</a></li>
-                <li><a href="/OurTennis/contact">Contact</a></li>
-            </ul>
-            <ul th:if="${logged == false}">
-                <li><a href="/ourTennis">About Us</a></li>
+            <ul>
+                <li id="active"><a href="/ourTennis">About Us</a></li>
+                <li th:if="${logged == true}"><a href="/OurTennis/reservation">Reservation</a></li>
                 <li><a href="/ourTennis/priceList">Price-List</a></li>
-                <li id="active"><a href="/ourTennis/gallery">Gallery</a></li>
+                <li><a href="/ourTennis/gallery">Gallery</a></li>
                 <li><a href="/ourTennis/contact">Contact</a></li>
             </ul>
         </div>
