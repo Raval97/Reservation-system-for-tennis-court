@@ -54,8 +54,59 @@ public class ControllerApi {
     public ControllerApi() {
     }
 
-    //############## ADMIN ##########################################
 
+    //############## ADMIN ##########################################
+    @RequestMapping("/admin/usersPermissions")
+    public String viewAdminPermissionsPage(Model model) {
+        List<User> usersList;
+        List<Client> clientList;
+        usersList = userService.listAll();
+        clientList = clientService.listAll();
+        model.addAttribute("usersList", usersList);
+        model.addAttribute("clientList", clientList);
+        return "admin/adminUsersPermissions";
+    }
+
+    @RequestMapping("/admin/tournamentsAndEvents")
+    public String viewAdminTournamentsPage(Model model) {
+        return "admin/adminTournamentsAndEvents";
+    }
+
+    @RequestMapping("/admin/teamAssociations")
+    public String viewAdminEventsPage(Model model) {
+        return "admin/adminTeamAssociations";
+    }
+
+    @RequestMapping("/admin/priceList")
+    public String viewAdminPriceListPage(Model model) {
+        List<PriceList> priceList;
+        priceList = priceListService.listAll();
+        model.addAttribute("priceList", priceList);
+        return "admin/adminPriceList";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/admin/edit_usersPermissions", method = RequestMethod.POST)
+    public ResponseEntity<?> setUsersPermissions(@RequestBody Object usersPermissionsList) {
+        System.out.println(usersPermissionsList);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/admin/edit_priceList", method = RequestMethod.POST)
+    public ResponseEntity<?> updatePriceOfPriceList(@RequestBody Object priceList) {
+        List<String> priceToChange = (List<String>) priceList;
+        List<PriceList> actualPriceList;
+        actualPriceList = priceListService.listAll();
+        final int[] iter = {0};
+        actualPriceList.forEach(ele -> {
+            Float price = Float.parseFloat(priceToChange.get(iter[0]));
+            ele.setPrice(price);
+            priceListService.save(ele);
+            iter[0]++;
+        });
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     //############## USER ##########################################
     @RequestMapping("/ourTennis")
@@ -325,25 +376,27 @@ public class ControllerApi {
     }
 
     private float getPriceByDateAndTime(LocalDate date, LocalTime time, float countOfHours) {
+        List<PriceList> priceList;
+        priceList = priceListService.listAll();
         boolean isAfternoon = time.compareTo(LocalTime.of(14, 0)) >= 0 &&
                 time.compareTo(LocalTime.of(23, 0)) < 0;
         boolean isMorning = time.compareTo(LocalTime.of(6, 0)) >= 0 &&
                 time.compareTo(LocalTime.of(14, 0)) < 0;
         boolean isWeekend = date.getDayOfWeek().getValue() > 5;
         if (!isAfternoon && !isMorning)
-            return 30F;
+            return priceList.get(3).getPrice();
         else {
             if (isWeekend) {
                 if (countOfHours >= 5)
-                    return 40F;
-                return 45F;
+                    return priceList.get(2).getPrice();
+                return priceList.get(5).getPrice();
             } else {
                 if (countOfHours >= 5)
-                    return 30F;
+                    return priceList.get(4).getPrice();
                 if (isAfternoon)
-                    return 50F;
+                    return priceList.get(1).getPrice();
                 else
-                    return 40F;
+                    return priceList.get(0).getPrice();
             }
         }
     }

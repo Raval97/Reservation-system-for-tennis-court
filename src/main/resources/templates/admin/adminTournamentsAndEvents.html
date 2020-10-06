@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>OurTennis | account</title>
+
+    <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/adminPagesStyle.css}">
+    <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
+
+</head>
+<body onload="time(); setInterval(time,1000);">
+
+<div id="container">
+
+    <div id="top">
+        <div id="logo">
+            <img th:src="@{/logo1.png}"/>
+        </div>
+        <div id="topMenu">
+            <div id="forNormalUser">
+                <a th:href="@{'/ourTennis'}">
+                    <button type="button" id="account">BACK</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button type="button" id="logout">LOG OUT</button>
+                </a>
+            </div>
+            <div id="forAdmin">
+                <a th:href="@{'/admin/usersPermissions'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="center">
+        <div class="menu">
+            <ul>
+                <li><a href="/admin/usersPermissions">Users Permissions</a></li>
+                <li id="active"><a href="/admin/tournamentsAndEvents">Tournaments & Events</a></li>
+                <li><a href="/admin/teamAssociations">Team associations</a></li>
+                <li><a href="/admin/priceList">Price-List</a></li>
+            </ul>
+        </div>
+
+        <div id="content">
+
+        </div>
+
+        <div id="footer">
+            &copy;2020 RG
+        </div>
+    </div>
+
+</body>
+</html>

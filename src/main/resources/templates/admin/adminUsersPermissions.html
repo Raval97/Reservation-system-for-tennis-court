@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>OurTennis | account</title>
+
+    <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/adminPagesStyle.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<!--    <script type="text/javascript" th:src="@{/static/jsFiles/adminFeatureScript.js}"></script>-->
+    <script type="text/javascript" src="/jsFiles/adminFeatureScript.js"></script>
+
+</head>
+<body onload="time(); setInterval(time,1000);">
+
+<div id="container">
+
+    <div id="top">
+        <div id="logo">
+            <img th:src="@{/logo1.png}"/>
+        </div>
+        <div id="topMenu">
+            <div id="forNormalUser">
+                <a th:href="@{'/ourTennis'}">
+                    <button type="button" id="account">BACK</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button type="button" id="logout">LOG OUT</button>
+                </a>
+            </div>
+            <div id="forAdmin">
+                <a th:href="@{'/admin/usersPermissions'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="center">
+        <div class="menu">
+            <ul>
+                <li id="active"><a href="/admin/usersPermissions">Users Permissions</a></li>
+                <li><a href="/admin/tournamentsAndEvents">Tournaments & Events</a></li>
+                <li><a href="/admin/teamAssociations">Team associations</a></li>
+                <li><a href="/admin/priceList">Price-List</a></li>
+            </ul>
+        </div>
+
+        <div id="content">
+
+            <div id="contextHead">
+                <h2>Users Permissions</h2>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Permissions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user,iter : ${usersList}">
+                            <td th:text="${user.id}"></td>
+                            <td th:text="${user.username}"></td>
+                            <td th:text="${clientList.get(iter.index).name}"></td>
+                            <td th:text="${clientList.get(iter.index).surname}"></td>
+                            <td class="permissions">
+                                <label class="userRole">USER
+                                    <input th:if="${user.role} == 'ROLE_USER'" value="ROLE_USER" type="radio" th:name="'radio'+${iter.index}" checked="checked">
+                                    <input th:if="${user.role} == 'ROLE_ADMIN'" value="ROLE_ADMIN" type="radio" th:name="'radio'+${iter.index}">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="userRole">ADMIN
+                                    <input th:if="${user.role} == 'ROLE_USER'" value="ROLE_USER" type="radio" th:name="'radio'+${iter.index}">
+                                    <input th:if="${user.role} == 'ROLE_ADMIN'"  value="ROLE_ADMIN" type="radio" th:name="'radio'+${iter.index}" checked="checked">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </br>
+                    <a>
+                        <button type="submit" class="option" id="confirmChangesUsers">Confirm Changes</button>
+                    </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer">
+        &copy;2020 RG
+    </div>
+</div>
+
+</body>
+</html>
