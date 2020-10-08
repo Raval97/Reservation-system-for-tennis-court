@@ -63,9 +63,9 @@
                     </thead>
                     <tbody>
                     <tr th:each="element,iter : ${priceList}">
-                        <td th:text="${element.type}"></td>
-                        <td class="pricee" th:text="${element.time}"></td>
-                        <td class="price"><input type="text" th:value="*{element.price}"/></td>
+                        <td width="50%" th:text="${element.type}"></td>
+                        <td width="50%" th:text="${element.time}"></td>
+                        <td class="price" ><input style="width: 120px;" type="text" th:value="*{element.price}"/></td>
                     </tr>
                     </tbody>
                 </table>
