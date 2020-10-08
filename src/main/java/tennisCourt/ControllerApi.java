@@ -88,7 +88,15 @@ public class ControllerApi {
     @ResponseBody
     @RequestMapping(value = "/admin/edit_usersPermissions", method = RequestMethod.POST)
     public ResponseEntity<?> setUsersPermissions(@RequestBody Object usersPermissionsList) {
-        System.out.println(usersPermissionsList);
+        List<String> permissionsList = (List<String>) usersPermissionsList;
+        List<User> usersList;
+        usersList = userService.listAll();
+        final int[] iter = {0};
+        usersList.forEach(user ->{
+            user.setRole(permissionsList.get(iter[0]));
+            userService.save(user);
+            iter[0]++;
+        });
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

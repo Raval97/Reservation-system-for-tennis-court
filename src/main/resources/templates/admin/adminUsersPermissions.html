@@ -71,13 +71,13 @@
                             <td th:text="${clientList.get(iter.index).surname}"></td>
                             <td class="permissions">
                                 <label class="userRole">USER
-                                    <input th:if="${user.role} == 'ROLE_USER'" value="ROLE_USER" type="radio" th:name="'radio'+${iter.index}" checked="checked">
-                                    <input th:if="${user.role} == 'ROLE_ADMIN'" value="ROLE_ADMIN" type="radio" th:name="'radio'+${iter.index}">
+                                    <input  th:if="${user.role} == 'ROLE_USER'" value="ROLE_USER" type="radio" th:name="'radio'+${iter.index}" checked="checked">
+                                    <input  th:if="${user.role} == 'ROLE_ADMIN'" value="ROLE_USER" type="radio" th:name="'radio'+${iter.index}">
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="userRole">ADMIN
-                                    <input th:if="${user.role} == 'ROLE_USER'" value="ROLE_USER" type="radio" th:name="'radio'+${iter.index}">
-                                    <input th:if="${user.role} == 'ROLE_ADMIN'"  value="ROLE_ADMIN" type="radio" th:name="'radio'+${iter.index}" checked="checked">
+                                    <input  th:if="${user.role} == 'ROLE_USER'" value="ROLE_ADMIN" type="radio" th:name="'radio'+${iter.index}">
+                                    <input  th:if="${user.role} == 'ROLE_ADMIN'"  value="ROLE_ADMIN" type="radio" th:name="'radio'+${iter.index}" checked="checked">
                                     <span class="checkmark"></span>
                                 </label>
                             </td>

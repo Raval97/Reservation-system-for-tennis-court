@@ -29,22 +29,9 @@ $(document).ready(function () {
 
     try {
         $("#confirmChangesUsers").click(function () {
-            let size = $('.permissions').length;
-            var i = 0;
-            var namee = "" ;
-            for (let i = 0; i < size; i++) {
-                namee = "radio"+i;
-                alert($('[name=namee]:checked').value)
-                usersPermissionsList.push($('[name=namee]:checked').value);
-            }
-            // $('.permissions').each(function () {
-            //     usersPermissionsList.push(this.innerHTML);
-            //     usersPermissionsList.push($(this + label + input:checked ).value);
-            //     alert(this.children[0].children.namedItem("radio0").attributes.checked.value +" ... "+
-            //     this.children[1].children.namedItem("radio0").attributes.checked.value);
-            //
-            //     // usersPermissionsList.push(this.children[0].);
-            // });
+            $('.permissions label input:checked').each(function() {
+                    usersPermissionsList.push(this.value);
+            });
             $.ajax({
                 type: "post",
                 url: "/admin/edit_usersPermissions",
