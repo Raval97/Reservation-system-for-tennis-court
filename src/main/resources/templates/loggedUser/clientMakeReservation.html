@@ -44,6 +44,7 @@
                 <ul>
                     <li id="active">Make Reserve</li>
                 </ul>
+                <li><a href="/ourTennis/events" style="font-size: 24px;">Tournaments & Events</a></li>
                 <li><a href="/ourTennis/priceList">Price-List</a></li>
                 <li><a href="/ourTennis/gallery">Gallery</a></li>
                 <li><a href="/ourTennis/contact">Contact</a></li>
@@ -133,6 +134,15 @@
                     </br> </br>
 
                     <table class="reservationDate">
+                        <tr>
+                            <td>Price</td>
+                            <td th:text="${reservation.price}"></td>
+                        </tr>
+                        <tr>
+                            <td>Discount Of Club Association</td>
+                            <td th:if="${reservation.discount == true}">YES</td>
+                            <td th:if="${reservation.discount == false}">NO</td>
+                        </tr>
                         <tr>
                             <td>Final Price</td>
                             <td th:text="${reservation.finalPrice}"

@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OurTennis | payment</title>S
+    <title>OurTennis | my_reservation</title>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
-    <link rel="stylesheet" th:href="@{/cssFiles/clientPaymentPageStale.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/clientReservationPageStale.css}">
     <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
 
 </head>
@@ -40,38 +41,36 @@
             <ul>
                 <li><a href="/ourTennis">Application</a></li>
                 <li><a href="/OurTennis/account/1">Personal Data</a></li>
-                <li><a href="/OurTennis/clientReservation">My Reservation</a></li>
-                <li id="active"><a href="/OurTennis/payment">Payment</a></li>
+                <li id="active"><a href="/OurTennis/clientReservation">My Reservation</a></li>
+                <li><a href="/OurTennis/clubAssociation">Club Association</a></li>
+                <li><a href="/OurTennis/payment">Payment</a></li>
             </ul>
         </div>
         <div id="content">
-            <div id="clientPayments">
-                <h2>My Payments</h2>
+            <div id="clientReservations">
+                <h2>My Reservations</h2>
                 <table>
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Final </br> Payment Date</th>
+                        <th>Date Of Reservation</th>
+                        <th>Status Of </br>Reservation</th>
                         <th>Price</th>
-                        <th>Type Of </br> Paying</th>
-                        <th>Status Of </br> Paying</th>
-                        <th>Action</th>
+                        <th>Type Of </br>Paying</th>
+                        <th>Status Of </br>Paying</th>
+                        <th>More </br> Details</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="element,iter : ${reservationList}">
                         <td th:text="${element.id}"></td>
-                        <td th:text="${element.finalPaymentDate}"></td>
+                        <td th:text="${element.dateOfReservation}"></td>
+                        <td th:text="${element.statusOfReservation}"></td>
                         <td th:text="${element.finalPrice}"></td>
                         <td th:text="${element.typeOfPaying}"></td>
                         <td th:text="${element.statusPaying}"></td>
-                        <td th:if="${#strings.toString(element.statusPaying)} == 'To Pay'
-                            and ${#strings.toString(element.typeOfPaying)} == 'online' ">
-                            <a class="pay" th:href="@{'/bankSimulator/'+${element.id}}" style="color: yellow">Pay</a>
-                        </td>
-                        <td th:if="${#strings.toString(element.statusPaying)} == 'Paid'
-                            or ${#strings.toString(element.typeOfPaying)} == 'offline' ">-----
-                        </td>
+                        <td><a class="details" th:href="@{'/OurTennis/clientReservation/'+${element.id}}"
+                               style="color: yellow">Details</a></td>
                     </tr>
                     </tbody>
                 </table>

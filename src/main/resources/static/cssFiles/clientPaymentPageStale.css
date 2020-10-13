@@ -2,6 +2,7 @@ table {
   border-collapse: collapse;
   width: 100%;
   background: #111177;
+  display: inline-table;
 }
 
 th, td {
@@ -27,4 +28,16 @@ th {
 
 a.pay:hover{
     font-size: 120%;
+}
+
+.divFoldTable ul {
+    background: #ff6484;
+    text-align: left;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    font-weight: 900;
+    color: #FFF;
+    list-style: none;
+    width: 80%;
+    padding: 10px;
 }

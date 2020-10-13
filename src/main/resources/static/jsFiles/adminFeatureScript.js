@@ -1,6 +1,7 @@
 var usersPermissionsList = [];
 var priceList = [];
 
+
 $(document).ready(function () {
 
     try {

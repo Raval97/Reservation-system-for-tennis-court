@@ -48,6 +48,7 @@
             <ul>
                 <li><a href="/ourTennis">About US</a></li>
                 <li id="active"><a href="/OurTennis/reservation">Reservation</a></li>
+                <li><a href="/ourTennis/events" style="font-size: 24px;">Tournaments & Events</a></li>
                 <li><a href="/ourTennis/priceList">Price-List</a></li>
                 <li><a href="/ourTennis/gallery">Gallery</a></li>
                 <li><a href="/ourTennis/contact">Contact</a></li>
@@ -113,7 +114,7 @@
                     </table>
                     </br></br>
                     <div id="summaryDiv" style="display:none;">
-                    <span th:text="'Final Price: '+${startedReservation.finalPrice}+'PLN'" align="center"
+                    <span th:text="'Final Price: '+${startedReservation.price}+'PLN'" align="center"
                           style="font-size:22; font-weight: 700"></span>
                         </br></br>
                         <button id="makeReservation" align="center">Reserve It</button>

@@ -1,0 +1,74 @@
+table {
+    border-collapse: collapse;
+    width: 500px;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr {
+    height: 50px;
+}
+
+tr:nth-child(odd) {
+    background-color: #1E1236;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 21px;
+    height: 50px;
+    margin-bottom: 30px;
+}
+
+#events {
+    padding: 5px 50px 30px;
+    text-align: left;
+}
+
+.tableHead {
+    background: #294429;
+    padding: 10px;
+}
+.tableHead span{
+    font-size: 25px;
+}
+
+span {
+    min-width: 200px;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+ul {
+    padding-left: 10px;
+    margin: 10px 0;
+    padding-bottom: 10px;
+}
+
+ul:nth-child(odd) {
+    background-color: rgba(17, 38, 53, 0.96);
+}
+
+ul:nth-child(even) {
+    background-color: rgba(40, 40, 53, 0.96);
+}
+
+.details {
+    margin-left: 100px;
+    min-height: 250px;
+    padding-right: 50px;
+}
+
+.infoOfEvent{
+    float: left;
+    padding-right: 100px;
+}
+
+.actionToDo {
+}
+

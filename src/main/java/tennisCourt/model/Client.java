@@ -14,6 +14,7 @@ public class Client {
     private String surname;
     private String emailAddress;
     private int phoneNumber;
+    private Boolean isClubMen;
     @OneToOne
     @MapsId
     private User user;
@@ -26,5 +27,6 @@ public class Client {
         this.surname = surname;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
+        this.isClubMen = false;
     }
 }

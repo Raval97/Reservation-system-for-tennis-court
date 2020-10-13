@@ -6,8 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>OurTennis | account</title>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
-    <link rel="stylesheet" th:href="@{/cssFiles/adminPagesStyle.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/eventsPageStale.css}">
     <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
 
 </head>
@@ -21,32 +22,79 @@
         </div>
         <div id="topMenu">
             <div id="forNormalUser">
-                <a th:href="@{'/ourTennis'}">
-                    <button type="button" id="account">BACK</button>
+                <a th:href="@{'/OurTennis/account/1'}">
+                    <button type="button" id="account">ACCOUNT</button>
                 </a>
                 <a th:href="@{'/logout'}">
                     <button type="button" id="logout">LOG OUT</button>
                 </a>
             </div>
             <div id="forAdmin">
-                <a th:href="@{'/admin/usersPermissions'}">
-                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION</button>
+                <a th:href="@{'/ourTennis'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">APPLICATION</button>
                 </a>
             </div>
         </div>
     </div>
 
     <div id="center">
-        <div class="menu">
-            <ul>
+        <div class="menu_div">
+            <ul  style="font-size: 24px">
                 <li><a href="/admin/usersPermissions">Users Permissions</a></li>
                 <li id="active"><a href="/admin/tournamentsAndEvents">Tournaments & Events</a></li>
-                <li><a href="/admin/teamAssociations">Team associations</a></li>
+                <li><a href="/admin/clubAssociations">Club Associations</a></li>
                 <li><a href="/admin/priceList">Price-List</a></li>
             </ul>
         </div>
 
         <div id="content">
+            <h2>Tournaments & Events</h2>
+            <div id="events">
+                <div class="tableHead">
+                    <span>Title</span>
+                    <span>Event date</span>
+                </div>
+                </br>
+                <ul class="event" th:each="element,iter : ${tournaments}">
+                    <span th:text="${element.title}"></span>
+                    <span th:if="${element.dateOfEnded.isAfter(#temporals.createNow().toLocalDate())}"
+                          th:text="${element.dateOfStarted}">&emsp; &emsp; &emsp;</span>
+                    <span th:if="${element.dateOfEnded.isBefore(#temporals.createNow().toLocalDate())}">Terminated &emsp; &emsp; &emsp;</span>
+                    <span><button class="showDetails">Show details</button>&emsp; &emsp; &emsp;</span>
+                    <span><button  class="showParticipants" style="width: 170px">Show participant</button></span>
+                    <div class="details" style="display: none">
+                        <div class="infoOfEvent">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td> Date Of started</td>
+                                    <td th:text="${element.dateOfStarted}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Date Of Ended</td>
+                                    <td th:text="${element.dateOfEnded}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Max Count Of Participant</td>
+                                    <td th:text="${element.maxCountOFParticipant}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Count Of Actual Registered Participant</td>
+                                    <td th:text="${element.countOFRegisteredParticipant}"></td>
+                                </tr>
+                                <tr>
+                                    <td> Entry Fee</td>
+                                    <td th:text="${element.entryFee}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="participant" style="display: none">
+                        Participant
+                    </div>
+                </ul>
+            </div>
 
         </div>
 
@@ -56,4 +104,27 @@
     </div>
 
 </body>
+
+<script>
+    $(document).ready(function () {
+        $(".event button").click(function () {
+            if($(this).is('.showDetails')) {
+                var div = $(this).parent().parent().find('.details');
+                if (div.css("display") === "none")
+                    div.css("display", "block");
+                else
+                    div.css("display", "none");
+                $(this).parent().parent().find('.participant').css("display", "none");
+            }
+            if($(this).is('.showParticipants')) {
+                var div = $(this).parent().parent().find('.participant');
+                if (div.css("display") === "none")
+                    div.css("display", "block");
+                else
+                    div.css("display", "none");
+                $(this).parent().parent().find('.details').css("display", "none");
+            }
+        });
+    });
+</script>
 </html>

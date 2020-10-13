@@ -41,8 +41,6 @@ body
 	text-align: right;
 }
 
-
-
 button {
 	display: inline-block;
 	background-color: #7b38d8;
@@ -59,7 +57,7 @@ button {
 }
 
 #center{
-    height: 500px;
+    height: 600px;
 }
 
 .menu_div {
@@ -83,7 +81,7 @@ button {
 .menu_div ul li
 {
 	padding-bottom: 5px;
-	background:#3f3f3f;
+	background:linear-gradient(rgb(11, 6, 37) 45%, rgb(203, 9, 9) 100%);;
 	line-height:70px;
     border-bottom:10px solid #333;
 }
@@ -98,9 +96,13 @@ button {
 	background:#d40203;
 }
 
+.menu_div ul li#active a {
+    color: #5accff;
+}
+
 .menu_div ul li#active
 {
-	background:#d40203;
+	background: linear-gradient(rgb(203, 9, 9) 5%, rgb(6, 6, 6) 100%);
 }
 
 #content{
@@ -108,7 +110,8 @@ button {
     width: 80%;
     text-align: center;
     float: left;
-    min-height: 650px;
+    min-height: 350px;
+    padding-bottom: 100px;
 }
 
 #footer{
@@ -116,8 +119,9 @@ button {
     clear: both;
     color: white;
     text-align: center;
-    padding: 3px;
+    padding: 5px;
     clear: both;
+    margin-bottom: 30px;
 }
 
 h2 {
@@ -131,4 +135,33 @@ h3 {
     font-family: "Great Vibes", cursive;
     font-size: 35px;
     font-weight: normal;
+}
+
+.p1 {
+     color: #AFF100;
+     font-family: "Great Vibes", cursive;
+     font-size: 25px;
+     font-weight: bold;
+ }
+
+.p2 {
+    color: #2b881e;
+    font-family: "Great Vibes", cursive;
+    font-size: 25px;
+    font-weight: normal;
+}
+
+.p3 {
+    color: #eaf1ef;
+    font-family: "Great Vibes", cursive;
+    font-size: 15px;
+    font-weight: normal;
+}
+
+.p4 {
+    color: #49415d;
+    border: 4px solid red;
+    margin: 10px 300px 0px;
+    background: linear-gradient(rgb(139, 135, 179) 5%, rgb(225, 218, 237) 100%);
+    font-size: 30px;
 }

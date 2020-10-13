@@ -32,6 +32,16 @@ public class User implements UserDetails{
     private Client client;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserReservation> userReservations;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ClubAssociation clubAssociation;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<MembershipApplication> membershipApplications;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Payment> payments;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserTournament> userTournaments;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserTournamentApplication> userTournamentApplications;
 
     public User() {
     }
@@ -100,10 +110,8 @@ public class User implements UserDetails{
         Authentication authentication = securityContext.getAuthentication();
         String userName = null;
         if (authentication != null) {
-
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             userName = userDetails.getUsername();
-
         }
         return userName;
     }

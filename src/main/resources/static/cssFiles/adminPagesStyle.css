@@ -1,49 +1,8 @@
-.menu {
-  margin-top: 50px;
-  width: 20%;
-  height: 100%;
-  float: left;
-}
-
-.menu ul
-{
-  padding:0px;
-  margin-left:20px;
-  font-family:Arial, Helvetica, sans-serif;
-  font-size:24px;
-  font-weight: 800;
-  color:#FFF;
-  list-style:none;
-  text-indent:15px;
-}
-.menu ul li
-{
-  padding-bottom: 5px;
-  background:#3f3f3f;
-  line-height:70px;
-  border-bottom:10px solid #333;
-}
-.menu ul li a
-{
-  text-decoration:none;
-  color:#FFF;
-  display:block;
-}
-.menu ul li a:hover
-{
-  background:#d40203;
-}
-
-.menu ul li#active
-{
-  background:#d40203;
-}
-
 #contextHead{
   padding: 5px 50px 30px;
 }
 
-/*  TABLE */
+/* TABLE */
 table {
   border-collapse: collapse;
   width: 900px;
@@ -52,7 +11,7 @@ table {
 }
 
 th, td {
-  text-align: left;
+  /*text-align: left;*/
   padding: 15px;
 }
 
@@ -72,7 +31,7 @@ input[type=text]:focus {
   border-radius: 5px;
 }
 
-/* CHECKBOX*/
+/* CHECKBOX USER PERMISSION*/
 
 .userRole {
   position: relative;
@@ -85,14 +44,12 @@ input[type=text]:focus {
   user-select: none;
 }
 
-/* Hide the browser's default radio button */
 .userRole input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
 }
 
-/* Create a custom radio button */
 .checkmark {
   position: absolute;
   top: 0;
@@ -103,29 +60,24 @@ input[type=text]:focus {
   border-radius: 50%;
 }
 
-/* On mouse-over, add a grey background color */
 .userRole:hover input ~ .checkmark {
   background-color: #ccc;
 }
 
-/* When the radio button is checked, add a blue background */
 .userRole input:checked ~ .checkmark {
   background-color: #2196F3;
 }
 
-/* Create the indicator (the dot/circle - hidden when not checked) */
 .userRole:after {
   content: "";
   position: absolute;
   display: none;
 }
 
-/* Show the indicator (dot/circle) when checked */
 .userRole input:checked ~ .checkmark:after {
   display: block;
 }
 
-/* Style the indicator (dot/circle) */
 .userRole .checkmark:after {
   top: 9px;
   left: 9px;
@@ -135,10 +87,58 @@ input[type=text]:focus {
   background: white;
 }
 
+/* PRICE LIST */
+
 [id^="confirmChanges"]{
   width: 250px;
   color: red;
   background: lime;
   font-size: 22px;
   margin-bottom: 40px;
+}
+
+/* CLUB ASSOCIATION*/
+
+#divListOfClubMans, #divMembershipApplication{
+  width: 85%;
+  margin-left: 100px;
+  margin-top: 0px;
+}
+
+#divListOfClubMans ul li, #divMembershipApplication ul li{
+  background: #ff6484;
+  text-align: left;
+}
+
+.tableClubAssociation{
+  margin-left: 200px;
+  display: block;
+}
+
+th.tableClubAssociation{
+  background-color: #1C301D
+}
+
+#noAcceptApplication:link{
+  text-decoration: none;
+  background: linear-gradient(rgb(7, 3, 26) 45%, rgb(101, 99, 88) 100%);
+  padding: 5px;
+  color: #f05d43;
+  font-weight: 900
+}
+
+#noAcceptApplication:hover {
+  color: #881a14;
+}
+
+#acceptApplication:link{
+  text-decoration: none;
+  background: linear-gradient(rgb(7, 3, 26) 45%, rgb(101, 99, 88) 100%);
+  padding: 5px;
+  color: #f0a511;
+  font-weight: 900
+}
+
+#acceptApplication:hover {
+  color: #2b881e;
 }

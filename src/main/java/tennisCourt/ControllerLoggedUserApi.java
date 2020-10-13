@@ -6,181 +6,54 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import tennisCourt.model.*;
-import tennisCourt.security.WebSecurityConfig;
 import tennisCourt.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
-public class ControllerApi {
+public class ControllerLoggedUserApi {
 
     private UserService userService;
     private ClientService clientService;
     private CourtService courtService;
     private ReservationService reservationService;
     private ServicesService servicesService;
-    private UserReservationService userReservationService;
     private ReservationServicesService reservationServicesService;
     private PriceListService priceListService;
+    private ClubAssociationService clubAssociationService;
+    private TournamentService tournamentService;
+    private UserTournamentService userTournamentService;
+    private UserTournamentApplicationService userTournamentApplicationService;
 
     @Autowired
-    public ControllerApi(UserService userService, ClientService clientService, CourtService courtService,
-                         ReservationService reservationService, UserReservationService userReservationService,
-                         ServicesService servicesService, ReservationServicesService reservationServicesService,
-                         PriceListService priceListService) {
+    public ControllerLoggedUserApi(UserService userService, ClientService clientService, CourtService courtService,
+                                   ReservationService reservationService, ServicesService servicesService,
+                                   ReservationServicesService reservationServicesService,
+                                   PriceListService priceListService, ClubAssociationService clubAssociationService,
+                                   TournamentService tournamentService, UserTournamentService userTournamentService,
+                                   UserTournamentApplicationService userTournamentApplicationService) {
         this.userService = userService;
         this.clientService = clientService;
         this.courtService = courtService;
         this.reservationService = reservationService;
         this.servicesService = servicesService;
-        this.userReservationService = userReservationService;
         this.reservationServicesService = reservationServicesService;
         this.priceListService = priceListService;
+        this.clubAssociationService = clubAssociationService;
+        this.tournamentService = tournamentService;
+        this.userTournamentService = userTournamentService;
+        this.userTournamentApplicationService = userTournamentApplicationService;
     }
 
-    public ControllerApi() {
+    public ControllerLoggedUserApi() {
     }
-
-
-    //############## ADMIN ##########################################
-    @RequestMapping("/admin/usersPermissions")
-    public String viewAdminPermissionsPage(Model model) {
-        List<User> usersList;
-        List<Client> clientList;
-        usersList = userService.listAll();
-        clientList = clientService.listAll();
-        model.addAttribute("usersList", usersList);
-        model.addAttribute("clientList", clientList);
-        return "admin/adminUsersPermissions";
-    }
-
-    @RequestMapping("/admin/tournamentsAndEvents")
-    public String viewAdminTournamentsPage(Model model) {
-        return "admin/adminTournamentsAndEvents";
-    }
-
-    @RequestMapping("/admin/teamAssociations")
-    public String viewAdminEventsPage(Model model) {
-        return "admin/adminTeamAssociations";
-    }
-
-    @RequestMapping("/admin/priceList")
-    public String viewAdminPriceListPage(Model model) {
-        List<PriceList> priceList;
-        priceList = priceListService.listAll();
-        model.addAttribute("priceList", priceList);
-        return "admin/adminPriceList";
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/admin/edit_usersPermissions", method = RequestMethod.POST)
-    public ResponseEntity<?> setUsersPermissions(@RequestBody Object usersPermissionsList) {
-        List<String> permissionsList = (List<String>) usersPermissionsList;
-        List<User> usersList;
-        usersList = userService.listAll();
-        final int[] iter = {0};
-        usersList.forEach(user ->{
-            user.setRole(permissionsList.get(iter[0]));
-            userService.save(user);
-            iter[0]++;
-        });
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/admin/edit_priceList", method = RequestMethod.POST)
-    public ResponseEntity<?> updatePriceOfPriceList(@RequestBody Object priceList) {
-        List<String> priceToChange = (List<String>) priceList;
-        List<PriceList> actualPriceList;
-        actualPriceList = priceListService.listAll();
-        final int[] iter = {0};
-        actualPriceList.forEach(ele -> {
-            Float price = Float.parseFloat(priceToChange.get(iter[0]));
-            ele.setPrice(price);
-            priceListService.save(ele);
-            iter[0]++;
-        });
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    //############## USER ##########################################
-    @RequestMapping("/ourTennis")
-    public String viewStartPage(Model model, HttpServletRequest request) {
-        boolean logged = false;
-        boolean isAdmin = false;
-        if (request.isUserInRole("USER"))
-            logged = true;
-        if (request.isUserInRole("ADMIN")) {
-            logged = true;
-            isAdmin = true;
-        }
-        model.addAttribute("logged", logged);
-        model.addAttribute("isAdmin", isAdmin);
-        return "defaultUser/startPage";
-    }
-
-    @RequestMapping("/ourTennis/priceList")
-    public String viewPriceListPage(Model model, HttpServletRequest request) {
-        boolean logged = false;
-        boolean isAdmin = false;
-        if (request.isUserInRole("USER"))
-            logged = true;
-        if (request.isUserInRole("ADMIN")) {
-            logged = true;
-            isAdmin = true;
-        }
-        model.addAttribute("logged", logged);
-        model.addAttribute("isAdmin", isAdmin);
-        List<PriceList> priceList;
-        priceList = priceListService.listAll();
-        model.addAttribute("priceList", priceList);
-        return "defaultUser/priceListPage";
-    }
-
-    @RequestMapping("/ourTennis/contact")
-    public String viewContactPage(Model model, HttpServletRequest request) {
-        boolean logged = false;
-        boolean isAdmin = false;
-        if (request.isUserInRole("USER"))
-            logged = true;
-        if (request.isUserInRole("ADMIN")) {
-            logged = true;
-            isAdmin = true;
-        }
-        model.addAttribute("logged", logged);
-        model.addAttribute("isAdmin", isAdmin);
-        return "defaultUser/contactPage";
-    }
-
-    @RequestMapping("/ourTennis/gallery")
-    public String viewGalleryPage(Model model, HttpServletRequest request) {
-        boolean logged = false;
-        boolean isAdmin = false;
-        if (request.isUserInRole("USER"))
-            logged = true;
-        if (request.isUserInRole("ADMIN")) {
-            logged = true;
-            isAdmin = true;
-        }
-        model.addAttribute("logged", logged);
-        model.addAttribute("isAdmin", isAdmin);
-        return "defaultUser/galleryPage";
-    }
-
-    //############## CLIENT ##########################################
 
     @RequestMapping("/OurTennis/reservation")
     public String viewReservationPage(Model model, HttpServletRequest request,
@@ -224,7 +97,7 @@ public class ControllerApi {
             model.addAttribute("startedReservationServices", startedReservationServices);
             model.addAttribute("startedReservation", startedReservation);
             model.addAttribute("date", date);
-            return "loggedUser/reservationPage";
+            return "loggedUser/clientReservation";
         } else
             return "redirect:/OurTennis/reservation";
     }
@@ -278,8 +151,12 @@ public class ControllerApi {
             TreeMap<String, Float> nodeMap = connectToSingleReservation(startedNoteMap);
             if (!reservationService.checkIfUserHasStartedReservation(user.getId())) {
                 UserReservation userReservation = new UserReservation(user);
-                reservationService.save(new Reservation(null, 0, "Started",
-                        null, null, null, userReservation));
+                Client client = clientService.getByUserId(user.getId());
+                boolean discount =false;
+                if (client.getIsClubMen())
+                    discount = clubAssociationService.getByUserId(user.getId()).getIfActive();
+                reservationService.save(new Reservation(null, 0, discount, 0,
+                        "Started", null, null, null, userReservation));
             }
             Reservation reservation = reservationService.getStartedReservationByUserId(user.getId());
             saveUpdatedServicesToStartedReservation(nodeMap, reservation);
@@ -379,7 +256,7 @@ public class ControllerApi {
                     false, false, (v * price[0]), reservationServices[0], court[0]));
             finalPrice[0] += v * price[0];
         });
-        reservation.setFinalPrice(finalPrice[0]);
+        reservation.setPrice(finalPrice[0]);
         reservationService.save(reservation);
     }
 
@@ -420,10 +297,19 @@ public class ControllerApi {
         servicesList.forEach((x) -> dates.add(x.getDate()));
         LocalDate minDate = Collections.min(dates);
         reservation.setFinalPaymentDate(minDate);
+        Client client = clientService.getByUserId(user.getId());
+        boolean discount =false;
+        if (client.getIsClubMen())
+            discount = clubAssociationService.getByUserId(user.getId()).getIfActive();
+        reservation.setDiscount(discount);
+        if(reservation.isDiscount())
+            reservation.setFinalPrice((float) (reservation.getPrice()*0.85));
+        else
+            reservation.setFinalPrice(reservation.getPrice());
         reservationService.save(reservation);
         model.addAttribute("servicesList", servicesList);
         model.addAttribute("reservation", reservation);
-        return "loggedUser/clientMakeReservationPage";
+        return "loggedUser/clientMakeReservation";
     }
 
     @RequestMapping(value = "/OurTennis/confirmReservation", method = RequestMethod.POST)
@@ -440,9 +326,10 @@ public class ControllerApi {
     @RequestMapping(value = "/updateIfBalls/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updateIfBallsOfService(@PathVariable(name = "id") Long id,
                                                     @RequestBody Object ifBalls) {
+        float price = priceListService.listAll().get(7).getPrice();
         Boolean decision = ifBalls.equals("1");
         servicesService.updateIfBalls(id, decision);
-        updatePrices(id, 2, decision);
+        updatePrices(id, price, decision);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -450,9 +337,10 @@ public class ControllerApi {
     @RequestMapping(value = "/updateIfRocket/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updateIfRocketOfService(@PathVariable(name = "id") Long id,
                                                      @RequestBody Object isRocket) {
+        float price = priceListService.listAll().get(6).getPrice();
         Boolean decision = isRocket.equals("1");
         servicesService.updateIfRocket(id, decision);
-        updatePrices(id, 5, decision);
+        updatePrices(id, price, decision);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -460,9 +348,10 @@ public class ControllerApi {
     @RequestMapping(value = "/updateIfShoes/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updateIfShoesOfService(@PathVariable(name = "id") Long id,
                                                     @RequestBody Object ifShoes) {
+        float price = priceListService.listAll().get(8).getPrice();
         Boolean decision = ifShoes.equals("1");
         servicesService.updateIfShoes(id, decision);
-        updatePrices(id, 2, decision);
+        updatePrices(id, price, decision);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -472,160 +361,13 @@ public class ControllerApi {
         Services services = servicesService.get(servicesId);
         if (selected) {
             servicesService.updatePrice(servicesId, services.getPrice() + price);
-            reservationService.updatePrice(startedReservation.getId(), startedReservation.getFinalPrice() + price);
+            reservationService.updatePrice(startedReservation.getId(), startedReservation.getPrice() + price);
         } else {
             servicesService.updatePrice(servicesId, services.getPrice() - price);
-            reservationService.updatePrice(startedReservation.getId(), startedReservation.getFinalPrice() - price);
+            reservationService.updatePrice(startedReservation.getId(), startedReservation.getPrice() - price);
         }
     }
 
-    //############## CLIENT ACCOUNT ##########################################
 
-    @RequestMapping("/OurTennis/account/{type}")
-    public String viewClientAccount(@PathVariable(name = "type") Double type, Model model, HttpServletRequest request) {
-        boolean isAdmin = false;
-        if (request.isUserInRole("ADMIN"))
-            isAdmin = true;
-        model.addAttribute("isAdmin", isAdmin);
-        User user = userService.findUserByUsername(User.getUserName());
-        Client client = clientService.get(user.getId());
-        model.addAttribute("client", client);
-        model.addAttribute("user", user);
-        model.addAttribute("type", type);
-        String oldPassword = new String();
-        String newPassword = new String();
-        String repeatNewPassword = new String();
-        model.addAttribute("oldPassword", oldPassword);
-        model.addAttribute("newPassword", newPassword);
-        model.addAttribute("repeatNewPassword", repeatNewPassword);
-        String ifDeleteAccount = "NO";
-        model.addAttribute("ifDeleteAccount", ifDeleteAccount);
-        return "loggedUser/clientAccountPage";
-    }
-
-    @RequestMapping(value = "/OurTennis/client/edit_data/{id}", method = RequestMethod.POST)
-    public String editClientData(@PathVariable(name = "id") Long id,
-                                 @ModelAttribute("client") Client client,
-                                 @ModelAttribute("user") User user) {
-        User userToChange = userService.get(id);
-        Client clientToChange = clientService.get(user.getId());
-        if ((!userToChange.getUsername().equals(user.getUsername())) || (!clientToChange.equals(client))) {
-            userToChange.setUsername(user.getUsername());
-            userToChange.setClient(client);
-            userService.save(userToChange);
-            return "redirect:/OurTennis/account/1.1";
-        } else
-            return "redirect:/OurTennis/account/1";
-    }
-
-    @RequestMapping(value = "/OurTennis/client/changePassword/{id}", method = RequestMethod.POST)
-    public String changeClientPassword(@PathVariable(name = "id") Long id,
-                                       @ModelAttribute("user") User user,
-                                       @RequestParam String newPassword,
-                                       @RequestParam String repeatNewPassword,
-                                       @RequestParam String oldPassword) {
-        User userToChange = userService.get(id);
-        if (WebSecurityConfig.passwordEncoder().matches(oldPassword, userToChange.getPassword())) {
-            System.out.println(newPassword + "  " + repeatNewPassword);
-            if (repeatNewPassword.equals(newPassword)) {
-                userToChange.setPassword(newPassword);
-                userService.save(userToChange);
-                return "redirect:/OurTennis/account/2.1";
-            } else
-                return "redirect:/OurTennis/account/2.2";
-        } else
-            return "redirect:/OurTennis/account/2.3";
-    }
-
-    @RequestMapping("/OurTennis/client/deleteAccount/{id}")
-    public String deleteBetFromCoupon(@PathVariable(name = "id") int id) {
-        clientService.deleteByUserId(id);
-        User user = userService.get(id);
-        user.setPassword("cannotLogin");
-        userService.save(user);
-        return "redirect:/ourTennis";
-    }
-
-    @RequestMapping("/OurTennis/clientReservation")
-    public String viewClientReservationPage(Model model, HttpServletRequest request) {
-        boolean isAdmin = false;
-        if (request.isUserInRole("ADMIN"))
-            isAdmin = true;
-        model.addAttribute("isAdmin", isAdmin);
-        User user = userService.findUserByUsername(User.getUserName());
-        List<Reservation> reservationList = reservationService.listAllByUserId(user.getId());
-        model.addAttribute("reservationList", reservationList);
-        return "loggedUser/clientReservationPage";
-    }
-
-    @RequestMapping("/OurTennis/clientReservation/{id}")
-    public String viewClientReservationDetailsPage(Model model, HttpServletRequest request,
-                                                   @PathVariable(name = "id") Long id) {
-        boolean isAdmin = false;
-        if (request.isUserInRole("ADMIN"))
-            isAdmin = true;
-        model.addAttribute("isAdmin", isAdmin);
-        Reservation reservation = reservationService.get(id);
-        List<Services> servicesList = servicesService.listAllByReservationId(id);
-        model.addAttribute("reservation", reservation);
-        model.addAttribute("servicesList", servicesList);
-        return "loggedUser/clientReservationDetailsPage";
-    }
-
-    @RequestMapping("/OurTennis/cancelReservation/{id}")
-    public String cancelReservation(Model model,
-                                    @PathVariable(name = "id") Long id) {
-        reservationServicesService.deleteAllByReservationId(id);
-        userReservationService.delete(userReservationService.getByReservationId(id).getId());
-        return "redirect:/OurTennis/clientReservation";
-    }
-
-    @RequestMapping("/OurTennis/payment")
-    public String viewClientPaymentPage(Model model, HttpServletRequest request) {
-        boolean isAdmin = false;
-        if (request.isUserInRole("ADMIN"))
-            isAdmin = true;
-        model.addAttribute("isAdmin", isAdmin);
-        User user = userService.findUserByUsername(User.getUserName());
-        List<Reservation> reservationList = reservationService.listAllByUserId(user.getId());
-        model.addAttribute("reservationList", reservationList);
-        return "loggedUser/clientPaymentPage";
-    }
-
-    @RequestMapping("/bankSimulator/{id}")
-    public String viewBankSimulatorPage(Model model, HttpServletRequest request,
-                                        @PathVariable(name = "id") Long id) {
-        boolean isAdmin = false;
-        if (request.isUserInRole("ADMIN"))
-            isAdmin = true;
-        model.addAttribute("isAdmin", isAdmin);
-        model.addAttribute("reservationID", id);
-        return "loggedUser/bankSimulatorPage";
-    }
-
-    @RequestMapping("/payForReservation/{id}")
-    public String setStatusForPayment(@PathVariable(name = "id") Long id) {
-        Reservation reservation = reservationService.get(id);
-        reservation.setStatusPaying("Paid");
-        reservationService.save(reservation);
-        return "redirect:/OurTennis/payment";
-    }
-
-    //################  LOGOWANIE & REJESTRACJA  ##################################
-
-    @GetMapping("/registration")
-    public String test(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        model.addAttribute("client", new Client());
-        return "defaultUser/registrationPage";
-    }
-
-    @PostMapping("/add-user")
-    public String addUser(@ModelAttribute User user, @ModelAttribute Client client) {
-        User newUser = new User(user.getUsername(), user.getPassword(), "ROLE_USER", client);
-        userService.save(newUser);
-        return "redirect:/ourTennis";
-    }
 
 }

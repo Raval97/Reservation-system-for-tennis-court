@@ -47,11 +47,12 @@
     <div id="center" class="center2">
         <div class="menu_div">
             <ul>
-                <li id="active"><a href="/ourTennis">About Us</a></li>
+                <li ><a href="/ourTennis">About Us</a></li>
                 <li th:if="${logged == true}"><a href="/OurTennis/reservation">Reservation</a></li>
+                <li><a href="/ourTennis/events" style="font-size: 24px;">Tournaments & Events</a></li>
                 <li><a href="/ourTennis/priceList">Price-List</a></li>
                 <li><a href="/ourTennis/gallery">Gallery</a></li>
-                <li><a href="/ourTennis/contact">Contact</a></li>
+                <li id="active"><a href="/ourTennis/contact">Contact</a></li>
             </ul>
         </div>
         <div id="content" align="center">

@@ -46,6 +46,7 @@
                         <li id="active">Details</li>
                     </ul>
                 </li>
+                <li><a href="/OurTennis/clubAssociation">Club Association</a></li>
                 <li><a href="/OurTennis/payment">Payment</a></li>
             </ul>
         </div>
@@ -111,8 +112,17 @@
 
                 <table class="reservationDate">
                     <tr>
+                        <td>Price</td>
+                        <td th:text="${reservation.price}"></td>
+                    </tr>
+                    <tr>
+                        <td>Discount Of Club Association</td>
+                        <td th:if="${reservation.discount == true}">YES</td>
+                        <td th:if="${reservation.discount == false}">NO</td>
+                    </tr>
+                    <tr>
                         <td>Final Price</td>
-                        <td th:text="${reservation.finalPrice}"></td>
+                        <td th:text="${reservation.finalPrice}" style="font-size: 25px; font-weight: 900; color: yellow;"></td>
                     </tr>
                     <tr>
                         <td>Type Of Paying</td>

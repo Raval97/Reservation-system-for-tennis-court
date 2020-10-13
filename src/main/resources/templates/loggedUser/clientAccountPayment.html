@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>OurTennis | payment</title>S
+
+    <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/clientPaymentPageStale.css}">
+    <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
+
+</head>
+<body onload="time(); setInterval(time,1000);">
+
+<div id="container">
+    <div id="top">
+        <div id="logo">
+            <img th:src="@{/logo1.png}"/>
+        </div>
+        <div id="topMenu">
+            <div id="forNormalUser">
+                <a th:href="@{'/ourTennis'}">
+                    <button type="button" id="account">BACK</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button type="button" id="logout">LOG OUT</button>
+                </a>
+            </div>
+            <div id="forAdmin" th:if="${isAdmin == true}">
+                <a th:href="@{'/admin/usersPermissions'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="center">
+        <div class="menu_div">
+            <ul>
+                <li><a href="/ourTennis">Application</a></li>
+                <li><a href="/OurTennis/account/1">Personal Data</a></li>
+                <li><a href="/OurTennis/clientReservation">My Reservation</a></li>
+                <li><a href="/OurTennis/clubAssociation">Club Association</a></li>
+                <li id="active"><a href="/OurTennis/payment">Payment</a></li>
+            </ul>
+        </div>
+        <div id="content">
+            <div id="clientPayments">
+                <h2>My Payments</h2>
+                <div class="divFoldTable" id="divReservationPayments" onclick="shoAndHideReservationPayments()"
+                     style="width: 80%">
+                    <ul>
+                        <li>Membership Application</li>
+                    </ul>
+                    <table id="reservationPayments" >
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Final </br> Payment Date</th>
+                            <th>Price</th>
+                            <th>Type Of </br> Paying</th>
+                            <th>Status Of </br> Paying</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="element,iter : ${reservationList}">
+                            <td th:text="${element.id}"></td>
+                            <td th:text="${element.finalPaymentDate}"></td>
+                            <td th:text="${element.finalPrice}"></td>
+                            <td th:text="${element.typeOfPaying}"></td>
+                            <td th:text="${element.statusPaying}"></td>
+                            <td th:if="${#strings.toString(element.statusPaying)} == 'To Pay'
+                            and ${#strings.toString(element.typeOfPaying)} == 'online' ">
+                                <a class="pay" th:href="@{'/bankSimulatorForReservation/'+${element.id}}"
+                                   style="color: yellow">Pay</a>
+                            </td>
+                            <td th:if="${#strings.toString(element.statusPaying)} == 'Paid'
+                            or ${#strings.toString(element.typeOfPaying)} == 'offline' ">-----
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </br></br>
+                <div class="divFoldTable" id="divOtherPayments" onclick="shoAndHideOtherPayments()" style="width: 80%">
+                    <ul>
+                        <li>Membership Application</li>
+                    </ul>
+                    <table id="otherPayments">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Data of Paying</th>
+                            <th>Final </br> Payment Date</th>
+                            <th>Final </br> Price</th>
+                            <th>Status Of </br> Paying</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="element,iter : ${paymentList}">
+                            <td th:text="${element.id}"></td>
+                            <td th:text="${element.title}"></td>
+                            <td th:text="${element.dateOfPaying}"></td>
+                            <td th:text="${element.dateOfPaying}"></td>
+                            <td th:text="${element.price}"></td>
+                            <td th:text="${element.statusPaying}"></td>
+                            <td th:if="${#strings.toString(element.statusPaying)} == 'To Pay'">
+                                <a class="pay" th:href="@{'/bankSimulatorForReservation/'+${element.id}}"
+                                   style="color: yellow">Pay</a>
+                            </td>
+                            <td th:if="${#strings.toString(element.statusPaying)} == 'Paid'">-----
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            &copy;2020 RG
+        </div>
+    </div>
+
+</body>
+<script>
+    function shoAndHideReservationPayments() {
+        try {
+            var x = document.getElementById("reservationPayments");
+            if (x.style.display === "none") {
+                x.style.display = "inline-table";
+            } else {
+                x.style.display = "none";
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    function shoAndHideOtherPayments() {
+        try {
+            var x = document.getElementById("otherPayments");
+            if (x.style.display === "none") {
+                x.style.display = "inline-table";
+            } else {
+                x.style.display = "none";
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+</script>
+</html>
