@@ -4,11 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tennisCourt.model.Payment;
-import tennisCourt.model.PriceList;
 import tennisCourt.repo.PaymentRepository;
-import tennisCourt.repo.PriceListRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,5 +34,17 @@ public class PaymentService {
 
     public List<Payment> listAllByUserId(Long id) {
         return repo.findAlByUserId(id);
+    }
+
+    public Payment getByTitleAndUser(String title, Long id) {
+        return repo.findByTitleAndUser(title, id);
+    }
+
+    public void deleteByTitleAndUser(String title, Long id) {
+        repo.deleteByTitleAndUser(title, id);
+    }
+
+    public Optional<Payment> getById(Long id) {
+        return repo.findById(id);
     }
 }

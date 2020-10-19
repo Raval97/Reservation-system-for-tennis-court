@@ -30,7 +30,8 @@
             </div>
             <div id="forAdmin" th:if="${isAdmin == true}">
                 <a th:href="@{'/admin/usersPermissions'}">
-                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION</button>
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION
+                    </button>
                 </a>
             </div>
         </div>
@@ -40,10 +41,11 @@
         <div class="menu_div">
             <ul>
                 <li><a href="/ourTennis">About US</a></li>
-                <li id="active"><a href="/OurTennis/reservation">Reservation</a></li>
-                <ul>
-                    <li id="active">Make Reserve</li>
-                </ul>
+                <li><a href="/OurTennis/reservation">Reservation</a>
+                    <ul>
+                        <li id="active" style="border-bottom: 0px solid #333">Make Reserve</li>
+                    </ul>
+                </li>
                 <li><a href="/ourTennis/events" style="font-size: 24px;">Tournaments & Events</a></li>
                 <li><a href="/ourTennis/priceList">Price-List</a></li>
                 <li><a href="/ourTennis/gallery">Gallery</a></li>

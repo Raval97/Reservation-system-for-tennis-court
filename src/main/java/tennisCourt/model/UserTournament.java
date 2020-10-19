@@ -11,10 +11,10 @@ public class UserTournament {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "tournament_id")
     private Tournament tournament;
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private User user;
 
     public UserTournament() {

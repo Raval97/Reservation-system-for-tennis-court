@@ -3,12 +3,11 @@ package tennisCourt.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tennisCourt.model.UserTournament;
 import tennisCourt.model.UserTournamentApplication;
 import tennisCourt.repo.UserTournamentApplicationRepository;
-import tennisCourt.repo.UserTournamentRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -33,6 +32,10 @@ public class UserTournamentApplicationService {
         repo.deleteById(id);
     }
 
+    public Optional<UserTournamentApplication> getById(Long id){
+       return repo.findById(id);
+    }
+
     public List<String> getAllStatusTournamentToUser(Long id) {
         return repo.findAllStatusTournamentToUser(id);
     }
@@ -47,5 +50,17 @@ public class UserTournamentApplicationService {
 
     public int countElementsByTournamentId(Long id) {
         return repo.countElementsByTournamentId(id);
+    }
+
+    public UserTournamentApplication getByTournamentAndUserId(Long tournamentId, Long userId) {
+        return repo.findByTournamentAndUserId(tournamentId, userId);
+    }
+
+    public void deleteByTournamentAndUserId(Long tournamentId, Long userId) {
+        repo.deleteByTournamentAndUserId(tournamentId, userId);
+    }
+
+    public boolean hasUserApplicationInTournament(Long tournamentId, Long userId) {
+        return repo.hasUserApplicationInTournament(tournamentId, userId);
     }
 }

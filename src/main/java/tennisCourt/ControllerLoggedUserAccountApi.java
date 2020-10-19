@@ -76,6 +76,7 @@ public class ControllerLoggedUserAccountApi {
         Client clientToChange = clientService.get(user.getId());
         if ((!userToChange.getUsername().equals(user.getUsername())) || (!clientToChange.equals(client))) {
             userToChange.setUsername(user.getUsername());
+            client.setIsClubMen(clientToChange.getIsClubMen());
             userToChange.setClient(client);
             userService.save(userToChange);
             return "redirect:/OurTennis/account/1.1";
@@ -223,7 +224,7 @@ public class ControllerLoggedUserAccountApi {
             clubAssociation.setDateOfEndActive(clubAssociation.getDateOfEndActive().plusDays(30));
         else {
             clubAssociation.setIfActive(true);
-            clubAssociation.setDateOfEndActive(LocalDate.now());
+            clubAssociation.setDateOfEndActive(LocalDate.now().plusDays(30));
         }
         clubAssociationService.save(clubAssociation);
         Payment payment = new Payment("Membership fee", LocalDate.now(), 30F, "Paid", user);

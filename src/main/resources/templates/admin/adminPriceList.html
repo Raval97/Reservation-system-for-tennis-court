@@ -4,12 +4,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OurTennis | account</title>
+    <title>OurTennis | admin</title>
 
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
     <link rel="stylesheet" th:href="@{/cssFiles/adminPagesStyle.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <!--    <script type="text/javascript" th:src="@{/static/jsFiles/adminFeatureScript.js}"></script>-->
     <script type="text/javascript" src="/jsFiles/adminFeatureScript.js"></script>
 
 </head>
@@ -65,7 +64,7 @@
                     <tr th:each="element,iter : ${priceList}">
                         <td width="50%" th:text="${element.type}"></td>
                         <td width="50%" th:text="${element.time}"></td>
-                        <td class="price" ><input style="width: 120px;" type="text" th:value="*{element.price}"/></td>
+                        <td class="price" ><input style="font-size: 15px; width: 120px;" type="text" th:value="*{element.price}"/></td>
                     </tr>
                     </tbody>
                 </table>

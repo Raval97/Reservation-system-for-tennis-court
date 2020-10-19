@@ -41,3 +41,20 @@ a.pay:hover{
     width: 80%;
     padding: 10px;
 }
+
+.cslider {
+    text-align: center;
+}
+
+.cslider a {
+    opacity: 0.25;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+    float: left;
+    padding-right: 10px;
+}
+
+.cslider:hover a {
+    opacity: 1;
+}

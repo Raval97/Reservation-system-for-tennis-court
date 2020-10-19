@@ -4,8 +4,10 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OurTennis | account</title>
+    <title>OurTennis | admin</title>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
     <link rel="stylesheet" th:href="@{/cssFiles/adminPagesStyle.css}">
     <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
@@ -50,7 +52,13 @@
             <h2>Club Association</h2>
             <div class="menu_div" id="divMembershipApplication" onclick="shoAndHideClubMans()" >
                 <ul>
-                    <li>Membership Application</li>
+                    <li  style="background: #ff6484">
+                        <span style="float: left;">Membership Application</span>
+                        <div class="cslider">
+                            <a class="control_next" onmouseover="this.style.background='#ff6484';" onmouseout="this.style.background='';"><i class="fa fa-arrow-right"></i></a>
+                            <a class="control_prev" onmouseover="this.style.background='#ff6484';" onmouseout="this.style.background='';"><i class="fa fa-arrow-left"></i></a>
+                        </div>
+                    </li>
                 </ul>
                 <table id="membershipApplication" class="tableClubAssociation">
                     <thead>
@@ -70,16 +78,22 @@
                         <td th:text="${clientApplications.get(iter.index).name}"></td>
                         <td th:text="${clientApplications.get(iter.index).surname}"></td>
                         <td th:text="${clientApplications.get(iter.index).user.getId()}"></td>
-                        <td><a id="acceptApplication" th:href="'/admin/acceptApplication/'+${element.id}"> ACCEPT</a></td>
-                        <td><a id="noAcceptApplication" th:href="'/admin/noAcceptApplication/'+${element.id}"> NOT ACCEPT</a></td>
+                        <td><a class="acceptApplication" th:href="'/admin/acceptApplication/'+${element.id}"> ACCEPT</a></td>
+                        <td><a class="noAcceptApplication" th:href="'/admin/noAcceptApplication/'+${element.id}"> NOT ACCEPT</a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             </br></br></br>
             <div class="menu_div" id="divListOfClubMans" onclick="shoAndHideMembershipApplications()">
-                <ul>
-                    <li>List Of Club Association Persons</li>
+                <ul >
+                    <li style="background: #ff6484">
+                        <span style="float: left;">List Of Club Association Persons</span>
+                        <div class="cslider">
+                            <a class="control_next" onmouseover="this.style.background='#ff6484';" onmouseout="this.style.background='';"><i class="fa fa-arrow-right"></i></a>
+                            <a class="control_prev" onmouseover="this.style.background='#ff6484';" onmouseout="this.style.background='';"><i class="fa fa-arrow-left"></i></a>
+                        </div>
+                    </li>
                 </ul>
                 <table id="listOfClubMans" class="tableClubAssociation">
                     <thead>
@@ -112,33 +126,15 @@
             &copy;2020 RG
         </div>
     </div>
-
+</div>
 </body>
 <script>
     function shoAndHideClubMans() {
-        try {
-            var x = document.getElementById("membershipApplication");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        } catch (e) {
-            console.log(e);
-        }
+        $("#membershipApplication").toggle(500);
     }
 
     function shoAndHideMembershipApplications() {
-        try {
-            var x = document.getElementById("listOfClubMans");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        } catch (e) {
-            console.log(e);
-        }
+        $("#listOfClubMans").toggle(500);
     }
 </script>
 </html>

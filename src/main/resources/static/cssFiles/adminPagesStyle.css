@@ -106,8 +106,8 @@ input[type=text]:focus {
 }
 
 #divListOfClubMans ul li, #divMembershipApplication ul li{
-  background: #ff6484;
   text-align: left;
+  min-height: 70px;
 }
 
 .tableClubAssociation{
@@ -119,26 +119,47 @@ th.tableClubAssociation{
   background-color: #1C301D
 }
 
-#noAcceptApplication:link{
+
+.acceptApplication {
+  border: 2px solid #4dab18;
+  padding: 4px;
+  color: yellow;
   text-decoration: none;
-  background: linear-gradient(rgb(7, 3, 26) 45%, rgb(101, 99, 88) 100%);
-  padding: 5px;
-  color: #f05d43;
-  font-weight: 900
+  background: #271d57;
 }
 
-#noAcceptApplication:hover {
-  color: #881a14;
+.acceptApplication:hover{
+  color: #6527ff;
+  background: #eaeef1;
+  font-weight: bold
 }
 
-#acceptApplication:link{
+.noAcceptApplication {
+  border: 2px solid #4dab18;
+  padding: 4px;
+  color: #ff0e05;
   text-decoration: none;
-  background: linear-gradient(rgb(7, 3, 26) 45%, rgb(101, 99, 88) 100%);
-  padding: 5px;
-  color: #f0a511;
-  font-weight: 900
+  background: #271d57;
 }
 
-#acceptApplication:hover {
-  color: #2b881e;
+.noAcceptApplication:hover{
+  color: #6527ff;
+  background: #eaeef1;
+  font-weight: bold
+}
+
+.cslider {
+  text-align: center;
+}
+
+.cslider a {
+  opacity: 0.25;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
+  float: left;
+}
+
+.cslider:hover a {
+  opacity: 1;
 }

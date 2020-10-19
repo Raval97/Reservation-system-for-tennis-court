@@ -3,12 +3,11 @@ package tennisCourt.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tennisCourt.model.Court;
 import tennisCourt.model.Tournament;
-import tennisCourt.repo.CourtRepository;
 import tennisCourt.repo.TournamentRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -33,4 +32,11 @@ public class TournamentService {
         repo.deleteById(id);
     }
 
+    public Optional<Tournament> getById(Long id) {
+        return repo.findById(id);
+    }
+
+    public Tournament getByTitle(String title) {
+        return repo.findByTitle(title);
+    }
 }

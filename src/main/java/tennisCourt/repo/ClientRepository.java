@@ -33,8 +33,9 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = "SELECT * FROM client WHERE user_id= :id", nativeQuery = true)
     Client findBuUserId(Long id);
 
-    @Query(value = "SELECT * FROM client WHERE user_id in (SELECT utp.user_id " +
-            "from user_tournament_application utp WHERE utp.tournament_id = :id)", nativeQuery = true)
+    @Query(value = "SELECT c.* FROM client c " +
+            "LEFT JOIN user_tournament_application utp on utp.user_id=c.user_id " +
+            "WHERE utp.tournament_id = :id", nativeQuery = true)
     List<Client> findAllByInTournamentApplicationByThemID(Long id);
 
     @Query(value = "SELECT * FROM client WHERE user_id in (SELECT user_id " +

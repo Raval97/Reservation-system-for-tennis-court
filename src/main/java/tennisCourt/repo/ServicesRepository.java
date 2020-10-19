@@ -91,4 +91,8 @@ public interface ServicesRepository extends JpaRepository<Services, Long> {
     @Modifying
     @Query(value = "UPDATE services SET price = :price WHERE services.id = :id", nativeQuery = true)
     void updatePrice (@Param("id")Long id, @Param("price")float price);
+
+    @Modifying
+    @Query(value = "DELETE from services WHERE date= :date ", nativeQuery = true)
+    void deleteAllByDate(@Param("date") LocalDate date);
 }

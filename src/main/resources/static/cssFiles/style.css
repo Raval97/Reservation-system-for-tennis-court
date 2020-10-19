@@ -1,7 +1,7 @@
 body
 {
     margin: 0;
-    background-color: #2F3336;
+    background-image: linear-gradient(to right, #230101, #2F3336, #230101);
     color: #efefef;
     font-family: 'Open Sans', sans-serif;
     font-size: 17px;
@@ -18,7 +18,7 @@ body
     height: 150px;
     background: gray;
     margin: 0 auto;
-    background: linear-gradient(rgb(19, 3, 83) 45%, rgb(192, 218, 212) 100%);
+    background: linear-gradient(rgb(19, 3, 83) 45%, rgb(4, 12, 2) 100%);
 }
 
 #logo{
@@ -56,6 +56,10 @@ button {
 	margin: 5px;
 }
 
+button:hover{
+    filter: brightness(150%);
+}
+
 #center{
     height: 600px;
 }
@@ -83,7 +87,7 @@ button {
 	padding-bottom: 5px;
 	background:linear-gradient(rgb(11, 6, 37) 45%, rgb(203, 9, 9) 100%);;
 	line-height:70px;
-    border-bottom:10px solid #333;
+    margin-bottom: 10px;
 }
 .menu_div ul li a
 {

@@ -15,8 +15,15 @@
     <h2>Bank Simulator</h2>
 
     <div id="center" class="center">
-        <a  th:if="${type == 'forReservation'}" th:href="@{'/payForReservation/'+${ID}}"><button type="button" id="account">Pay For Reservation</button></a>
-        <a th:if="${type == 'forMembershipFee'}" th:href="@{'/OurTennis/payMembershipFee/'+${ID}}"><button type="button" id="account">Pay For Membership Fee</button></a>
+        <a  th:if="${type == 'forReservation'}" th:href="@{'/payForReservation/'+${ID}}">
+            <button type="button" id="account">Pay For Reservation</button>
+        </a>
+        <a th:if="${type == 'forMembershipFee'}" th:href="@{'/OurTennis/payMembershipFee/'+${ID}}">
+            <button type="button" id="account">Pay For Membership Fee</button>
+        </a>
+        <a th:if="${type == 'forEventApplicationFee'}" th:href="@{'/OurTennis/payEventApplicationFee/'+${ID}}">
+            <button type="button" id="account">Pay For Event ApplicationFee Fee</button>
+        </a>
     </div>
 </div>
 

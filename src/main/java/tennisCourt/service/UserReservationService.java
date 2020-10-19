@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tennisCourt.model.UserReservation;
 import tennisCourt.repo.UserReservationRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -33,6 +34,10 @@ public class UserReservationService {
 
     public UserReservation getByReservationId(Long id) {
        return repo.findByReservationId(id);
+    }
+
+    public void deleteAllByDate(LocalDate date) {
+        repo.deleteAllByDate(date);
     }
 
 }

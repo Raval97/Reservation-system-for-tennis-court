@@ -7,6 +7,7 @@ import tennisCourt.model.Services;
 import tennisCourt.repo.ServicesRepository;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -86,5 +87,9 @@ public class ServicesService {
 
     public void updatePrice(Long id, float price) {
         repo.updatePrice(id, price);
+    }
+
+    public void deleteAllByDate(LocalDate date) {
+        repo.deleteAllByDate(date);
     }
 }

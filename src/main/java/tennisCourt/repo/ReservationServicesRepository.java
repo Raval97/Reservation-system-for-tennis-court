@@ -9,6 +9,7 @@ import tennisCourt.model.ReservationServices;
 import tennisCourt.model.Services;
 import tennisCourt.model.UserReservation;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -17,4 +18,9 @@ public interface ReservationServicesRepository extends JpaRepository<Reservation
     @Query(value = "Select * FROM reservation_services " +
             "WHERE reservation_id=:id", nativeQuery = true)
     List<ReservationServices>  findAllByReservationId(Long id);
+
+    @Modifying
+    @Query(value = "DELETE FROM reservation_services WHERE services_id in" +
+            " (SELECT id from services WHERE date= :date)", nativeQuery = true)
+    void deleteAllByDate(@Param("date") LocalDate date);
 }

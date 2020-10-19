@@ -43,4 +43,8 @@ public class UserTournamentService {
     public Optional<UserTournament> getById(long id) {
         return repo.findById(id);
     }
+
+    public void deleteByTournamentAndUserId(Long tournamentId, Long userId) {
+        repo.deleteByTournamentAndUserId(tournamentId, userId);
+    }
 }

@@ -15,4 +15,6 @@ import java.util.List;
 @Repository
 public interface TournamentRepository extends JpaRepository<Tournament, Long> {
 
+    @Query(value = "SELECT * FROM tournament  WHERE title= :title", nativeQuery = true)
+    Tournament findByTitle(@Param("title")String title);
 }

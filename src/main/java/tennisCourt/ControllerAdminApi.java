@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tennisCourt.model.*;
+import tennisCourt.repo.UserTournamentRepository;
 import tennisCourt.security.WebSecurityConfig;
 import tennisCourt.service.*;
 
@@ -15,6 +16,7 @@ import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -25,25 +27,42 @@ public class ControllerAdminApi {
     private UserService userService;
     private ClientService clientService;
     private PriceListService priceListService;
+    private PaymentService paymentService;
     private MembershipApplicationService membershipApplicationService;
     private ClubAssociationService clubAssociationService;
     private TournamentService tournamentService;
     private UserTournamentService userTournamentService;
+    private UserTournamentRepository userTournamentRepository;
     private UserTournamentApplicationService userTournamentApplicationService;
+    private ReservationService reservationService;
+    private UserReservationService userReservationService;
+    private ReservationServicesService reservationServicesService;
+    private ServicesService servicesService;
+    private CourtService courtService;
 
     @Autowired
     public ControllerAdminApi(UserService userService, ClientService clientService, PriceListService priceListService,
-                              MembershipApplicationService membershipApplicationService,
+                              MembershipApplicationService membershipApplicationService, PaymentService paymentService,
                               ClubAssociationService clubAssociationService, TournamentService tournamentService,
-                              UserTournamentService userTournamentService, UserTournamentApplicationService userTournamentApplicationService) {
+                              UserTournamentService userTournamentService, UserTournamentApplicationService userTournamentApplicationService,
+                              UserTournamentRepository userTournamentRepository, ReservationService reservationService,
+                              UserReservationService userReservationService, ReservationServicesService reservationServicesService,
+                              ServicesService servicesService, CourtService courtService) {
         this.userService = userService;
         this.clientService = clientService;
         this.priceListService = priceListService;
+        this.paymentService = paymentService;
         this.membershipApplicationService = membershipApplicationService;
         this.clubAssociationService = clubAssociationService;
         this.tournamentService = tournamentService;
         this.userTournamentService = userTournamentService;
         this.userTournamentApplicationService = userTournamentApplicationService;
+        this.userTournamentRepository = userTournamentRepository;
+        this.reservationService = reservationService;
+        this.servicesService = servicesService;
+        this.userReservationService = userReservationService;
+        this.reservationServicesService = reservationServicesService;
+        this.courtService = courtService;
     }
 
     public ControllerAdminApi() {
@@ -78,19 +97,15 @@ public class ControllerAdminApi {
     @RequestMapping("/admin/tournamentsAndEvents")
     public String viewAdminTournamentsPage(Model model) {
         List<Tournament> tournaments = tournamentService.listAll();
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxx");
-        System.out.println(userTournamentService.getById(1L));
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxx");
         List<List<Client>> participantTournaments = new ArrayList<>();
         List<List<Client>> participantTournamentApplications = new ArrayList<>();
         List<List<String>> participantApplicationsStatus = new ArrayList<>();
         tournaments.forEach(tournament -> {
-            if (userTournamentService.countElementsByTournamentId(tournament.getId())==0)
+            if (userTournamentService.countElementsByTournamentId(tournament.getId()) == 0)
                 participantTournaments.add(new ArrayList<>());
             else
                 participantTournaments.add(clientService.listAllByInTournamentByThemID(tournament.getId()));
-            if (userTournamentApplicationService.countElementsByTournamentId(tournament.getId())==0) {
+            if (userTournamentApplicationService.countElementsByTournamentId(tournament.getId()) == 0) {
                 participantTournamentApplications.add(new ArrayList<>());
                 participantApplicationsStatus.add(new ArrayList<>());
             } else {
@@ -98,14 +113,71 @@ public class ControllerAdminApi {
                 participantApplicationsStatus.add(userTournamentApplicationService.listAllStatusByTournamentId(tournament.getId()));
             }
         });
-        System.out.println(participantTournaments);
-        System.out.println(participantTournamentApplications);
-        System.out.println(participantApplicationsStatus);
+        Tournament tournament = new Tournament();
         model.addAttribute("participantTournaments", participantTournaments);
         model.addAttribute("participantTournamentApplications", participantTournamentApplications);
         model.addAttribute("participantApplicationsStatus", participantApplicationsStatus);
         model.addAttribute("tournaments", tournaments);
+        model.addAttribute("tournament", tournament);
         return "admin/adminTournamentsAndEvents";
+    }
+
+    @RequestMapping("/admin/acceptEventApplication/{tournamentId}/{userId}")
+    public String acceptEventApplication(@PathVariable(name = "tournamentId") Long tournamentId,
+                                         @PathVariable(name = "userId") Long userId) {
+        UserTournamentApplication application = userTournamentApplicationService.getByTournamentAndUserId(tournamentId, userId);
+        application.setStatus("To Pay");
+        User user = userService.get(userId);
+        Tournament tournament = tournamentService.getById(tournamentId).get();
+        Payment paymentForEvent = new Payment("Tournament Fee: " + tournament.getTitle(), tournament.getDateOfStarted(), tournament.getEntryFee(), "To Pay", user);
+        paymentService.save(paymentForEvent);
+        userTournamentApplicationService.save(application);
+        return "redirect:/admin/tournamentsAndEvents";
+    }
+
+    @RequestMapping("/admin/rejectEventApplication/{tournamentId}/{userId}")
+    public String rejectEventApplication(@PathVariable(name = "tournamentId") Long tournamentId,
+                                         @PathVariable(name = "userId") Long userId) {
+        UserTournamentApplication application = userTournamentApplicationService.getByTournamentAndUserId(tournamentId, userId);
+        application.setStatus("Rejected");
+        userTournamentApplicationService.save(application);
+        return "redirect:/admin/tournamentsAndEvents";
+    }
+
+    @PostMapping("/admin/createEvent")
+    public String addEvent(@ModelAttribute Tournament tournament) {
+        List<Court> courts = courtService.listAll();
+        tournament.setCountOFRegisteredParticipant(0);
+        tournamentService.save(tournament);
+        User user = userService.findUserByUsername(User.getUserName());
+        UserReservation userReservation = new UserReservation(user);
+        Reservation reservation = new Reservation(LocalDate.now(), "Reserved", userReservation);
+        reservationService.save(reservation);
+        long days = Period.between(tournament.getDateOfStarted(), tournament.getDateOfEnded()).getDays() + 1;
+        for (long i = 0; i < days; i++) {
+            for (Court court : courts) {
+                ReservationServices reservationServices = new ReservationServices(reservation);
+                Services services = new Services(tournament.getDateOfStarted().plusDays(i), 24f, LocalTime.parse("00:00:00"),
+                        reservationServices, court);
+                servicesService.save(services);
+            }
+        }
+        return "redirect:/admin/tournamentsAndEvents";
+    }
+
+    @RequestMapping("/admin/removeEvent/{id}")
+    public String removeEvent(@PathVariable(name = "id") Long id) {
+        System.out.println("Here");
+        Tournament tournament = tournamentService.getById(id).get();
+        long days = Period.between(tournament.getDateOfStarted(), tournament.getDateOfEnded()).getDays() + 1;
+        for (long i = 0; i < days; i++) {
+            reservationServicesService.deleteAllByDate(tournament.getDateOfStarted().plusDays(i));
+            servicesService.deleteAllByDate(tournament.getDateOfStarted().plusDays(i));
+            userReservationService.deleteAllByDate(tournament.getDateOfStarted().plusDays(i));
+            reservationService.deleteAllByDate(tournament.getDateOfStarted().plusDays(i));
+        }
+        tournamentService.delete(id);
+        return "redirect:/admin/tournamentsAndEvents";
     }
 
     @RequestMapping("/admin/clubAssociations")

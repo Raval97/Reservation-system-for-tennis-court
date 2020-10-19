@@ -38,7 +38,15 @@ public class Payment {
         this.user = user;
     }
 
-    public Payment(String title, LocalDate dateOfPaying, Float price, String statusPaying, User user) {
+    public Payment(String title, LocalDate finalPaymentDate, Float price, String statusPaying, User user) {
+        this.title = title;
+        this.finalPaymentDate = finalPaymentDate;
+        this.price = price;
+        this.statusPaying = statusPaying;
+        this.user = user;
+    }
+
+    public Payment(String title, Float price, LocalDate dateOfPaying, String statusPaying, User user) {
         this.title = title;
         this.dateOfPaying = dateOfPaying;
         this.price = price;

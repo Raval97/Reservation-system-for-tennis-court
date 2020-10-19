@@ -48,4 +48,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     void updatePrice (@Param("id")Long id, @Param("price")float price);
 
 
+    @Modifying
+    @Query(value = "DELETE FROM  reservation WHERE id in (SELECT reservation_id from reservation_services" +
+            " WHERE services_id in (SELECT id from services WHERE date= :date));", nativeQuery = true)
+    void deleteAllByDate(@Param("date") LocalDate date);
 }

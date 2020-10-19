@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>OurTennis | payment</title>S
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
     <link rel="stylesheet" th:href="@{/cssFiles/clientPaymentPageStale.css}">
     <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
@@ -51,8 +53,14 @@
                 <h2>My Payments</h2>
                 <div class="divFoldTable" id="divReservationPayments" onclick="shoAndHideReservationPayments()"
                      style="width: 80%">
-                    <ul>
-                        <li>Membership Application</li>
+                    <ul style="background: #ff6484">
+                        <li style="min-height: 40px;">
+                            <span style="float: left; padding-right: 30px;">Reservation Payments</span>
+                            <div class="cslider">
+                                <a class="control_next" onmouseover="this.style.background='#ff6484';" onmouseout="this.style.background='';"><i class="fa fa-arrow-right"></i></a>
+                                <a class="control_prev" onmouseover="this.style.background='#ff6484';" onmouseout="this.style.background='';"><i class="fa fa-arrow-left"></i></a>
+                            </div>
+                        </li>
                     </ul>
                     <table id="reservationPayments" >
                         <thead>
@@ -86,8 +94,14 @@
                 </div>
                 </br></br>
                 <div class="divFoldTable" id="divOtherPayments" onclick="shoAndHideOtherPayments()" style="width: 80%">
-                    <ul>
-                        <li>Membership Application</li>
+                    <ul >
+                        <li style="min-height: 40px;">
+                            <span style="float: left; padding-right: 30px;">Other Payments</span>
+                            <div class="cslider">
+                                <a class="control_next" onmouseover="this.style.background='#ff6484';" onmouseout="this.style.background='';"><i class="fa fa-arrow-right"></i></a>
+                                <a class="control_prev" onmouseover="this.style.background='#ff6484';" onmouseout="this.style.background='';"><i class="fa fa-arrow-left"></i></a>
+                            </div>
+                        </li>
                     </ul>
                     <table id="otherPayments">
                         <thead>
@@ -96,7 +110,7 @@
                             <th>Title</th>
                             <th>Data of Paying</th>
                             <th>Final </br> Payment Date</th>
-                            <th>Final </br> Price</th>
+                            <th>Price</th>
                             <th>Status Of </br> Paying</th>
                             <th>Action</th>
                         </tr>
@@ -106,11 +120,12 @@
                             <td th:text="${element.id}"></td>
                             <td th:text="${element.title}"></td>
                             <td th:text="${element.dateOfPaying}"></td>
-                            <td th:text="${element.dateOfPaying}"></td>
+                            <td th:if="${element.finalPaymentDate == null}">-----</td>
+                            <td th:if="${element.finalPaymentDate != null}" th:text="${element.finalPaymentDate}"></td>
                             <td th:text="${element.price}"></td>
                             <td th:text="${element.statusPaying}"></td>
                             <td th:if="${#strings.toString(element.statusPaying)} == 'To Pay'">
-                                <a class="pay" th:href="@{'/bankSimulatorForReservation/'+${element.id}}"
+                                <a class="pay" th:href="@{'/OurTennis/payFeeOfParticipantEventFromAccount/'+${element.id}}"
                                    style="color: yellow">Pay</a>
                             </td>
                             <td th:if="${#strings.toString(element.statusPaying)} == 'Paid'">-----
@@ -126,33 +141,15 @@
             &copy;2020 RG
         </div>
     </div>
-
+</div>
 </body>
 <script>
     function shoAndHideReservationPayments() {
-        try {
-            var x = document.getElementById("reservationPayments");
-            if (x.style.display === "none") {
-                x.style.display = "inline-table";
-            } else {
-                x.style.display = "none";
-            }
-        } catch (e) {
-            console.log(e);
-        }
+        $("#reservationPayments").toggle(500);
     }
 
     function shoAndHideOtherPayments() {
-        try {
-            var x = document.getElementById("otherPayments");
-            if (x.style.display === "none") {
-                x.style.display = "inline-table";
-            } else {
-                x.style.display = "none";
-            }
-        } catch (e) {
-            console.log(e);
-        }
+        $("#otherPayments").toggle(500);
     }
 </script>
 </html>

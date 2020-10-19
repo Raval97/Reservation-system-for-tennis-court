@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -18,10 +19,11 @@ public class Tournament {
     private int countOFRegisteredParticipant;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfStarted;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfEnded;
     private float entryFee;
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
-    private Set<UserTournament> userTournaments;
+    private Set<UserTournament> userTournaments= new HashSet<>();
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
     private Set<UserTournamentApplication> userTournamentApplications;
 

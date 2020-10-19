@@ -7,6 +7,7 @@ import tennisCourt.model.ReservationServices;
 import tennisCourt.model.UserReservation;
 import tennisCourt.repo.ReservationServicesRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -39,6 +40,10 @@ public class ReservationServicesService {
     public void deleteAllByReservationId(Long id) {
         List<ReservationServices> reservationServicesList = repo.findAllByReservationId(id);
         reservationServicesList.forEach((x) -> repo.deleteById(x.getId()));
+    }
+
+    public void deleteAllByDate(LocalDate date) {
+        repo.deleteAllByDate(date);
     }
 
 }

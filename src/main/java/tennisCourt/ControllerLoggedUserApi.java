@@ -28,6 +28,7 @@ public class ControllerLoggedUserApi {
     private ReservationServicesService reservationServicesService;
     private PriceListService priceListService;
     private ClubAssociationService clubAssociationService;
+    private PaymentService paymentService;
     private TournamentService tournamentService;
     private UserTournamentService userTournamentService;
     private UserTournamentApplicationService userTournamentApplicationService;
@@ -35,7 +36,7 @@ public class ControllerLoggedUserApi {
     @Autowired
     public ControllerLoggedUserApi(UserService userService, ClientService clientService, CourtService courtService,
                                    ReservationService reservationService, ServicesService servicesService,
-                                   ReservationServicesService reservationServicesService,
+                                   ReservationServicesService reservationServicesService, PaymentService paymentService,
                                    PriceListService priceListService, ClubAssociationService clubAssociationService,
                                    TournamentService tournamentService, UserTournamentService userTournamentService,
                                    UserTournamentApplicationService userTournamentApplicationService) {
@@ -45,6 +46,7 @@ public class ControllerLoggedUserApi {
         this.reservationService = reservationService;
         this.servicesService = servicesService;
         this.reservationServicesService = reservationServicesService;
+        this.paymentService = paymentService;
         this.priceListService = priceListService;
         this.clubAssociationService = clubAssociationService;
         this.tournamentService = tournamentService;
@@ -368,6 +370,76 @@ public class ControllerLoggedUserApi {
         }
     }
 
+    ////////////////// Tournaments & Events Api ///////////////////////////////
+    @RequestMapping("/OurTennis/applyForParticipantEvent/{id}")
+    public String applyForParticipantEvent(@PathVariable(name = "id") Long id) {
+        User user = userService.findUserByUsername(User.getUserName());
+        Tournament tournament = tournamentService.getById(id).get();
+        UserTournamentApplication application = new UserTournamentApplication("Delivered", false, tournament, user);
+        userTournamentApplicationService.save(application);
+        return "redirect:/ourTennis/events";
+    }
 
+    @RequestMapping("/OurTennis/payFeeOfParticipantEvent/{id}")
+    public String viewBankSimulatorForParticipantEventPage(Model model, @PathVariable(name = "id") Long id) {
+        model.addAttribute("ID", id);
+        model.addAttribute("type", "forEventApplicationFee");
+        return "loggedUser/bankSimulatorPage";
+    }
+
+    @RequestMapping("/OurTennis/payFeeOfParticipantEventFromAccount/{id}")
+    public String viewBankSimulatorForParticipantEventFromAccountPage(Model model, @PathVariable(name = "id") Long id) {
+        Payment payment = paymentService.getById(id).get();
+        System.out.println(payment.getTitle().substring(16));
+        Tournament  tournament = tournamentService.getByTitle(payment.getTitle().substring(16));
+        model.addAttribute("ID", tournament.getId());
+        model.addAttribute("type", "forEventApplicationFee");
+        return "loggedUser/bankSimulatorPage";
+    }
+
+    @RequestMapping("/OurTennis/payEventApplicationFee/{id}")
+    public String payEventApplicationFee(@PathVariable(name = "id") Long id) {
+        User user = userService.findUserByUsername(User.getUserName());
+        Tournament tournament = tournamentService.getById(id).get();
+        tournament.setCountOFRegisteredParticipant(tournament.getCountOFRegisteredParticipant()+1);
+        UserTournamentApplication application = userTournamentApplicationService.getByTournamentAndUserId(tournament.getId(), user.getId());
+        application.setStatus("Accepted");
+        Payment payment = paymentService.getByTitleAndUser("Tournament Fee: "+tournament.getTitle(), user.getId());
+        payment.setStatusPaying("Paid");
+        payment.setDateOfPaying(LocalDate.now());
+        UserTournament userTournament = new UserTournament(tournament, user);
+        userTournamentApplicationService.save(application);
+        paymentService.save(payment);
+        tournamentService.save(tournament);
+        userTournamentService.save(userTournament);
+        return "redirect:/OurTennis/payment";
+    }
+
+    @RequestMapping("/OurTennis/cancelApplicationEvent/{id}")
+    public String cancelApplicationEvent(@PathVariable(name = "id") Long id) {
+        User user = userService.findUserByUsername(User.getUserName());
+        Tournament tournament = tournamentService.getById(id).get();
+        UserTournamentApplication application = userTournamentApplicationService.getByTournamentAndUserId(tournament.getId(),user.getId());
+        if(application.getStatus().equals("Rejected")){
+            Payment payment = paymentService.getByTitleAndUser(tournament.getTitle(), user.getId());
+            paymentService.delete(payment.getId());
+        }
+        application.setStatus("Canceled");
+        userTournamentApplicationService.save(application);
+        return "redirect:/ourTennis/events";
+    }
+
+    @RequestMapping("/OurTennis/cancelParticipantEvent/{id}")
+    public String cancelParticipantEvent(@PathVariable(name = "id") Long id) {
+        User user = userService.findUserByUsername(User.getUserName());
+        Tournament tournament = tournamentService.getById(id).get();
+        tournament.setCountOFRegisteredParticipant(tournament.getCountOFRegisteredParticipant()-1);
+        UserTournamentApplication application = userTournamentApplicationService.getByTournamentAndUserId(tournament.getId(),user.getId());
+        application.setStatus("Canceled");
+        userTournamentService.deleteByTournamentAndUserId(tournament.getId(), user.getId());
+        userTournamentApplicationService.save(application);
+        tournamentService.save(tournament);
+        return "redirect:/ourTennis/events";
+    }
 
 }
