@@ -1,0 +1,150 @@
+table {
+    border-collapse: collapse;
+    width: 500px;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr {
+    height: 50px;
+}
+
+tr:nth-child(odd) {
+    background-color: #1E1236;
+}
+
+th {
+    background-color: #542c57;
+    color: white;
+    font-size: 21px;
+}
+
+#events {
+    padding: 5px 50px 30px;
+    text-align: left;
+}
+
+.tableHead {
+    background: #294429;
+    padding: 10px;
+}
+.tableHead span{
+    font-size: 25px;
+}
+
+span {
+    min-width: 200px;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+ul {
+    padding-left: 10px;
+    margin: 10px 0;
+    padding-bottom: 10px;
+}
+
+#events ul:nth-child(odd) {
+    background-color: rgba(17, 38, 53, 0.96);
+}
+
+#events ul:nth-child(even) {
+    background-color: rgba(40, 40, 53, 0.96);
+}
+
+.details {
+    margin-left: 100px;
+    padding-top: 20px;
+}
+
+.infoOfEvent{
+    float: left;
+    padding-right: 100px;
+}
+
+.actionToDo {
+}
+
+.tableTitle{
+    text-align: center;
+    font-size: 25px;
+    color: #aa9dd8;
+}
+
+.participant {
+   padding-top: 20px;
+}
+
+.participants {
+    float: left;
+    width: 50%;
+}
+
+.userApplications {
+    float: left;
+    width: 50%;
+}
+
+.accept {
+    border: 2px solid #4dab18;
+    padding: 4px;
+    color: yellow;
+    text-decoration: none;
+}
+
+.accept:hover{
+    color: #6527ff;
+    background: #eaeef1;
+    font-weight: bold
+}
+
+.noAccept {
+    border: 2px solid #4dab18;
+    padding: 4px;
+    color: #ff0e05;
+    text-decoration: none;
+}
+
+.noAccept:hover{
+    color: #6527ff;
+    background: #eaeef1;
+    font-weight: bold
+}
+
+#createEvent{
+    color: #d8bbc0;
+    background: #ab7900;
+    border: 4px solid #eaeaf1
+}
+
+#createEvent button:hover{
+    color: #ffffff;
+}
+
+#newEvent{
+    padding: 20px;
+    margin-left: 50px
+}
+
+#addEvent{
+     float: left;
+     color: #d2e2e8;
+     background: #00620b;
+     border: 4px solid #eaeaf1;
+     margin: 80px 0px 0px 100px;
+     font-size: 20px;
+     width: 200px;
+ }
+
+.deleteEvent{
+    float: right;
+    width: 200px;
+    color: #ff921e;
+    background: #ac4b4b;
+}
+
+

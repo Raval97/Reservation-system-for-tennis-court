@@ -1,0 +1,165 @@
+#contextHead{
+  padding: 5px 50px 30px;
+}
+
+/* TABLE */
+table {
+  border-collapse: collapse;
+  width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+th, td {
+  /*text-align: left;*/
+  padding: 15px;
+}
+
+tr:nth-child(even){
+  background-color: #1E1236;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 21px;
+}
+
+input[type=text]:focus {
+  background-color: lightblue;
+  border: 2px solid red;
+  border-radius: 5px;
+}
+
+/* CHECKBOX USER PERMISSION*/
+
+.userRole {
+  position: relative;
+  padding-left: 30px;  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.userRole input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+.userRole:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.userRole input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+.userRole:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.userRole input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.userRole .checkmark:after {
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+/* PRICE LIST */
+
+[id^="confirmChanges"]{
+  width: 250px;
+  color: red;
+  background: lime;
+  font-size: 22px;
+  margin-bottom: 40px;
+}
+
+/* CLUB ASSOCIATION*/
+
+#divListOfClubMans, #divMembershipApplication{
+  width: 85%;
+  margin-left: 100px;
+  margin-top: 0px;
+}
+
+#divListOfClubMans ul li, #divMembershipApplication ul li{
+  text-align: left;
+  min-height: 70px;
+}
+
+.tableClubAssociation{
+  margin-left: 200px;
+  display: block;
+}
+
+th.tableClubAssociation{
+  background-color: #1C301D
+}
+
+
+.acceptApplication {
+  border: 2px solid #4dab18;
+  padding: 4px;
+  color: yellow;
+  text-decoration: none;
+  background: #271d57;
+}
+
+.acceptApplication:hover{
+  color: #6527ff;
+  background: #eaeef1;
+  font-weight: bold
+}
+
+.noAcceptApplication {
+  border: 2px solid #4dab18;
+  padding: 4px;
+  color: #ff0e05;
+  text-decoration: none;
+  background: #271d57;
+}
+
+.noAcceptApplication:hover{
+  color: #6527ff;
+  background: #eaeef1;
+  font-weight: bold
+}
+
+.cslider {
+  text-align: center;
+}
+
+.cslider a {
+  opacity: 0.25;
+  transition: opacity .25s ease-in-out;
+  -moz-transition: opacity .25s ease-in-out;
+  -webkit-transition: opacity .25s ease-in-out;
+  float: left;
+}
+
+.cslider:hover a {
+  opacity: 1;
+}

@@ -27,23 +27,31 @@
             <img th:src="@{/logo1.png}"/>
         </div>
         <div id="topMenu">
-            <a th:href="@{'/OurTennis/account/1'}">
-                <button type="button" id="account">ACCOUNT</button>
-            </a>
-            <a th:href="@{'/logout'}">
-                <button type="button" id="logout">LOG OUT</button>
-            </a>
+            <div id="forNormalUser">
+                <a th:href="@{'/OurTennis/account/1'}">
+                    <button type="button" id="account">ACCOUNT</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button type="button" id="logout">LOG OUT</button>
+                </a>
+            </div>
+            <div id="forAdmin" th:if="${isAdmin == true}">
+                <a th:href="@{'/admin/usersPermissions'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION</button>
+                </a>
+            </div>
         </div>
     </div>
 
     <div id="center" class="center2">
         <div class="menu_div">
             <ul>
-                <li><a href="/OurTennis">About US</a></li>
+                <li><a href="/ourTennis">About US</a></li>
                 <li id="active"><a href="/OurTennis/reservation">Reservation</a></li>
-                <li><a href="/OurTennis/priceList">Price-List</a></li>
-                <li><a href="/OurTennis/gallery">Gallery</a></li>
-                <li><a href="/OurTennis/contact">Contact</a></li>
+                <li><a href="/ourTennis/events" style="font-size: 24px;">Tournaments & Events</a></li>
+                <li><a href="/ourTennis/priceList">Price-List</a></li>
+                <li><a href="/ourTennis/gallery">Gallery</a></li>
+                <li><a href="/ourTennis/contact">Contact</a></li>
             </ul>
         </div>
         <div id="content" align="center">
@@ -106,7 +114,7 @@
                     </table>
                     </br></br>
                     <div id="summaryDiv" style="display:none;">
-                    <span th:text="'Final Price: '+${startedReservation.finalPrice}+'PLN'" align="center"
+                    <span th:text="'Final Price: '+${startedReservation.price}+'PLN'" align="center"
                           style="font-size:22; font-weight: 700"></span>
                         </br></br>
                         <button id="makeReservation" align="center">Reserve It</button>

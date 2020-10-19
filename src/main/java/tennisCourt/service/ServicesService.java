@@ -7,10 +7,7 @@ import tennisCourt.model.Services;
 import tennisCourt.repo.ServicesRepository;
 
 import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -48,34 +45,28 @@ public class ServicesService {
         return repo.findAllByReservationId(id);
     }
 
-    public List<Time> getReservedTimeByDate(String date) throws ParseException {
-        Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        return repo.findReservedTimeByDate(d);
+    public List<Time> getReservedTimeByDate(String date){
+        return repo.findReservedTimeByDate(date);
     };
 
-    public List<Float> getReservedNumberOfHoursByDate(String date) throws ParseException {
-        Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        return repo.findReservedNumberOfHoursByDate(d);
+    public List<Float> getReservedNumberOfHoursByDate(String date){
+        return repo.findReservedNumberOfHoursByDate(date);
     };
 
-    public List<Long> getReservedCourtIdByDate(String date) throws ParseException {
-        Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        return repo.findReservedCourtIdByDate(d);
+    public List<Long> getReservedCourtIdByDate(String date){
+        return repo.findReservedCourtIdByDate(date);
     };
 
-    public List<Time> getStartedTimeByDate(String date, Long id)throws ParseException {
-        Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        return repo.findStartedTimeByDate(d, id);
+    public List<Time> getStartedTimeByDate(String date, Long id){
+        return repo.findStartedTimeByDate(date, id);
     };
 
-    public List<Float> getStartedNumberOfHoursByDate(String date, Long id)throws ParseException {
-        Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        return repo.findStartedNumberOfHoursByDate(d, id);
+    public List<Float> getStartedNumberOfHoursByDate(String date, Long id){
+        return repo.findStartedNumberOfHoursByDate(date, id);
     };
 
-    public List<Long> getStartedCourtIdByDate(String date, Long id)throws ParseException {
-        Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        return repo.findStartedCourtIdByDate(d, id);
+    public List<Long> getStartedCourtIdByDate(String date, Long id){
+        return repo.findStartedCourtIdByDate(date, id);
     };
 
     public List<Services> getInStartedReservationByUserId(Long id) {
@@ -96,5 +87,9 @@ public class ServicesService {
 
     public void updatePrice(Long id, float price) {
         repo.updatePrice(id, price);
+    }
+
+    public void deleteAllByDate(LocalDate date) {
+        repo.deleteAllByDate(date);
     }
 }

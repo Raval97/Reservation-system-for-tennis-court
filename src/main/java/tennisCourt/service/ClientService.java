@@ -39,4 +39,23 @@ public class ClientService {
         repo.deleteByUserId(id);
     }
 
+    public List<Client> getAllWhoHasActiveApplication() {
+        return repo.findAllWhoHasActiveApplication();
+    }
+
+    public List<Client> getAllWhoInClub() {
+        return repo.findAllWhoInClub();
+    }
+
+    public Client getByUserId(Long id) {
+        return repo.findBuUserId(id);
+    }
+
+    public List<Client> listAllByInTournamentApplicationByThemID(Long id) {
+        return repo.findAllByInTournamentApplicationByThemID(id);
+    }
+
+    public List<Client> listAllByInTournamentByThemID(Long id) {
+        return repo.findAllByInTournamentByThemID(id);
+    }
 }

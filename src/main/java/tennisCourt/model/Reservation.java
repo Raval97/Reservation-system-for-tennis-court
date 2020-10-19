@@ -19,8 +19,11 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private boolean byAdmin;
     private LocalDate dateOfReservation;
+    private float price;
     private float finalPrice;
+    private boolean discount;
     private String statusOfReservation;
     private String typeOfPaying;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -34,15 +37,26 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(LocalDate dateOfReservation, float finalPrice, String statusOfReservation,
-                       String typeOfPaying, LocalDate finalPaymentDate, String statusPaying,
-                       UserReservation userReservation) {
+    public Reservation(LocalDate dateOfReservation, float price, boolean discount, float finalPrice,
+                       String statusOfReservation, String typeOfPaying, LocalDate finalPaymentDate,
+                       String statusPaying, UserReservation userReservation) {
         this.dateOfReservation = dateOfReservation;
         this.finalPrice = finalPrice;
+        this.price = price;
+        this.discount = discount;
         this.statusOfReservation = statusOfReservation;
         this.typeOfPaying = typeOfPaying;
         this.finalPaymentDate = finalPaymentDate;
         this.statusPaying = statusPaying;
+        this.userReservation = userReservation;
+        this.userReservation.setReservation(this);
+        this.byAdmin = false;
+    }
+
+    public Reservation(LocalDate dateOfReservation, String statusOfReservation, UserReservation userReservation) {
+        this.byAdmin = true;
+        this.dateOfReservation = dateOfReservation;
+        this.statusOfReservation = statusOfReservation;
         this.userReservation = userReservation;
         this.userReservation.setReservation(this);
     }

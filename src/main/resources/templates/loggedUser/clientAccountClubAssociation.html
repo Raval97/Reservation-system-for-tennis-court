@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>OurTennis | club</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
+
+</head>
+<body onload="time(); setInterval(time,1000);">
+
+<div id="container">
+    <div id="top">
+        <div id="logo">
+            <img th:src="@{/logo1.png}"/>
+        </div>
+        <div id="topMenu">
+            <div id="forNormalUser">
+                <a th:href="@{'/ourTennis'}">
+                    <button type="button" id="account">BACK</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button type="button" id="logout">LOG OUT</button>
+                </a>
+            </div>
+            <div id="forAdmin" th:if="${isAdmin == true}">
+                <a th:href="@{'/admin/usersPermissions'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="center">
+        <div class="menu_div">
+            <ul>
+                <li><a href="/ourTennis">Application</a></li>
+                <li><a href="/OurTennis/account/1">Personal Data</a></li>
+                <li><a href="/OurTennis/clientReservation">My Reservation</a></li>
+                <li id="active"><a href="/OurTennis/clubAssociation">Club Association</a></li>
+                <li><a href="/OurTennis/payment">Payment</a></li>
+            </ul>
+        </div>
+        <div id="content">
+            <div style="padding: 5px 50px 30px;">
+                <h2>Club Association</h2>
+                <div th:if="${isClubMen == true}" align="center">
+                    <p class="p1">You are in club association</p>
+                    <div th:if="${isActiveClubMen == false}">
+                        <p class="p2">Here you can pay monthly membership fee [30 PLN]</p>
+                        <a th:href="@{'/bankSimulatorForMembershipFee'}">
+                            <button id="payFee"  style="width: 315px; font-size:20px; padding:15px; background-color: #511286">Pay membership fee</button>
+                        </a>
+                    </div>
+                    <div th:if="${isActiveClubMen == true}">
+                        <p class="p2">You have paid membership fee. </br>
+                            So you can take full advantage of the club member's benefits</p>
+                        <span style='font-size:30px;'>&#128512;</span>
+                        </br>
+                        <p class="p4">Your club activity will expire in: </br>
+                            <b th:text="${daysOfActiveMembership} +' days'" style="font-size: 45px"></b> </p>
+                        </br>
+                        <p class="p2">Here you can extend the validity of an active account
+                            </br>for another 30 days [30 PLN]</p>
+                        <a th:href="@{'/bankSimulatorForMembershipFee'}">
+                            <button id="payFee"  style="width: 315px; font-size:20px; padding:15px; background-color: #511286">Extend your membership validity</button>
+                        </a>
+                    </div>
+                </div>
+                <div th:if="${isClubMen == false}" align="center">
+                    <p class="p1">You aren't in club association</p>
+                    <div th:if="${hasActiveApplication == false and hasRejectedApplication == false}">
+                        <p class="p2">Here you can apply for membership</p>
+                        <a th:href="@{'/OurTennis/applyForMembership'}">
+                            <button type="button" id="apply" style="width: 315px; font-size:20px; padding:15px; background-color: #511286">Apply for membership</button>
+                        </a>
+                    </div>
+                    <div th:if="${hasActiveApplication == true}">
+                        <p class="p2">You have already submitted your application.</p>
+                        <p class="p2">Application status: <b>Waiting for decision</b></p>
+                    </div>
+                    <div th:if="${hasRejectedApplication == true}">
+                        <p class="p1">Unfortunately, your last application was denied by the administrator :(</p>
+                        <p class="p1">Here you can reapply for membership</p>
+                        <a th:href="@{'/OurTennis/applyForMembership'}">
+                            <button type="button" id="apply"  style="width: 315px; font-size:20px; padding:15px; background-color: #511286">Apply for membership</button>
+                        </a>
+                    </div>
+                </div>
+                </br></br></br>
+                <p class="p3">As a  active club member you have a <b>15% discount</b> on reservations</p>
+                <p class="p3">*A active club member is a person hwo pay regular membership fee</p>
+                <p class="p3">Monthly membership fee is 30 PLN</p>
+            </div>
+        </div>
+
+        <div id="footer">
+            &copy;2020 RG
+        </div>
+    </div>
+
+</body>
+</html>

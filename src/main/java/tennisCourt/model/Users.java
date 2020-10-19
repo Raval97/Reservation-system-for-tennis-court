@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,6 +33,16 @@ public class Users implements UserDetails{
     private Client client;
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private Set<UserReservation> userReservations;
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
+    private ClubAssociation clubAssociation;
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<MembershipApplication> membershipApplications;
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<Payment> payments;
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<UserTournament> userTournaments = new HashSet<>();
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<UserTournamentApplication> userTournamentApplications;
 
     public Users() {
     }

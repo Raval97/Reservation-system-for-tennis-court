@@ -20,26 +20,36 @@
             <img th:src="@{/logo1.png}"/>
         </div>
         <div id="topMenu">
-            <a th:href="@{'/OurTennis/account/1'}">
-                <button type="button" id="account">ACCOUNT</button>
-            </a>
-            <a th:href="@{'/logout'}">
-                <button type="button" id="logout">LOG OUT</button>
-            </a>
+            <div id="forNormalUser">
+                <a th:href="@{'/OurTennis/account/1'}">
+                    <button type="button" id="account">ACCOUNT</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button type="button" id="logout">LOG OUT</button>
+                </a>
+            </div>
+            <div id="forAdmin" th:if="${isAdmin == true}">
+                <a th:href="@{'/admin/usersPermissions'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
 
     <div id="center">
         <div class="menu_div">
             <ul>
-                <li><a href="/OurTennis">About US</a></li>
-                <li id="active"><a href="/OurTennis/reservation">Reservation</a></li>
-                <ul>
-                    <li id="active">Make Reserve</li>
-                </ul>
-                <li><a href="/OurTennis/priceList">Price-List</a></li>
-                <li><a href="/OurTennis/gallery">Gallery</a></li>
-                <li><a href="/OurTennis/contact">Contact</a></li>
+                <li><a href="/ourTennis">About US</a></li>
+                <li><a href="/OurTennis/reservation">Reservation</a>
+                    <ul>
+                        <li id="active" style="border-bottom: 0px solid #333">Make Reserve</li>
+                    </ul>
+                </li>
+                <li><a href="/ourTennis/events" style="font-size: 24px;">Tournaments & Events</a></li>
+                <li><a href="/ourTennis/priceList">Price-List</a></li>
+                <li><a href="/ourTennis/gallery">Gallery</a></li>
+                <li><a href="/ourTennis/contact">Contact</a></li>
             </ul>
         </div>
         <div id="content">
@@ -126,6 +136,15 @@
                     </br> </br>
 
                     <table class="reservationDate">
+                        <tr>
+                            <td>Price</td>
+                            <td th:text="${reservation.price}"></td>
+                        </tr>
+                        <tr>
+                            <td>Discount Of Club Association</td>
+                            <td th:if="${reservation.discount == true}">YES</td>
+                            <td th:if="${reservation.discount == false}">NO</td>
+                        </tr>
                         <tr>
                             <td>Final Price</td>
                             <td th:text="${reservation.finalPrice}"

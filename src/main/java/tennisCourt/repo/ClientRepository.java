@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import tennisCourt.model.Client;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
@@ -20,4 +21,24 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = "Delete FROM client WHERE users= :id", nativeQuery = true)
     void deleteByUserId(@Param("id") Long id);
 
+    @Query(value = "SELECT DISTINCT c.* FROM client c " +
+            " RIGHT JOIN membership_application ma on ma.users_id= c.users_id" +
+            " WHERE ma.decision = \"waiting_for_decisions \" ORDER BY ma.id", nativeQuery = true)
+    List<Client> findAllWhoHasActiveApplication();
+
+    @Query(value = "SELECT c.* FROM client c" +
+            " RIGHT JOIN club_association ca on ca.users_id= c.users_id ORDER BY ca.id", nativeQuery = true)
+    List<Client> findAllWhoInClub();
+
+    @Query(value = "SELECT * FROM client WHERE users_id= :id", nativeQuery = true)
+    Client findBuUserId(Long id);
+
+    @Query(value = "SELECT c.* FROM client c " +
+            "LEFT JOIN user_tournament_application utp on utp.users_id=c.users_id " +
+            "WHERE utp.tournament_id = :id", nativeQuery = true)
+    List<Client> findAllByInTournamentApplicationByThemID(Long id);
+
+    @Query(value = "SELECT * FROM client WHERE users_id in (SELECT users_id " +
+            "from user_tournament WHERE tournament_id = :id)", nativeQuery = true)
+    List<Client> findAllByInTournamentByThemID(Long id);
 }

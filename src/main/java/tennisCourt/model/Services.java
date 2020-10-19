@@ -47,4 +47,13 @@ public class Services {
         this.reservationService.setServices(this);
         this.court = court;
     }
+
+    public Services(LocalDate date, float numberOfHours, LocalTime time, ReservationServices reservationService, Court court) {
+        this.date = date;
+        this.numberOfHours = numberOfHours;
+        this.time = time;
+        this.reservationService = reservationService;
+        this.reservationService.setServices(this);
+        this.court = court;
+    }
 }

@@ -19,17 +19,18 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Reservation findByIdReservation(@Param("id") Long id);
 
     @Query(value = "SELECT r.* FROM reservation r " +
-            "LEFT JOIN user_reservation ur on ur.reservation=r.id " +
-            "LEFT JOIN users u on ur.users=u.id WHERE u.id=:id AND r.status_of_reservation = \'Reserved\'", nativeQuery = true)
+            "LEFT JOIN user_reservation ur on ur.reservation_id=r.id " +
+            "LEFT JOIN users u on ur.users_id=u.id WHERE u.id=:id AND r.status_of_reservation = \"Reserved\" " +
+            "AND r.by_admin = false", nativeQuery = true)
     List<Reservation> findAllByIdUser(Long id);
 
     @Query(value = "SELECT case when count(distinct id) > 0 then 'true' else 'false' end as bool\n" +
-            "FROM reservation WHERE status_of_reservation=\'Started\' " +
-            "AND id in (SELECT ur.reservation from user_reservation ur WHERE ur.users = :id)", nativeQuery = true)
+            "FROM `reservation` WHERE status_of_reservation=\"Started\" " +
+            "AND id in (SELECT ur.reservation_id from user_reservation ur WHERE ur.users_id = :id)", nativeQuery = true)
     Boolean findIfUserHasStartedReservation(Long id);
 
-    @Query(value = "SELECT * FROM reservation r WHERE r.status_of_reservation=\'Started\' AND r.id in " +
-            "(SELECT ur.reservation FROM user_reservation ur WHERE ur.users=:id) ", nativeQuery = true)
+    @Query(value = "SELECT * FROM reservation r WHERE r.status_of_reservation=\"Started\" AND r.id in " +
+            "(SELECT ur.reservation_id FROM user_reservation ur WHERE ur.users_id=:id) ", nativeQuery = true)
     Reservation findStartedReservationByUserId(Long id);
 
     @Transactional
@@ -43,8 +44,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE reservation SET final_price = :final_price WHERE reservation.id = :id", nativeQuery = true)
-    void updatePrice (@Param("id")Long id, @Param("final_price")float final_price);
+    @Query(value = "UPDATE reservation SET price = :price WHERE reservation.id = :id", nativeQuery = true)
+    void updatePrice (@Param("id")Long id, @Param("price")float price);
+
+
+    @Modifying
+    @Query(value = "DELETE FROM  reservation WHERE id in (SELECT reservation_id from reservation_services" +
+            " WHERE services_id in (SELECT id from services WHERE date= :date));", nativeQuery = true)
+    void deleteAllByDate(@Param("date") LocalDate date);
 
 
 }

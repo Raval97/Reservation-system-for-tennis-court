@@ -55,4 +55,8 @@ public class ReservationService {
     public void updatePrice(Long id, float price) {
         repo.updatePrice(id, price);
     }
+
+    public void deleteAllByDate(LocalDate date) {
+        repo.deleteAllByDate(date);
+    }
 }
