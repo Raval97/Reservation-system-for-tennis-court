@@ -20,7 +20,7 @@ public class CourtService {
     }
 
     public List<Court> listAll() {
-        return repo.findAll();
+        return repo.findAllCourt();
     }
 
     public Court get(long id) {

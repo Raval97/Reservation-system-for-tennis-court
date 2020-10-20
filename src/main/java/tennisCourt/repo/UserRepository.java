@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tennisCourt.model.Users;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
 
@@ -15,4 +17,6 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     @Query(value = "SELECT * FROM users u WHERE u.id= :id", nativeQuery = true)
     Users findByIdUser(@Param("id") Long id);
 
+    @Query(value = "SELECT * FROM users u Order BY id", nativeQuery = true)
+    List<Users> findAllUser();
 }

@@ -7,6 +7,7 @@ import tennisCourt.model.Reservation;
 import tennisCourt.repo.ReservationRepository;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,7 +22,7 @@ public class ReservationService {
     }
 
     public List<Reservation> listAll() {
-        return repo.findAll();
+        return repo.findAllReservation();
     }
 
     public Reservation get(long id) {
@@ -49,7 +50,8 @@ public class ReservationService {
     }
 
     public void update(Long id, String status_of_reservation, String status_of_paying, String typeOfPaying, LocalDate date) {
-        repo.update(id, status_of_reservation,  status_of_paying, typeOfPaying, date);
+        Date d = java.sql.Date.valueOf(date);
+        repo.update(id, status_of_reservation,  status_of_paying, typeOfPaying, d);
     }
 
     public void updatePrice(Long id, float price) {
@@ -57,6 +59,7 @@ public class ReservationService {
     }
 
     public void deleteAllByDate(LocalDate date) {
-        repo.deleteAllByDate(date);
+        Date d = java.sql.Date.valueOf(date);
+        repo.deleteAllByDate(d);
     }
 }

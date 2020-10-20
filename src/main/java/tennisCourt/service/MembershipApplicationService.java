@@ -21,7 +21,7 @@ public class MembershipApplicationService {
     }
 
     public List<MembershipApplication> listAll() {
-        return repo.findAll();
+        return repo.findallMemebrship();
     }
 
     public Optional<MembershipApplication> get(long id) {

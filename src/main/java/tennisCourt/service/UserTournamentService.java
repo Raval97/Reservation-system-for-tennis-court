@@ -21,7 +21,7 @@ public class UserTournamentService {
     }
 
     public List<UserTournament> listAll() {
-        return repo.findAll();
+        return repo.findAllParticipant();
     }
 
     public void save(UserTournament userTournament){

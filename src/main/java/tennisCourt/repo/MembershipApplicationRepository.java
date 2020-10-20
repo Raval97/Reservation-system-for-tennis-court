@@ -13,13 +13,16 @@ import java.util.List;
 public interface MembershipApplicationRepository extends JpaRepository<MembershipApplication, Long> {
 
     @Query(value = "SELECT decision FROM membership_application" +
-            " WHERE users_id = :id ORDER by id DESC ", nativeQuery = true)
+            " WHERE users = :id ORDER by id DESC ", nativeQuery = true)
     List<String> getDecisionByUserId(@Param("id") Long id);
 
-    @Query(value = "SELECT * FROM membership_application ma" +
-            " WHERE decision = \"waiting_for_decisions\" GROUP by ma.users_id", nativeQuery = true)
+    @Query(value = "SELECT * FROM membership_application " +
+            " WHERE decision = 'waiting_for_decisions' GROUP by users, id", nativeQuery = true)
     List<MembershipApplication> finAllActive();
 
     @Query(value = "SELECT * FROM membership_application  WHERE id = :id", nativeQuery = true)
     MembershipApplication findByIdParam(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM membership_application Order by id", nativeQuery = true)
+    List<MembershipApplication> findallMemebrship();
 }

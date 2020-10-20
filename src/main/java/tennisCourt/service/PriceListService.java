@@ -20,7 +20,7 @@ public class PriceListService {
     }
 
     public List<PriceList> listAll() {
-        return repo.findAll();
+        return repo.findAllPrice();
     }
 
     public PriceList get(long id) {

@@ -20,7 +20,7 @@ public class ClientService {
     }
 
     public List<Client> listAll() {
-        return repo.findAll();
+        return repo.findAllClient();
     }
 
     public Client get(long id) {

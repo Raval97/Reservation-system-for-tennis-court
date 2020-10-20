@@ -21,7 +21,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<Users> listAll() {
-        return repo.findAll();
+        return repo.findAllUser();
     }
 
     public Users get(long id) {

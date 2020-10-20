@@ -13,4 +13,6 @@ public interface PriceListRepository extends JpaRepository<PriceList, Long> {
     @Query(value = "SELECT * FROM price_list pl WHERE pl.id= :id", nativeQuery = true)
     PriceList findByIdPriceList(@Param("id") Long id);
 
+    @Query(value = "SELECT * FROM price_list ORDER BY id", nativeQuery = true)
+    List<PriceList> findAllPrice();
 }

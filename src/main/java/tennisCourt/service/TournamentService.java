@@ -21,7 +21,7 @@ public class TournamentService {
     }
 
     public List<Tournament> listAll() {
-        return repo.findAll();
+        return repo.findAllTournament();
     }
 
     public void save(Tournament tournament){

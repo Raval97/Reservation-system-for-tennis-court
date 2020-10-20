@@ -20,7 +20,7 @@ public class ClubAssociationService {
     }
 
     public List<ClubAssociation> listAll() {
-        return repo.findAll();
+        return repo.findAllClub();
     }
 
     public void save(ClubAssociation clubAssociation){

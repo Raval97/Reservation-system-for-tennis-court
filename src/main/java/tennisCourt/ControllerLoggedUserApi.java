@@ -11,6 +11,7 @@ import tennisCourt.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Time;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -59,7 +60,7 @@ public class ControllerLoggedUserApi {
 
     @RequestMapping("/OurTennis/reservation")
     public String viewReservationPage(Model model, HttpServletRequest request,
-                                      @RequestParam(value = "date", required = false) String date) {
+                                      @RequestParam(value = "date", required = false) String date) throws ParseException {
         Boolean correctParameter = true;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate now = LocalDate.now();

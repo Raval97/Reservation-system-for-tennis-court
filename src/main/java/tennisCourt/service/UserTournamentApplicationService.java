@@ -21,7 +21,7 @@ public class UserTournamentApplicationService {
     }
 
     public List<UserTournamentApplication> listAll() {
-        return repo.findAll();
+        return repo.findAllApplication();
     }
 
     public void save(UserTournamentApplication userTournamentApplication){

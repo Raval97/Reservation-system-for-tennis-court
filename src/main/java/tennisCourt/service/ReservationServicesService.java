@@ -7,6 +7,7 @@ import tennisCourt.model.ReservationServices;
 import tennisCourt.repo.ReservationServicesRepository;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,7 +22,7 @@ public class ReservationServicesService {
     }
 
     public List<ReservationServices> listAll() {
-        return repo.findAll();
+        return repo.findAllReservationService();
     }
 
     public void save(ReservationServices reservationServices){
@@ -42,7 +43,8 @@ public class ReservationServicesService {
     }
 
     public void deleteAllByDate(LocalDate date) {
-        repo.deleteAllByDate(date);
+        Date d = java.sql.Date.valueOf(date);
+        repo.deleteAllByDate(d);
     }
 
 }
