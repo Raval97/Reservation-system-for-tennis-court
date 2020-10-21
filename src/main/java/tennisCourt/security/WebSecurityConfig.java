@@ -80,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
+//
 //    @EventListener(ApplicationReadyEvent.class)
 //    public void get() {
 //        ///////////////// Price List ///////////////////////////////////////////////////////////////////////////////////

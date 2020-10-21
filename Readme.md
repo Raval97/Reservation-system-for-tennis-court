@@ -16,36 +16,63 @@
 
     
 ## Example Of Working
-    Homepage & Price-List Page for a user who is not logged in
+
+### User: Default (for a user who is not logged in)
+    Homepage & Price-List & Events Page 
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/1.png?raw=true)
 
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/2.png?raw=true)
 
-    Login page
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/3.png?raw=true)
 
-    Reservation Page (available only after login verification)
+    Register & Login page
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/4.png?raw=true)
+
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/21.png?raw=true)
+
+
+### User: Client  (available only after login verification))
+    Tournaments & Events
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/5.png?raw=true)
+
+    Reservation Page 
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/6.png?raw=true)
 
     Page of summary of Reservation before confirm it.
     Here, the user specifies whether to rent additional equipment and the form of payment
-![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/5.png?raw=true)
-
-    User Account subpages
-![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/6.png?raw=true)
-
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/7.png?raw=true)
 
+    User Account: Personal Data 
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/8.png?raw=true)
 
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/9.png?raw=true)
 
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/10.png?raw=true)
 
+    User Account: Reservation of user
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/11.png?raw=true)
 
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/12.png?raw=true)
 
-## Databse Structure (Diagram ERD) 
+    User Account: Payment
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/13.png?raw=true)
+
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/14.png?raw=true)
+
+    User Account: Club Association
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/15.png?raw=true)
+
+
+### User: Admin
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/16.png?raw=true)
+
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/17.png?raw=true)
+
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/18.png?raw=true)
+
+![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/19.png?raw=true)
+
+
+### Databse Structure (Diagram ERD) 
 
 ![Image description](https://raw.githubusercontent.com/Raval97/Reservation-system-for-tennis-court/master/src/main/resources/images/readmeImages/database.png?raw=true)
