@@ -113,8 +113,8 @@
                         </tbody>
                     </table>
                     </br></br>
-                    <div id="summaryDiv" style="display:none;">
-                    <span th:text="'Final Price: '+${startedReservation.price}+'PLN'" align="center"
+                    <div id="summaryDiv" th:if="!${startedTimeList.isEmpty()}">
+                    <span  th:text="'Final Price: '+${startedReservation.price}+'PLN'" align="center"
                           style="font-size:22; font-weight: 700"></span>
                         </br></br>
                         <button id="makeReservation" align="center">Reserve It</button>

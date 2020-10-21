@@ -91,6 +91,7 @@ public class ControllerLoggedUserApi {
             List<Long> startedCourtIdList = servicesService.getStartedCourtIdByDate(date, user.getId());
             List<Services> startedReservationServices = servicesService.getInStartedReservationByUserId(user.getId());
             Reservation startedReservation = reservationService.getStartedReservationByUserId(user.getId());
+            System.out.println(startedTimeList.toString());
             model.addAttribute("reservedTimeList", reservedTimeList);
             model.addAttribute("reservedNumberOfHoursList", reservedNumberOfHoursList);
             model.addAttribute("reservedCourtIdList", reservedCourtIdList);

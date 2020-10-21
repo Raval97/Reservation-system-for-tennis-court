@@ -177,10 +177,10 @@ $(document).ready(function () {
         window.location='/OurTennis/makeReservation';
     });
 
-    if(jQuery.isEmptyObject(startedTimeList))
-         $("#summaryDiv").css('display', 'none');
-    else
-         $("#summaryDiv").css('display', 'block');
+    // if(jQuery.isEmptyObject(startedTimeList))
+    //      $("#summaryDiv").css('display', 'none');
+    // else
+    //      $("#summaryDiv").css('display', 'block');
 
     //###################### next or prev click ########################################
     let changedWeek = false;

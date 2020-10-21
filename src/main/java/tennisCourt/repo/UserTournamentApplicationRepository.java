@@ -12,12 +12,11 @@ import java.util.List;
 @Repository
 public interface UserTournamentApplicationRepository extends JpaRepository<UserTournamentApplication, Long> {
 
-    //DISTINCT ERROR // obok (SELECT * FROM (SELECT #DISTINCT# tournament...(druga linia), oraz tournament, #status#
-
-    @Query(value = "SELECT CASE WHEN status IS NULL THEN 'without_application' ELSE status END AS status " +
-            "FROM tournament LEFT JOIN (SELECT * FROM (SELECT  tournament, status FROM user_tournament_application utp " +
-            "RIGHT JOIN tournament t on t.id=utp.tournament WHERE users = 3 ORDER By utp.id DESC )X " +
-            "GROUP By tournament, status)XX on tournament.id = XX.tournament;", nativeQuery = true)
+    @Query(value = "SELECT CASE WHEN status IS NULL THEN 'without_application' ELSE status END AS status from ( " +
+            "SELECT status, tournament from user_tournament_application where id in ( Select X.max from ( " +
+            "SELECT tournament, max(utp.id) FROM user_tournament_application utp RIGHT JOIN tournament t " +
+            "on t.id = utp.tournament  WHERE users = :id GROUP BY tournament)X ))XX right join tournament utp " +
+            "on XX.tournament = utp.id;", nativeQuery = true)
     List<String> findAllStatusTournamentToUser(Long id);
 
     @Query(value = "Select * FROM user_tournament_application WHERE tournament=:id", nativeQuery = true)
