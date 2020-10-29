@@ -1,5 +1,7 @@
 package tennisCourt.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import javax.persistence.*;
 
@@ -10,9 +12,11 @@ public class UserTournament {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -24,4 +28,5 @@ public class UserTournament {
         this.tournament = tournament;
         this.user = user;
     }
+
 }

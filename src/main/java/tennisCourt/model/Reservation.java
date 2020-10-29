@@ -1,5 +1,7 @@
 package tennisCourt.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,8 +31,10 @@ public class Reservation {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate finalPaymentDate;
     private String statusPaying;
+    @JsonBackReference
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private UserReservation userReservation;
+    @JsonBackReference
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private Set<ReservationServices> reservationServices;
 

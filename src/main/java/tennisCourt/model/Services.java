@@ -1,5 +1,7 @@
 package tennisCourt.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,6 +29,7 @@ public class Services {
     private float price;
     @ManyToOne
     private Court court;
+    @JsonBackReference
     @OneToOne(mappedBy = "services", cascade = CascadeType.ALL)
     private ReservationServices reservationService;
 
