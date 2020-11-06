@@ -155,14 +155,14 @@ public class ControllerUserApi {
                     mapper.convertValue(jsonNode.get("emailAddress"), String.class),
                     mapper.convertValue(jsonNode.get("phoneNumber"), int.class));
             clientFromJson.setIsClubMen(false);
-            newUser = new User(
-                    mapper.convertValue(jsonNode.get("username"), String.class),
-                    mapper.convertValue(jsonNode.get("password"), String.class),
-                    "ROLE_USER", clientFromJson);
-        } else {
-            client.setIsClubMen(false);
-            newUser = new User(user.getUsername(), user.getPassword(), "ROLE_USER", client);
+            client = clientFromJson;
+            User userFromJson = new User();
+            userFromJson.setUsername(mapper.convertValue(jsonNode.get("username"), String.class));
+            userFromJson.setPassword(mapper.convertValue(jsonNode.get("password"), String.class));
+            user = userFromJson;
         }
+        client.setIsClubMen(false);
+        newUser = new User(user.getUsername(), user.getPassword(), "ROLE_USER", client);
         userService.save(newUser);
         return "redirect:/ourTennis";
     }
