@@ -1,8 +1,14 @@
 package tennisCourt.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +19,8 @@ import tennisCourt.model.*;
 import tennisCourt.service.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -135,10 +143,26 @@ public class ControllerUserApi {
         return "defaultUser/registrationPage";
     }
 
-    @PostMapping("/add-user")
-    public String addUser(@ModelAttribute User user, @ModelAttribute Client client) {
-        client.setIsClubMen(false);
-        User newUser = new User(user.getUsername(), user.getPassword(), "ROLE_USER", client);
+    @RequestMapping(value = "/add-user", method = RequestMethod.POST)
+    public String addUser(@RequestBody String object, @ModelAttribute User user, @ModelAttribute Client client) throws JsonProcessingException {
+        User newUser;
+        if (object.startsWith("{")) {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(object);
+            Client clientFromJson = new Client(
+                    mapper.convertValue(jsonNode.get("name"), String.class),
+                    mapper.convertValue(jsonNode.get("surname"), String.class),
+                    mapper.convertValue(jsonNode.get("emailAddress"), String.class),
+                    mapper.convertValue(jsonNode.get("phoneNumber"), int.class));
+            clientFromJson.setIsClubMen(false);
+            newUser = new User(
+                    mapper.convertValue(jsonNode.get("username"), String.class),
+                    mapper.convertValue(jsonNode.get("password"), String.class),
+                    "ROLE_USER", clientFromJson);
+        } else {
+            client.setIsClubMen(false);
+            newUser = new User(user.getUsername(), user.getPassword(), "ROLE_USER", client);
+        }
         userService.save(newUser);
         return "redirect:/ourTennis";
     }
