@@ -5,21 +5,25 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import tennisCourt.model.*;
 import tennisCourt.repo.*;
 import tennisCourt.service.UserService;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+
 
 @Configuration
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserService userDetailsService;
@@ -66,20 +70,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/OurTennis/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .and()
-                .formLogin().permitAll().defaultSuccessUrl("/ourTennis", true)
-                .and()
-                .logout()
-                .logoutSuccessUrl("/ourTennis")
+                .and().formLogin().permitAll().defaultSuccessUrl("/ourTennis", true)
+                .and().logout().logoutSuccessUrl("/ourTennis")
                 .permitAll()
-                .and()
-                .csrf().disable().cors();
+                .and().csrf().disable().cors()
+                .and().httpBasic();
     }
 
     @Bean
-    public static PasswordEncoder passwordEncoder(){
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 //    @EventListener(ApplicationReadyEvent.class)
 //    public void get() {
@@ -192,7 +194,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        servicesRepository.save(servicesT2_6);
 //        servicesRepository.save(servicesT2_7);
 //        servicesRepository.save(servicesT2_8);
-//        ///////////////// Reservation bu user //////////////////////////////////////////////////////////////////////////
+//        ///////////////// Reservation by user //////////////////////////////////////////////////////////////////////////
 //        UserReservation userReservation1 = new UserReservation(appUserClient3);
 //        Reservation reservation1 = new Reservation(LocalDate.now(), 171F, true, 145.35F,
 //                "Reserved", "online", LocalDate.now(), "Paid", userReservation1);
