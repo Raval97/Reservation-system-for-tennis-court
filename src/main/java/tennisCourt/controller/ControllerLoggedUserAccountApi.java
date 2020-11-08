@@ -1,5 +1,8 @@
 package tennisCourt.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,20 +71,35 @@ public class ControllerLoggedUserAccountApi {
         return "loggedUser/clientAccountPersonalData";
     }
 
+
     @RequestMapping(value = "/OurTennis/client/edit_data/{id}", method = RequestMethod.POST)
-    public String editClientData(@PathVariable(name = "id") Long id,
+    public String editClientData(@RequestBody String object, @PathVariable(name = "id") Long id,
                                  @ModelAttribute("client") Client client,
-                                 @ModelAttribute("user") User user) {
+                                 @ModelAttribute("user") User user) throws JsonProcessingException {
+
         User userToChange = userService.get(id);
-        Client clientToChange = clientService.get(user.getId());
-        if ((!userToChange.getUsername().equals(user.getUsername())) || (!clientToChange.equals(client))) {
-            userToChange.setUsername(user.getUsername());
-            client.setIsClubMen(clientToChange.getIsClubMen());
-            userToChange.setClient(client);
+        Client clientToChange = clientService.get(id);
+        if (object.startsWith("{")) {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(object);
+            clientToChange.setName(mapper.convertValue(jsonNode.get("name"), String.class));
+            clientToChange.setSurname(mapper.convertValue(jsonNode.get("surname"), String.class));
+            clientToChange.setEmailAddress(mapper.convertValue(jsonNode.get("emailAddress"), String.class));
+            clientToChange.setPhoneNumber(mapper.convertValue(jsonNode.get("phoneNumber"), int.class));
+            userToChange.setUsername(mapper.convertValue(jsonNode.get("username"), String.class));
+            userToChange.setClient(clientToChange);
             userService.save(userToChange);
-            return "redirect:/OurTennis/account/1.1";
-        } else
-            return "redirect:/OurTennis/account/1";
+        } else {
+            if ((!userToChange.getUsername().equals(user.getUsername())) || (!clientToChange.equals(client))) {
+                userToChange.setUsername(user.getUsername());
+                client.setIsClubMen(clientToChange.getIsClubMen());
+                userToChange.setClient(client);
+                userService.save(userToChange);
+                return "redirect:/OurTennis/account/1.1";
+            } else
+                return "redirect:/OurTennis/account/1";
+        }
+        return "redirect:/OurTennis/account/1";
     }
 
     @RequestMapping(value = "/OurTennis/client/changePassword/{id}", method = RequestMethod.POST)
@@ -192,10 +210,10 @@ public class ControllerLoggedUserAccountApi {
         User user = userService.findUserByUsername(User.getUserName());
         boolean isClubMen = clientService.get(user.getId()).getIsClubMen();
         boolean isActiveClubMen = false;
-        long  daysOfActiveMembership = 0;
-        if(isClubMen) {
+        long daysOfActiveMembership = 0;
+        if (isClubMen) {
             isActiveClubMen = clubAssociationService.getByUserId(user.getId()).getIfActive();
-            if(isActiveClubMen)
+            if (isActiveClubMen)
                 daysOfActiveMembership = Duration.between(LocalDate.now().atStartOfDay(),
                         clubAssociationService.getByUserId(user.getId()).getDateOfEndActive().atStartOfDay()).toDays();
         }
@@ -203,9 +221,9 @@ public class ControllerLoggedUserAccountApi {
         boolean hasRejectedApplication = false;
         String decision = membershipApplicationService.getLatestMembershipApplicationDecision(user.getId());
         if (decision.equals("waiting_for_decisions"))
-            hasActiveApplication =true;
+            hasActiveApplication = true;
         if (decision.equals("rejected"))
-            hasRejectedApplication =true;
+            hasRejectedApplication = true;
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("user", user);
         model.addAttribute("isClubMen", isClubMen);
@@ -220,7 +238,7 @@ public class ControllerLoggedUserAccountApi {
     public String payForMembership(@PathVariable(name = "id") Long id) {
         User user = userService.findUserByUsername(User.getUserName());
         ClubAssociation clubAssociation = clubAssociationService.getById(id);
-        if(clubAssociation.getIfActive())
+        if (clubAssociation.getIfActive())
             clubAssociation.setDateOfEndActive(clubAssociation.getDateOfEndActive().plusDays(30));
         else {
             clubAssociation.setIfActive(true);
@@ -235,7 +253,7 @@ public class ControllerLoggedUserAccountApi {
     @RequestMapping("/OurTennis/applyForMembership")
     public String applyForMembership(Model model) {
         User user = userService.findUserByUsername(User.getUserName());
-        membershipApplicationService.save(new MembershipApplication(user,  LocalDate.now(), "waiting_for_decisions"));
+        membershipApplicationService.save(new MembershipApplication(user, LocalDate.now(), "waiting_for_decisions"));
         return "redirect:/OurTennis/clubAssociation";
     }
 

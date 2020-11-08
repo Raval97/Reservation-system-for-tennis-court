@@ -167,4 +167,9 @@ public class ControllerUserApi {
         return "redirect:/ourTennis";
     }
 
+    @RequestMapping("/OurTennis/login")
+    public Model checkAuthorization(Model model) {
+        model.addAttribute("authorization", true);
+        return model;
+    }
 }
