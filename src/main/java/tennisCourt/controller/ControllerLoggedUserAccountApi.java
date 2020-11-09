@@ -105,9 +105,10 @@ public class ControllerLoggedUserAccountApi {
     @RequestMapping(value = "/OurTennis/client/changePassword/{id}", method = RequestMethod.POST)
     public String changeClientPassword(@PathVariable(name = "id") Long id,
                                        @ModelAttribute("user") User user,
-                                       @RequestParam String newPassword,
-                                       @RequestParam String repeatNewPassword,
-                                       @RequestParam String oldPassword) {
+                                       @RequestParam("newPassword") String newPassword,
+                                       @RequestParam("repeatNewPassword") String repeatNewPassword,
+                                       @RequestParam("oldPassword") String oldPassword) {
+        System.out.println("in");
         User userToChange = userService.get(id);
         if (WebSecurityConfig.passwordEncoder().matches(oldPassword, userToChange.getPassword())) {
             System.out.println(newPassword + "  " + repeatNewPassword);
