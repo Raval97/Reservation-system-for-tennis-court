@@ -404,7 +404,7 @@ public class ControllerLoggedUserApi {
         tournament.setCountOFRegisteredParticipant(tournament.getCountOFRegisteredParticipant()+1);
         UserTournamentApplication application = userTournamentApplicationService.getByTournamentAndUserId(tournament.getId(), user.getId());
         application.setStatus("Accepted");
-        Payment payment = paymentService.getByTitleAndUser("Tournament Fee: "+tournament.getTitle(), user.getId());
+        Payment payment = paymentService.getByTitleAndUser("Tournament fee: "+tournament.getTitle(), user.getId());
         payment.setStatusPaying("Paid");
         payment.setDateOfPaying(LocalDate.now());
         UserTournament userTournament = new UserTournament(tournament, user);

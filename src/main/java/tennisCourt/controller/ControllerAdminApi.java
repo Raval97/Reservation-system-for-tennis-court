@@ -129,7 +129,7 @@ public class ControllerAdminApi {
         application.setStatus("To Pay");
         User user = userService.get(userId);
         Tournament tournament = tournamentService.getById(tournamentId).get();
-        Payment paymentForEvent = new Payment("Tournament Fee: " + tournament.getTitle(), tournament.getDateOfStarted(), tournament.getEntryFee(), "To Pay", user);
+        Payment paymentForEvent = new Payment("Tournament fee: " + tournament.getTitle(), tournament.getDateOfStarted(), tournament.getEntryFee(), "To Pay", user);
         paymentService.save(paymentForEvent);
         userTournamentApplicationService.save(application);
         return "redirect:/admin/tournamentsAndEvents";

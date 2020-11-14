@@ -246,7 +246,7 @@ public class ControllerLoggedUserAccountApi {
             clubAssociation.setDateOfEndActive(LocalDate.now().plusDays(30));
         }
         clubAssociationService.save(clubAssociation);
-        Payment payment = new Payment("Membership fee", LocalDate.now(), 30F, "Paid", user);
+        Payment payment = new Payment("Membership fee", 30F, LocalDate.now(), "Paid", user);
         paymentService.save(payment);
         return "redirect:/OurTennis/clubAssociation";
     }
