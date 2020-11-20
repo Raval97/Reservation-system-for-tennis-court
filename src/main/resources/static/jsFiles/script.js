@@ -20,7 +20,7 @@ function sendSelectNodeArrayWithAjax(dateUrlParameter){
        url: "/saveSelectedDay",
        contentType: "application/json",
        dataType:"json",
-       data: JSON.stringify(selectNodeArray),
+       data: JSON.stringify({"selectNodeArray" : selectNodeArray}),
        success: function(result) {
             console.log("success: ", result);
             window.location='/OurTennis/reservation?date='+dateUrlParameter;
@@ -40,7 +40,7 @@ function sendRemovedNodeArrayWithAjax(dateUrlParameter){
        url: "/saveRemovedDay",
        contentType: "application/json",
        dataType:"json",
-       data: JSON.stringify(removedNodeArray),
+       data: JSON.stringify({"removedNodeArray" : removedNodeArray}),
        success: function(result) {
             console.log("success: ", result);
             sendSelectNodeArrayWithAjax(dateUrlParameter)

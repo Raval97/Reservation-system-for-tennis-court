@@ -8,7 +8,7 @@ function sendChangeIfRocketWithAjax(id, addition){
        url: "/updateIfRocket/"+id,
        contentType: "application/json",
        dataType:"json",
-       data: JSON.stringify(addition),
+       data: JSON.stringify({"addition" : addition}),
        success: function(result) {
             console.log("success: ", result);
             window.location='/OurTennis/makeReservation';
@@ -28,7 +28,7 @@ function sendChangeIfBallsWithAjax(id, addition){
        url: "/updateIfBalls/"+id,
        contentType: "application/json",
        dataType:"json",
-       data: JSON.stringify(addition),
+       data: JSON.stringify({"addition" : addition}),
        success: function(result) {
             console.log("success: ", result);
             window.location='/OurTennis/makeReservation';
@@ -48,7 +48,7 @@ function sendChangeIfShoesWithAjax(id, addition){
        url: "/updateIfShoes/"+id,
        contentType: "application/json",
        dataType:"json",
-       data: JSON.stringify(addition),
+       data: JSON.stringify({"addition" : addition}),
        success: function(result) {
             console.log("success: ", result);
             window.location='/OurTennis/makeReservation';

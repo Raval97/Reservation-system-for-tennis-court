@@ -1,5 +1,8 @@
 package tennisCourt.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -105,15 +108,22 @@ public class ControllerLoggedUserApi {
     }
 
     ////////////////// Update Started Reservation ///////////////////////////////
+
+    @RequestMapping("/OurTennis/cancelReservationService/{id}")
+    public String cancelReservation(Model model, @PathVariable(name = "id") Long id) {
+        reservationServicesService.delete(id);
+        return "redirect:/OurTennis/reservation";
+    }
+
     @ResponseBody
     @RequestMapping(value = "/saveRemovedDay", method = RequestMethod.POST)
-    public ResponseEntity<?> saveRemovedDays(@RequestBody Object removedNodeArray) {
-        if (!((List) removedNodeArray).isEmpty()) {
+    public ResponseEntity<?> saveRemovedDays(@RequestBody  Map<String, List<String>> removedNodeArray) {
+        if (!removedNodeArray.get("removedNodeArray").isEmpty()) {
             User user = userService.findUserByUsername(User.getUserName());
             List<Services> startedReservation = servicesService.getInStartedReservationByUserId(user.getId());
             Map<String, Float> startedNoteMap = parseReservedReservationToMapFormat(startedReservation);
             Map<String, Float> removedNoteMap = new HashMap<>();
-            ((List) removedNodeArray).forEach((ele) -> removedNoteMap.put((String) ele, 0.5F));
+            removedNodeArray.get("removedNodeArray").forEach((ele) -> removedNoteMap.put((String) ele, 0.5F));
             List<String> startedNodeIdList = new ArrayList<>(startedNoteMap.keySet());
             List<String> removedNodeIdList = new ArrayList<>(removedNoteMap.keySet());
             for (String startedNodeId : startedNodeIdList) {
@@ -141,14 +151,14 @@ public class ControllerLoggedUserApi {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveSelectedDay", method = RequestMethod.POST)
-    public ResponseEntity<?> saveSelectedDays(@RequestBody Object selectNodeArray) {
-        if (!((List) selectNodeArray).isEmpty()) {
+    @RequestMapping(value = "/saveSelectedDay", method = RequestMethod.POST, consumes = { "application/json" })
+    public ResponseEntity<?> saveSelectedDays(@RequestBody Map<String, List<String>> selectNodeArray) throws JsonProcessingException {
+        if (!selectNodeArray.get("selectNodeArray").isEmpty()) {
             User user = userService.findUserByUsername(User.getUserName());
             List<Services> startedReservation = servicesService.getInStartedReservationByUserId(user.getId());
             Map<String, Float> reservedNoteMap = parseReservedReservationToMapFormat(startedReservation);
             Map<String, Float> startedNoteMap = new HashMap<>();
-            ((List) selectNodeArray).forEach((ele) -> startedNoteMap.put((String) ele, 0.5F));
+            selectNodeArray.get("selectNodeArray").forEach((ele) -> startedNoteMap.put((String) ele, 0.5F));
             startedNoteMap.putAll(reservedNoteMap);
             TreeMap<String, Float> nodeMap = connectToSingleReservation(startedNoteMap);
             if (!reservationService.checkIfUserHasStartedReservation(user.getId())) {
@@ -315,21 +325,22 @@ public class ControllerLoggedUserApi {
     }
 
     @RequestMapping(value = "/OurTennis/confirmReservation", method = RequestMethod.POST)
-    public String confirmReservation(@ModelAttribute Reservation reservation) {
+    public String confirmReservation(@RequestBody Map<String, String> typeOfPaying,
+                                     @ModelAttribute Reservation reservation) {
         User user = userService.findUserByUsername(User.getUserName());
         Reservation startedReservation = reservationService.getStartedReservationByUserId(user.getId());
         reservationService.update(startedReservation.getId(), "Reserved", "To Pay",
-                reservation.getTypeOfPaying(), LocalDate.now());
-
+                (!typeOfPaying.isEmpty() ? typeOfPaying.get("typeOfPaying").toString() : reservation.getTypeOfPaying()),
+                LocalDate.now());
         return "redirect:/OurTennis/clientReservation";
     }
 
     @ResponseBody
     @RequestMapping(value = "/updateIfBalls/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updateIfBallsOfService(@PathVariable(name = "id") Long id,
-                                                    @RequestBody Object ifBalls) {
+                                                    @RequestBody Map<String, String> ifBalls) {
         float price = priceListService.listAll().get(7).getPrice();
-        Boolean decision = ifBalls.equals("1");
+        Boolean decision = ifBalls.get("addition").equals("1");
         servicesService.updateIfBalls(id, decision);
         updatePrices(id, price, decision);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -338,9 +349,9 @@ public class ControllerLoggedUserApi {
     @ResponseBody
     @RequestMapping(value = "/updateIfRocket/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updateIfRocketOfService(@PathVariable(name = "id") Long id,
-                                                     @RequestBody Object isRocket) {
+                                                     @RequestBody Map<String, String> isRocket) {
         float price = priceListService.listAll().get(6).getPrice();
-        Boolean decision = isRocket.equals("1");
+        Boolean decision = isRocket.get("addition").equals("1");
         servicesService.updateIfRocket(id, decision);
         updatePrices(id, price, decision);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -349,9 +360,9 @@ public class ControllerLoggedUserApi {
     @ResponseBody
     @RequestMapping(value = "/updateIfShoes/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> updateIfShoesOfService(@PathVariable(name = "id") Long id,
-                                                    @RequestBody Object ifShoes) {
+                                                    @RequestBody Map<String, String> ifShoes) {
         float price = priceListService.listAll().get(8).getPrice();
-        Boolean decision = ifShoes.equals("1");
+        Boolean decision = ifShoes.get("addition").equals("1");
         servicesService.updateIfShoes(id, decision);
         updatePrices(id, price, decision);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
