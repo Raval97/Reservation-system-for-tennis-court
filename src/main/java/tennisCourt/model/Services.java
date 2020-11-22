@@ -1,12 +1,12 @@
 package tennisCourt.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Set;
 
 @Data
 @Entity
@@ -27,6 +27,7 @@ public class Services {
     private float price;
     @ManyToOne
     private Court court;
+    @JsonBackReference
     @OneToOne(mappedBy = "services", cascade = CascadeType.ALL)
     private ReservationServices reservationService;
 
@@ -43,6 +44,15 @@ public class Services {
         this.ifBalls = ifBalls;
         this.ifShoes = ifShoes;
         this.price = price;
+        this.reservationService = reservationService;
+        this.reservationService.setServices(this);
+        this.court = court;
+    }
+
+    public Services(LocalDate date, float numberOfHours, LocalTime time, ReservationServices reservationService, Court court) {
+        this.date = date;
+        this.numberOfHours = numberOfHours;
+        this.time = time;
         this.reservationService = reservationService;
         this.reservationService.setServices(this);
         this.court = court;

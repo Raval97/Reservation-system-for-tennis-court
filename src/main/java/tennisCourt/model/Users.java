@@ -1,7 +1,7 @@
 package tennisCourt.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.service.spi.InjectService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,9 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Data
 @Entity
@@ -28,10 +27,27 @@ public class Users implements UserDetails{
     private String username;
     private String password;
     private String role;
+    @JsonBackReference
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
     private Client client;
+    @JsonBackReference
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private Set<UserReservation> userReservations;
+    @JsonBackReference
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
+    private ClubAssociation clubAssociation;
+    @JsonBackReference
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<MembershipApplication> membershipApplications;
+    @JsonBackReference
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<Payment> payments;
+    @JsonBackReference
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<UserTournament> userTournaments = new HashSet<>();
+    @JsonBackReference
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<UserTournamentApplication> userTournamentApplications;
 
     public Users() {
     }
@@ -100,10 +116,8 @@ public class Users implements UserDetails{
         Authentication authentication = securityContext.getAuthentication();
         String userName = null;
         if (authentication != null) {
-
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             userName = userDetails.getUsername();
-
         }
         return userName;
     }

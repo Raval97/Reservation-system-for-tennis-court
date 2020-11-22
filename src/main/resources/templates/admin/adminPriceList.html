@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>OurTennis | admin</title>
+
+    <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/adminPagesStyle.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/jsFiles/adminFeatureScript.js"></script>
+
+</head>
+<body onload="time(); setInterval(time,1000);">
+
+<div id="container">
+
+    <div id="top">
+        <div id="logo">
+            <img th:src="@{/logo1.png}"/>
+        </div>
+        <div id="topMenu">
+            <div id="forNormalUser">
+                <a th:href="@{'/OurTennis/account/1'}">
+                    <button type="button" id="account">ACCOUNT</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button type="button" id="logout">LOG OUT</button>
+                </a>
+            </div>
+            <div id="forAdmin">
+                <a th:href="@{'/ourTennis'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">APPLICATION
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="center">
+        <div class="menu_div">
+            <ul  style="font-size: 24px">
+                <li><a href="/admin/usersPermissions">Users Permissions</a></li>
+                <li><a href="/admin/tournamentsAndEvents">Tournaments & Events</a></li>
+                <li><a href="/admin/clubAssociations">Club Associations</a></li>
+                <li id="active"><a href="/admin/priceList">Price-List</a></li>
+            </ul>
+        </div>
+
+        <div id="content">
+
+            <div id="contextHead">
+                <h2>Price List</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Game & Equipment</th>
+                        <th>TIME</th>
+                        <th>PRICE</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="element,iter : ${priceList}">
+                        <td width="50%" th:text="${element.type}"></td>
+                        <td width="50%" th:text="${element.time}"></td>
+                        <td class="price" ><input style="font-size: 15px; width: 120px;" type="text" th:value="*{element.price}"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a>
+                    <button type="submit" class="option" id="confirmChangesPrice">Confirm Changes</button>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer">
+        &copy;2020 RG
+    </div>
+</div>
+
+</body>
+</html>

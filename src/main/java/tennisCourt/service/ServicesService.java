@@ -25,7 +25,7 @@ public class ServicesService {
     }
 
     public List<Services> listAll() {
-        return repo.findAll();
+        return repo.findAllService();
     }
 
     public Services get(long id) {
@@ -48,12 +48,12 @@ public class ServicesService {
         return repo.findAllByReservationId(id);
     }
 
-    public List<Time> getReservedTimeByDate(String date) throws ParseException {
+    public List<Time> getReservedTimeByDate(String date) throws ParseException{
         Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
         return repo.findReservedTimeByDate(d);
     };
 
-    public List<Float> getReservedNumberOfHoursByDate(String date) throws ParseException {
+    public List<Float> getReservedNumberOfHoursByDate(String date) throws ParseException{
         Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
         return repo.findReservedNumberOfHoursByDate(d);
     };
@@ -63,17 +63,17 @@ public class ServicesService {
         return repo.findReservedCourtIdByDate(d);
     };
 
-    public List<Time> getStartedTimeByDate(String date, Long id)throws ParseException {
+    public List<Time> getStartedTimeByDate(String date, Long id) throws ParseException{
         Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
         return repo.findStartedTimeByDate(d, id);
     };
 
-    public List<Float> getStartedNumberOfHoursByDate(String date, Long id)throws ParseException {
+    public List<Float> getStartedNumberOfHoursByDate(String date, Long id) throws ParseException{
         Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
         return repo.findStartedNumberOfHoursByDate(d, id);
     };
 
-    public List<Long> getStartedCourtIdByDate(String date, Long id)throws ParseException {
+    public List<Long> getStartedCourtIdByDate(String date, Long id) throws ParseException{
         Date d =  new SimpleDateFormat("yyyy-MM-dd").parse(date);
         return repo.findStartedCourtIdByDate(d, id);
     };
@@ -96,5 +96,10 @@ public class ServicesService {
 
     public void updatePrice(Long id, float price) {
         repo.updatePrice(id, price);
+    }
+
+    public void deleteAllByDate(LocalDate date) {
+        Date d = java.sql.Date.valueOf(date);
+        repo.deleteAllByDate(d);
     }
 }

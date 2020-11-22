@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tennisCourt.model.PriceList;
 import tennisCourt.repo.PriceListRepository;
+
 import java.util.List;
 
 @Service
@@ -19,7 +20,7 @@ public class PriceListService {
     }
 
     public List<PriceList> listAll() {
-        return repo.findAll();
+        return repo.findAllPrice();
     }
 
     public PriceList get(long id) {

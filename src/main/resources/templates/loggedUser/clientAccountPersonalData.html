@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>OurTennis | account</title>
+
+    <link rel="stylesheet" th:href="@{/cssFiles/style.css}">
+    <link rel="stylesheet" th:href="@{/cssFiles/registration_AccountPagesStyle.css}">
+    <script type="text/javascript" th:src="@{/jsFiles/timer.js}"></script>
+
+</head>
+<body onload="time(); setInterval(time,1000);">
+
+<div id="container">
+
+    <div id="top">
+        <div id="logo">
+            <img th:src="@{/logo1.png}"/>
+        </div>
+        <div id="topMenu">
+            <div id="forNormalUser">
+                <a th:href="@{'/ourTennis'}">
+                    <button type="button" id="account">BACK</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button type="button" id="logout">LOG OUT</button>
+                </a>
+            </div>
+            <div id="forAdmin" th:if="${isAdmin == true}">
+                <a th:href="@{'/admin/usersPermissions'}">
+                    <button type="button" id="admin" style="width: 315px; background-color: #511286">ADMINISTRATION</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="center">
+        <div class="menu_div">
+            <ul>
+                <li><a href="/ourTennis">Application</a></li>
+                <li id="active"><a href="/OurTennis/account/1">Personal Data</a></li>
+                <li><a href="/OurTennis/clientReservation">My Reservation</a></li>
+                <li><a href="/OurTennis/clubAssociation">Club Association</a></li>
+                <li><a href="/OurTennis/payment">Payment</a></li>
+            </ul>
+        </div>
+        <div id="content">
+            <!-- CHANGE DATA -->
+            <form th:if="${type >=1 && type < 2}" action="#" th:action="@{'/OurTennis/client/edit_data/'+${user.id}}"
+                  method="post">
+                <div id="clientData">
+                    <table border="0" cellpadding="10" style="margin: auto;">
+                        <h2 th:if="${type == 1}">Your account</h2>
+                        <h2 th:if="${type == 1.1}" style="color: green; font-size: 30px">Data Change</br>SUCCESSFUL</h2>
+                        <h2 th:if="${type == 1.2}" style="color: red; font-size: 30px">Data Change FILED</h2>
+                        <tr th:object="${client}">
+                            <td>First Name:</td>
+                            <td><input type="text" th:field="*{name}"/></td>
+                        </tr>
+                        <tr th:object="${client}">
+                            <td>Second Name:</td>
+                            <td><input type="text" th:field="*{surname}"/></td>
+                        </tr>
+                        <tr th:object="${client}">
+                            <td>Email Address:</td>
+                            <td><input type="text" th:field="*{emailAddress}"/></td>
+                        </tr>
+                        <tr th:object="${client}">
+                            <td>Phone Number:</td>
+                            <td><input type="number" th:field="*{phoneNumber}"/></td>
+                        </tr>
+                        <tr th:object="${user}">
+                            <td>Login:</td>
+                            <td><input type="text" th:field="*{username}"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="optionClientAccount" align="center">
+                    <a th:href="@{'/OurTennis/account/2'}">
+                        <button type="button" style="background-color: gray;" class="option" id="changePassword">CHANGE
+                            PASSWORD
+                        </button>
+                    </a>
+                    <a>
+                        <button type="submit" class="option" id="editClientData">EDIT DATA</button>
+                    </a>
+                    <a th:href="@{'/OurTennis/account/3'}">
+                        <button type="button" style="background-color: gray;" class="option" id="deleteClient">DELETE
+                            ACCOUNT
+                        </button>
+                    </a>
+                </div>
+            </form>
+            <!-- CHANGE PASSWORD -->
+            <form th:if="${type >=2 && type <3}" action="#"
+                  th:action="@{'/OurTennis/client/changePassword/'+${user.id}}"
+                  method="post">
+                <div id="clientData">
+                    <table border="0" cellpadding="10" style="margin: auto;">
+                        <h2 th:if="${type == 2}">Set New Password</h2>
+                        <h2 th:if="${type == 2.1}" style="color: green; font-size: 30px">Password Change SUCCESSFUL</h2>
+                        <h2 th:if="${type == 2.2}" style="color: red; font-size: 30px">Password Change FILED </br>
+                            (incorrect
+                            repeat new password)</h2>
+                        <h2 th:if="${type == 2.3}" style="color: red; font-size: 30px">Password Change FILED </br>
+                            (incorrect
+                            old password)</h2>
+                        <tr th:object="${user}">
+                            <td>Old Password:</td>
+                            <td><input type="text" th:value="${oldPassword}" name="oldPassword"/></td>
+                        </tr>
+                        <tr th:object="${client}">
+                            <td>New Password:</td>
+                            <td><input type="text" th:value="${newPassword}" name="newPassword"/></td>
+                        </tr>
+                        <tr th:object="${client}">
+                            <td>Repeat New Password:</td>
+                            <td><input type="text" th:value="${repeatNewPassword}" name="repeatNewPassword"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="optionClientAccount" align="center">
+                    <a th:href="@{'/OurTennis/account/1'}">
+                        <button type="button" style="background-color: gray;" class="option" id="editClientData">EDIT
+                            DATA
+                        </button>
+                    </a>
+                    <a>
+                        <button type="submit" class="option" id="changePassword">CHANGE PASSWORD</button>
+                    </a>
+                    <a th:href="@{'/OurTennis/account/3'}">
+                        <button type="button" style="background-color: gray;" class="option" id="deleteClient">DELETE
+                            ACCOUNT
+                        </button>
+                    </a>
+                </div>
+            </form>
+            <!-- DELETE ACCOUNT-->
+            <form th:if="${type >= 3}" action="#" th:action="@{'/OurTennis/client/deleteAccount/'+${user.id}}"
+                  method="post">
+                <div id="clientData">
+                    <table border="0" cellpadding="10" style="margin: auto;">
+                        <h2>DELETE ACCOUNT</h2>
+                        <tr th:object="${client}">
+                            <td style="font-size: 20px;">Are you sure, you want to delete your account?</td>
+                            <td>
+                                <label class="switch">
+                                    <input type="checkbox" onchange="document.getElementById('deleteClient').disabled = !this.checked;
+                                        if(document.getElementById('deleteClient').style.backgroundColor === 'red')
+                                            document.getElementById('deleteClient').style.background = '#7b38d8';
+                                        else  document.getElementById('deleteClient').style.background = 'red';">
+                                    <span class="slider round" id="rentBalls"></span>
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="optionClientAccount" align="center">
+                    <a th:href="@{'/OurTennis/account/1'}">
+                        <button type="button" style="background-color: gray;" class="option" id="editClientData">EDIT
+                            DATA
+                        </button>
+                    </a>
+                    <a>
+                        <button type="submit" disabled="true" style="background-color: red;" class="option"
+                                id="deleteClient">DELETE ACCOUNT
+                        </button>
+                    </a>
+                    <a th:href="@{'/OurTennis/account/2'}">
+                        <button type="submit" style="background-color: gray;" class="option" id="changePassword">CHANGE
+                            PASSWORD
+                        </button>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div id="footer">
+            &copy;2020 RG
+        </div>
+    </div>
+
+</body>
+</html>

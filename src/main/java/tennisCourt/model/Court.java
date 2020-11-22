@@ -1,5 +1,6 @@
 package tennisCourt.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,6 +17,7 @@ public class Court {
     private String name;
     private String type;
     private Boolean status;
+    @JsonBackReference
     @OneToMany(mappedBy = "court", cascade = CascadeType.ALL)
     private Set<Services> services;
 
