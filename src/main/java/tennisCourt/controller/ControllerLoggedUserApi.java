@@ -324,13 +324,11 @@ public class ControllerLoggedUserApi {
         return "loggedUser/clientMakeReservation";
     }
 
-    @RequestMapping(value = "/OurTennis/confirmReservation", method = RequestMethod.POST)
-    public String confirmReservation(@RequestBody Map<String, String> typeOfPaying,
-                                     @ModelAttribute Reservation reservation) {
+    @RequestMapping(value = "/OurTennis/confirmReservation/{type}", method = RequestMethod.POST)
+    public String confirmReservation(@PathVariable(name = "type") String typeOfPaying) {
         User user = userService.findUserByUsername(User.getUserName());
         Reservation startedReservation = reservationService.getStartedReservationByUserId(user.getId());
-        reservationService.update(startedReservation.getId(), "Reserved", "To Pay",
-                (!typeOfPaying.isEmpty() ? typeOfPaying.get("typeOfPaying").toString() : reservation.getTypeOfPaying()),
+        reservationService.update(startedReservation.getId(), "Reserved", "To Pay", typeOfPaying,
                 LocalDate.now());
         return "redirect:/OurTennis/clientReservation";
     }

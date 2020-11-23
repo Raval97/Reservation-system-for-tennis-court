@@ -53,7 +53,7 @@
             </ul>
         </div>
         <div id="content">
-            <form action="#" th:action="@{'/OurTennis/confirmReservation'}" method="post">
+            <form action="#" th:action="@{'/OurTennis/confirmReservation/' + ${reservation.typeOfPaying}}" method="post">
                 <div id="clientReservations">
                     <h2>Complete Your Reservation</h2>
 
