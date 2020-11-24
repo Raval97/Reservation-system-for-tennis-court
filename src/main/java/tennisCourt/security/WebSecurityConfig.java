@@ -140,9 +140,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         userTournamentRepository.save(userTournament);
         ///////////////// Payment for Events and Membership ////////////////////////////////////////////////////////////
         Payment paymentForMembership = new Payment("Membership fee", 30F, LocalDate.now(), "Paid", appUserClient3);
-        Payment paymentForEvent1 = new Payment("Tournament Fee: Cracow Open",
+        Payment paymentForEvent1 = new Payment("Tournament fee: Cracow Open",
                 tournament1.getDateOfStarted(), 20F, "To Pay", appUserClient1);
-        Payment paymentForEvent2 = new Payment("Tournament Fee: Cracow Open",
+        Payment paymentForEvent2 = new Payment("Tournament fee: Cracow Open",
                 LocalDate.now(), tournament1.getDateOfStarted(), 20F, "Paid", appUserClient3);
         paymentRepository.save(paymentForMembership);
         paymentRepository.save(paymentForEvent1);

@@ -16,7 +16,7 @@ public interface UserTournamentApplicationRepository extends JpaRepository<UserT
             "SELECT status, tournament from user_tournament_application where id in ( Select X.max from ( " +
             "SELECT tournament, max(utp.id) FROM user_tournament_application utp RIGHT JOIN tournament t " +
             "on t.id = utp.tournament  WHERE users = :id GROUP BY tournament)X ))XX right join tournament utp " +
-            "on XX.tournament = utp.id;", nativeQuery = true)
+            "on XX.tournament = utp.id order by utp.id;", nativeQuery = true)
     List<String> findAllStatusTournamentToUser(Long id);
 
     @Query(value = "Select * FROM user_tournament_application WHERE tournament=:id", nativeQuery = true)
