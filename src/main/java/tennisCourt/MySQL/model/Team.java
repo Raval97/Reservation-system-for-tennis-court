@@ -3,6 +3,7 @@ package tennisCourt.MySQL.model;
 import com.github.dhiraj072.randomwordgenerator.RandomWordGenerator;
 import com.github.dhiraj072.randomwordgenerator.datamuse.DataMuseRequest;
 import com.github.dhiraj072.randomwordgenerator.exceptions.DataMuseException;
+import com.github.javafaker.Faker;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,9 +30,10 @@ public class Team {
 
 
     public Team() throws DataMuseException {
-        this.name = RandomWordGenerator.getRandomWord(new DataMuseRequest().topics("Football"));
+        Faker faker = new Faker();
+        this.name = faker.pokemon().name() +" "+ faker.team().sport();
         this.country = "Poland";
-        this.coach  = RandomWordGenerator.getRandomWord(new DataMuseRequest().topics("Transliteration of personal names"));
+        this.coach  = faker.name().lastName();
         this.nationalLevel = "Ekstraklasa";
     }
 

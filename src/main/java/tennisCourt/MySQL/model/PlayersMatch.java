@@ -55,6 +55,8 @@ public class PlayersMatch {
         this.integrations = ThreadLocalRandom.current().nextInt(0, 10);
         this.defence_attempts = ThreadLocalRandom.current().nextInt(0, 10);
         this.defences =  ThreadLocalRandom.current().nextInt(00, 10);
+        this.player.setPlayersMatch(this);
+        this.matches.setMatch1(this);
     }
 
     public PlayersMatch(float deegree, int minutes, float distance, int shots, int shots_on_target, int goals,
