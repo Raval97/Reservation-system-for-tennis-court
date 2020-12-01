@@ -1,5 +1,6 @@
 package tennisCourt.MySQL.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class Competition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonBackReference
     @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL)
     private Set<MatchCompetitions> matchCompetitions;
     String name;
@@ -20,8 +22,8 @@ public class Competition {
     String session;
     int number_of_teams;
 
-    public Competition() {
-        this.name = "Ekstraklasa";
+    public Competition(String name) {
+        this.name = name;
         this.level = "1";
         this.session = ThreadLocalRandom.current().nextInt(0, 2)%2==1 ? "zimowa" : "wiosenna";
         this.number_of_teams = 25;

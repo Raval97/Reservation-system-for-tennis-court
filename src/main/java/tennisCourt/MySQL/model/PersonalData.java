@@ -1,5 +1,6 @@
 package tennisCourt.MySQL.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.github.dhiraj072.randomwordgenerator.RandomWordGenerator;
 import com.github.dhiraj072.randomwordgenerator.datamuse.DataMuseRequest;
 import com.github.dhiraj072.randomwordgenerator.exceptions.DataMuseException;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Data
@@ -19,10 +21,12 @@ public class PersonalData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonBackReference
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
     private PlayerTeam playerTeam;
-    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
-    private PlayersMatch playersMatch;
+    @JsonBackReference
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    private Set<PlayersMatch> playersMatch;
     String surname;
     String name;
     int age;
@@ -42,10 +46,10 @@ public class PersonalData {
                 "Agentyna", "Anglia", "Belgia", "Brazylia", "Urugwaj", "Japonia","Rosja", "Portugalia" ));
         this.surname = faker.name().lastName();
         this.name = faker.name().firstName();
-        this.age= ThreadLocalRandom.current().nextInt(16, 40 + 1);
+        this.age= ThreadLocalRandom.current().nextInt(16, 41);
         this.nationality  = country.get(ThreadLocalRandom.current().nextInt(0, country.size()));
-        this.weight = ThreadLocalRandom.current().nextInt(60, 95 + 1);
-        this.height  = this.weight + ThreadLocalRandom.current().nextInt(90, 110 + 1);
+        this.weight = ThreadLocalRandom.current().nextInt(60, 96);
+        this.height  = this.weight + ThreadLocalRandom.current().nextInt(90, 111);
         this.position = position.get(ThreadLocalRandom.current().nextInt(0, 11));
         this.formation = "a";
         this.playerTeam = playerTeam;

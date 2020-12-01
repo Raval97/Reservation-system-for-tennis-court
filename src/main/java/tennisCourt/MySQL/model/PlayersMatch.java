@@ -12,11 +12,13 @@ public class PlayersMatch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn
     private PersonalData player;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn
     private Matches matches;
-    float deegree;
+    float degree;
     int minutes;
     float distance;
     int shots;
@@ -37,33 +39,77 @@ public class PlayersMatch {
     public PlayersMatch() {
     }
 
-    public PlayersMatch(PersonalData player, Matches match) {
-        this.deegree = ThreadLocalRandom.current().nextInt(1, 6);
-        this.minutes = 90;
-        this.distance = ThreadLocalRandom.current().nextInt(6, 14);
-        this.shots = ThreadLocalRandom.current().nextInt(0, 7);
-        this.shots_on_target = ThreadLocalRandom.current().nextInt(0, 3);
-        this.goals = ThreadLocalRandom.current().nextInt(0, 3);
-        this.passes = ThreadLocalRandom.current().nextInt(10, 40);
-        this.accurate_passes = ThreadLocalRandom.current().nextInt(10, 30);
-        this.assists = ThreadLocalRandom.current().nextInt(0, 3);
+    public PlayersMatch(PersonalData player, Matches match, int minutes, int goals, int assists) {
+        this.minutes = minutes;
+        this.distance = minutes * 10 * ThreadLocalRandom.current().nextInt(8, 14);
+        this.shots = (minutes / 90) * ThreadLocalRandom.current().nextInt(0, 5);
+        this.shots_on_target = this.shots - (this.shots * ThreadLocalRandom.current().nextInt(0, 10) / 10);
+        if (goals<=0)
+            this.goals = 0;
+        else
+            this.goals = ThreadLocalRandom.current().nextInt(0, goals);
+        this.passes = (minutes / 90) * ThreadLocalRandom.current().nextInt(10, 40);
+        this.accurate_passes = this.passes - (this.passes * ThreadLocalRandom.current().nextInt(0, 10) / 10);
+        if (assists<=0)
+            this.assists = 0;
+        else
+            this.assists = ThreadLocalRandom.current().nextInt(0, assists);;
         this.fouls = ThreadLocalRandom.current().nextInt(0, 5);
-        this.red_cards = ThreadLocalRandom.current().nextInt(0, 1);
-        this.yellow_cards = ThreadLocalRandom.current().nextInt(0, 2);
-        this.injury = false;
+        this.red_cards = ThreadLocalRandom.current().nextInt(0, 30)%30==0 ? 1 : 0;
+        this.yellow_cards = ThreadLocalRandom.current().nextInt(0, 5) %5==0 ? 1 : 0;
+        this.injury = ThreadLocalRandom.current().nextInt(0, 100) % 100 == 0;
         this.integration_attempts = ThreadLocalRandom.current().nextInt(0, 10);
-        this.integrations = ThreadLocalRandom.current().nextInt(0, 10);
+        this.integrations = this.integration_attempts - (this.integration_attempts * ThreadLocalRandom.current().nextInt(0, 10) / 10);
         this.defence_attempts = ThreadLocalRandom.current().nextInt(0, 10);
-        this.defences =  ThreadLocalRandom.current().nextInt(00, 10);
-        this.player.setPlayersMatch(this);
-        this.matches.setMatch1(this);
+        this.defences =  this.defence_attempts - (this.defence_attempts * ThreadLocalRandom.current().nextInt(0, 10) / 10);
+        int degreeValue = 3;
+        degreeValue -= (this.red_cards + this.yellow_cards + (fouls/3));
+        degreeValue = (this.distance>11000) ? degreeValue : (degreeValue+1);
+        degreeValue += goals + assists;
+        if(degreeValue>6)
+            degreeValue=6;
+        if(degreeValue<0)
+            degreeValue=0;
+        this.degree = degreeValue;
+        this.player = player;
+        this.matches = match;
+    }
+
+    public PlayersMatch(PersonalData player, Matches match, int minutes) {
+        this.minutes = minutes;
+        this.distance = minutes * 10 * ThreadLocalRandom.current().nextInt(8, 14);
+        this.shots = (minutes / 90) * ThreadLocalRandom.current().nextInt(0, 5);
+        this.shots_on_target = this.shots - (this.shots * ThreadLocalRandom.current().nextInt(0, 10) / 10);
+        this.goals = 0;
+        this.passes = (minutes / 90) * ThreadLocalRandom.current().nextInt(10, 40);
+        this.accurate_passes = this.passes - (this.passes * ThreadLocalRandom.current().nextInt(0, 10) / 10);
+        this.assists = 0;
+        this.fouls = ThreadLocalRandom.current().nextInt(0, 5);
+        this.red_cards = ThreadLocalRandom.current().nextInt(0, 30)%30==0 ? 1 : 0;
+        this.yellow_cards = ThreadLocalRandom.current().nextInt(0, 5) %5==0 ? 1 : 0;
+        this.injury = ThreadLocalRandom.current().nextInt(0, 100) % 100 == 0;
+        this.integration_attempts = ThreadLocalRandom.current().nextInt(0, 10);
+        this.integrations = this.integration_attempts - (this.integration_attempts * ThreadLocalRandom.current().nextInt(0, 10) / 10);
+        this.defence_attempts = ThreadLocalRandom.current().nextInt(0, 10);
+        this.defences =  this.defence_attempts - (this.defence_attempts * ThreadLocalRandom.current().nextInt(0, 10) / 10);
+        int degreeValue = 3;
+        degreeValue -= (this.red_cards + this.yellow_cards + (fouls/3));
+        degreeValue = (this.distance>11000) ? degreeValue : (degreeValue+1);
+        degreeValue += (goals + assists);
+        if(degreeValue>6)
+            degreeValue=6;
+        if(degreeValue<0)
+            degreeValue=0;
+        this.degree = degreeValue;
+        this.player = player;
+        this.matches = match;
     }
 
     public PlayersMatch(float deegree, int minutes, float distance, int shots, int shots_on_target, int goals,
                         int passes, int accurate_passes, int assists, int fouls, int red_cards, int yellow_cards,
                         boolean injury, int integration_attempts, int integrations, int defence_attempts, int defences,
                         PersonalData player, Matches match) {
-        this.deegree = deegree;
+        this.degree = deegree;
         this.minutes = minutes;
         this.distance = distance;
         this.shots = shots;
@@ -82,7 +128,7 @@ public class PlayersMatch {
         this.defences = defences;
         this.player = player;
         this.matches = match;
-        this.player.setPlayersMatch(this);
-        this.matches.setMatch1(this);
+        this.player = player;
+        this.matches = match;
     }
 }

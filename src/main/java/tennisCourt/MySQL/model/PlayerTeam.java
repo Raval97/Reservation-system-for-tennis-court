@@ -1,5 +1,6 @@
 package tennisCourt.MySQL.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ public class PlayerTeam {
     @ManyToOne
     @JoinColumn
     private Team team;
+    @JsonBackReference
     @OneToOne(cascade =  CascadeType.REMOVE)
     private PersonalData player;
 

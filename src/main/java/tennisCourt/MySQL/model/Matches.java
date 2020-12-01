@@ -1,10 +1,12 @@
 package tennisCourt.MySQL.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Data
@@ -14,13 +16,17 @@ public class Matches {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonBackReference
     @OneToOne(mappedBy = "matches", cascade = CascadeType.ALL)
     private MatchCompetitions matchCompetitions;
-    @OneToOne(mappedBy = "matches", cascade = CascadeType.ALL)
-    private PlayersMatch match1;
-    @OneToOne
+    @JsonBackReference
+    @OneToMany(mappedBy = "matches", cascade = CascadeType.ALL)
+    private Set<PlayersMatch> match1;
+    @ManyToOne
+    @JoinColumn
     private Team team1;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn
     private Team team2;
     private int team_1_score;
     private int team_2_score;
@@ -39,8 +45,6 @@ public class Matches {
         this.matchCompetitions.setMatches(this);
         this.team1 = team1;
         this.team2 = team2;
-        this.team1.setMatch1(this);
-        this.team2.setMatch2(this);
     }
 
     public Matches(int team_1_score, int team_2_score, LocalDate date, MatchCompetitions matchCompetitions,
@@ -52,7 +56,5 @@ public class Matches {
         this.matchCompetitions.setMatches(this);
         this.team1 = team1;
         this.team2 = team2;
-        this.team1.setMatch1(this);
-        this.team2.setMatch2(this);
     }
 }
