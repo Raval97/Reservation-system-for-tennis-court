@@ -45,9 +45,9 @@ public class Generator {
     @EventListener(ApplicationReadyEvent.class)
     public void contextRefreshedEvent() throws DataMuseException {
         System.out.println("Start");
-        int teamsSize = 10;
+        int teamsSize = 25;
         int playersSize = 22;
-        int matchesSize = 10;
+        int matchesSize = 10000;
         List<Competition> competitions = new ArrayList<Competition>();
         List<Team> teams = new ArrayList<Team>();
         List<PersonalData> players = new ArrayList<PersonalData>();
