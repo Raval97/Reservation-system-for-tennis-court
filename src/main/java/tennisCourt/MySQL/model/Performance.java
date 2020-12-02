@@ -1,5 +1,6 @@
 package tennisCourt.MySQL.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,17 +8,14 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Data
 @Entity
-@Table(name = "players_match")
-public class PlayersMatch {
+@Table(name = "Performance")
+public class Performance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn
-    private PersonalData player;
-    @ManyToOne
-    @JoinColumn
-    private Matches matches;
+    @JsonBackReference
+    @OneToOne(mappedBy = "performance", cascade = CascadeType.ALL)
+    PlayerMatchPerformance playerMatchPerformance;
     float degree;
     int minutes;
     float distance;
@@ -36,10 +34,10 @@ public class PlayersMatch {
     int defence_attempts;
     int defences;
 
-    public PlayersMatch() {
+    public Performance() {
     }
 
-    public PlayersMatch(PersonalData player, Matches match, int minutes, int goals, int assists) {
+    public Performance(PlayerMatchPerformance playerMatchPerformance, int minutes, int goals, int assists) {
         this.minutes = minutes;
         this.distance = minutes * 10 * ThreadLocalRandom.current().nextInt(8, 15);
         this.shots = (int) ((((float) minutes) / 90) * ThreadLocalRandom.current().nextInt(0, 5));
@@ -79,11 +77,11 @@ public class PlayersMatch {
         if(degreeValue<0)
             degreeValue=0;
         this.degree = degreeValue;
-        this.player = player;
-        this.matches = match;
+        this.playerMatchPerformance =playerMatchPerformance;
+        this.playerMatchPerformance.setPerformance(this);
     }
 
-    public PlayersMatch(PersonalData player, Matches match, int minutes) {
+    public Performance(PlayerMatchPerformance playerMatchPerformance, int minutes) {
         this.goals = 0;
         this.assists = 0;
         this.minutes = minutes;
@@ -116,14 +114,14 @@ public class PlayersMatch {
         if(degreeValue<0)
             degreeValue=0;
         this.degree = degreeValue;
-        this.player = player;
-        this.matches = match;
+        this.playerMatchPerformance =playerMatchPerformance;
+        this.playerMatchPerformance.setPerformance(this);
     }
 
-    public PlayersMatch(float deegree, int minutes, float distance, int shots, int shots_on_target, int goals,
-                        int passes, int accurate_passes, int assists, int fouls, int red_cards, int yellow_cards,
-                        boolean injury, int integration_attempts, int integrations, int defence_attempts, int defences,
-                        PersonalData player, Matches match) {
+    public Performance(float deegree, int minutes, float distance, int shots, int shots_on_target, int goals,
+                       int passes, int accurate_passes, int assists, int fouls, int red_cards, int yellow_cards,
+                       boolean injury, int integration_attempts, int integrations, int defence_attempts, int defences,
+                       PlayerMatchPerformance playerMatchPerformance) {
         this.degree = deegree;
         this.minutes = minutes;
         this.distance = distance;
@@ -141,9 +139,7 @@ public class PlayersMatch {
         this.integrations = integrations;
         this.defence_attempts = defence_attempts;
         this.defences = defences;
-        this.player = player;
-        this.matches = match;
-        this.player = player;
-        this.matches = match;
+        this.playerMatchPerformance =playerMatchPerformance;
+        this.playerMatchPerformance.setPerformance(this);
     }
 }

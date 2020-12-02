@@ -2,11 +2,11 @@ package tennisCourt.MySQL.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import tennisCourt.MySQL.model.Performance;
+import tennisCourt.MySQL.model.PlayerTeam;
 
 
 @Repository
-public interface PlayersMatchRepo extends JpaRepository<Performance, Long> {
+public interface PlayerMatchPerformanceRepo extends JpaRepository<PlayerTeam, Long> {
 
 
 }

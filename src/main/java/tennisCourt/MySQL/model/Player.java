@@ -1,8 +1,6 @@
 package tennisCourt.MySQL.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.github.dhiraj072.randomwordgenerator.RandomWordGenerator;
-import com.github.dhiraj072.randomwordgenerator.datamuse.DataMuseRequest;
 import com.github.dhiraj072.randomwordgenerator.exceptions.DataMuseException;
 import com.github.javafaker.Faker;
 import lombok.Data;
@@ -16,8 +14,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Data
 @Entity
-@Table(name="PersonalData")
-public class PersonalData {
+@Table(name="Player")
+public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,7 +24,7 @@ public class PersonalData {
     private PlayerTeam playerTeam;
     @JsonBackReference
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
-    private Set<PlayersMatch> playersMatch;
+    private Set<PlayerMatchPerformance> playersMatch;
     String surname;
     String name;
     int age;
@@ -36,10 +34,10 @@ public class PersonalData {
     String position;
     String formation;
 
-    public PersonalData() {
+    public Player() {
     }
 
-    public PersonalData(PlayerTeam playerTeam) throws DataMuseException {
+    public Player(PlayerTeam playerTeam) throws DataMuseException {
         Faker faker = new Faker();
         List<String> position = new ArrayList<>(Arrays.asList("ln", "pn", "pp", "lp", "spo", "sp", "spd", "lo", "so", "po", "br"));
         List<String> country = new ArrayList<>(Arrays.asList("Polska", "Niemcy", "Hiszpania", "Włochy", "Francja",
@@ -56,8 +54,8 @@ public class PersonalData {
         this.playerTeam.setPlayer(this);
     }
 
-    public PersonalData(String surname, String name, int age, String nationality, int weight,
-                        int height, String position, String formation, PlayerTeam playerTeam) {
+    public Player(String surname, String name, int age, String nationality, int weight,
+                  int height, String position, String formation, PlayerTeam playerTeam) {
         this.surname = surname;
         this.name = name;
         this.age = age;

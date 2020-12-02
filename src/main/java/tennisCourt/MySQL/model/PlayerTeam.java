@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name="player_team")
+@Table(name="Player_Team")
 public class PlayerTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class PlayerTeam {
     private Team team;
     @JsonBackReference
     @OneToOne(cascade =  CascadeType.REMOVE)
-    private PersonalData player;
+    private Player player;
 
     public PlayerTeam() {
     }

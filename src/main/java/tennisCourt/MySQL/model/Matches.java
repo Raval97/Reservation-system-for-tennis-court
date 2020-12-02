@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Data
 @Entity
-@Table(name="matches")
+@Table(name="Matches")
 public class Matches {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class Matches {
     private MatchCompetitions matchCompetitions;
     @JsonBackReference
     @OneToMany(mappedBy = "matches", cascade = CascadeType.ALL)
-    private Set<PlayersMatch> match1;
+    private Set<PlayerMatchPerformance> match1;
     @ManyToOne
     @JoinColumn
     private Team team1;

@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Data
 @Entity
-@Table(name="competition")
+@Table(name="Competition")
 public class Competition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +17,9 @@ public class Competition {
     @JsonBackReference
     @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL)
     private Set<MatchCompetitions> matchCompetitions;
+    @JsonBackReference
+    @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL)
+    private Set<CompetitionTeam> competitionTeams;
     String name;
     String level;
     String session;

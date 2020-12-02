@@ -7,22 +7,23 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name="Match_Competitions")
-public class MatchCompetitions {
+@Table(name="Competition_Team")
+public class CompetitionTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn
     private Competition competition;
-    @JsonBackReference
-    @OneToOne(cascade =  CascadeType.REMOVE)
-    private Matches matches;
+    @ManyToOne
+    @JoinColumn
+    private Team team;
 
-    public MatchCompetitions() {
+    public CompetitionTeam() {
     }
 
-    public MatchCompetitions(Competition competition) {
+    public CompetitionTeam(Competition competition, Team team) {
         this.competition = competition;
+        this.team = team;
     }
 }

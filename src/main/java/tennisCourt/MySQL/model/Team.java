@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name="team")
+@Table(name="Team")
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,9 @@ public class Team {
     @JsonBackReference
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private Set<PlayerTeam> players;
+    @JsonBackReference
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private Set<CompetitionTeam> competitionTeams;
     @JsonBackReference
     @OneToMany(mappedBy = "team1", cascade = CascadeType.ALL)
     private Set<Matches> match1;

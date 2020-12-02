@@ -11,7 +11,6 @@ import tennisCourt.MySQL.repo.*;
 import java.util.ArrayList;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 
@@ -19,10 +18,12 @@ import java.util.stream.Collectors;
 public class Generator {
 
     private CompetitionRepo competitionRepo;
+    private CompetitionTeamRepo competitionTeamRepo;
     private MatchCompetitionsRepo matchCompetitionsRepo;
     private MatchRepo matchRepo;
     private PersonalDataRepo personalDataRepo;
     private PlayersMatchRepo playersMatchRepo;
+    private PlayerMatchPerformanceRepo playerMatchPerformancerepo;
     private PlayerTeamRepo playerTeamRepo;
     private TeamRepo teamRepo;
 
@@ -32,7 +33,8 @@ public class Generator {
     @Autowired
     public Generator(CompetitionRepo competitionRepo, MatchCompetitionsRepo matchCompetitionsRepo,
                      MatchRepo matchRepo, PersonalDataRepo personalDataRepo, PlayersMatchRepo playersMatchRepo,
-                     PlayerTeamRepo playerTeamRepo, TeamRepo teamRepo) throws DataMuseException {
+                     PlayerTeamRepo playerTeamRepo, TeamRepo teamRepo, PlayerMatchPerformanceRepo playerMatchPerformancerepo,
+                     CompetitionTeamRepo competitionTeamRepo) throws DataMuseException {
         this.competitionRepo = competitionRepo;
         this.matchCompetitionsRepo = matchCompetitionsRepo;
         this.matchRepo = matchRepo;
@@ -40,6 +42,8 @@ public class Generator {
         this.playersMatchRepo = playersMatchRepo;
         this.playerTeamRepo = playerTeamRepo;
         this.teamRepo = teamRepo;
+        this.competitionTeamRepo = competitionTeamRepo;
+        this.playerMatchPerformancerepo = playerMatchPerformancerepo;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -50,7 +54,12 @@ public class Generator {
         int matchesSize = 10;
         List<Competition> competitions = new ArrayList<Competition>();
         List<Team> teams = new ArrayList<Team>();
-        List<PersonalData> players = new ArrayList<PersonalData>();
+        List<Player> players = new ArrayList<Player>();
+
+        Competition c1 = new Competition("La liga", "1", "zimowa", 25);
+        Competition c2 = new Competition("La liga", "1", "wiosenna", 25);
+        Competition c3 = new Competition("Copa Del Ray", "1", "none", 25);
+        competitions.add(c1); competitions.add(c2); competitions.add(c3);
 
         for (int i = 0; i < teamsSize; i++)
             teams.add(new Team());
@@ -61,19 +70,17 @@ public class Generator {
             for (int i = 0; i < playersSize; i++) {
 //                System.out.println("player nr: " + (i+1));
                 PlayerTeam pt = new PlayerTeam(t);
-                PersonalData p = new PersonalData(pt);
+                Player p = new Player(pt);
                 players.add(p);
                 personalDataRepo.save(p);
             }
         }
 
-        Competition c1 = new Competition("Ekstraklasa", "1", "zimowa", 25);
-        Competition c2 = new Competition("Ekstraklasa", "1", "wiosenna", 25);
-        Competition c3 = new Competition("Puchar Polski", "1", "none", 25);
-        competitions.add(c1); competitions.add(c2); competitions.add(c3);
         int iter2= 0;
         for (Competition c: competitions) {
             competitionRepo.save(c);
+            for (Team t : teams)
+                competitionTeamRepo.save(new CompetitionTeam(c, t));
             iter2++;
             for (int i = 0; i < matchesSize; i++) {
                 System.out.println("Competition: "+ iter2 + " match nr: " + (i+1));
@@ -86,10 +93,10 @@ public class Generator {
 
                 Matches m = new Matches(mc1, t1, t2);
                 matchRepo.save(m);
-                List<PersonalData> playerT1 = new ArrayList<>();
+                List<Player> playerT1 = new ArrayList<>();
                 playerT1 = players.stream().filter(p -> p.getPlayerTeam().getTeam().getId().equals(t1.getId())).collect(Collectors.toList());
                 Collections.shuffle(playerT1);
-                List<PersonalData> playerT2 = new ArrayList<>();
+                List<Player> playerT2 = new ArrayList<>();
                 Team finalT2 = t2;
                 playerT2 = players.stream().filter(p -> p.getPlayerTeam().getTeam().getId().equals(finalT2.getId())).collect(Collectors.toList());
                 Collections.shuffle(playerT2);
@@ -100,9 +107,11 @@ public class Generator {
                 int assistsT2 = goalsT2;
                 for (int j = 0; j < 14; j++) {
                     int minutes = ThreadLocalRandom.current().nextInt(5, 46);
+                    PlayerMatchPerformance pmp1 = new PlayerMatchPerformance(playerT1.get(j), m);
+                    PlayerMatchPerformance pmp2 = new PlayerMatchPerformance(playerT2.get(j), m);
                     if(j<=8) {
-                            PlayersMatch p1 = new PlayersMatch(playerT1.get(j), m, 90, goalsT1, assistsT1);
-                            PlayersMatch p2 = new PlayersMatch(playerT2.get(j), m, 90, goalsT2, assistsT2);
+                            Performance p1 = new Performance(pmp1, 90, goalsT1, assistsT1);
+                            Performance p2 = new Performance(pmp2, 90, goalsT2, assistsT2);
                             goalsT1 -= p1.getGoals();
                             goalsT2 -= p2.getGoals();
                             assistsT1 -= p1.getAssists();
@@ -111,12 +120,12 @@ public class Generator {
                             playersMatchRepo.save(p2);
                     }
                     else if(j>8 && j<=11) {
-                        playersMatchRepo.save(new PlayersMatch(playerT1.get(j), m, (90-minutes)));
-                        playersMatchRepo.save(new PlayersMatch(playerT2.get(j), m, (90-minutes)));
+                        playersMatchRepo.save(new Performance(pmp1, (90-minutes)));
+                        playersMatchRepo.save(new Performance(pmp2, (90-minutes)));
                     }
                     else {
-                        playersMatchRepo.save(new PlayersMatch(playerT1.get(j), m, minutes));
-                        playersMatchRepo.save(new PlayersMatch(playerT2.get(j), m, minutes));
+                        playersMatchRepo.save(new Performance(pmp1, minutes));
+                        playersMatchRepo.save(new Performance(pmp2, minutes));
                     }
 //                System.out.println("player match details: " + (j+1));
                 }
