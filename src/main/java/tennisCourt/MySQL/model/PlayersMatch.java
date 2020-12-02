@@ -12,6 +12,8 @@ public class PlayersMatch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToOne(mappedBy = "playersMatch", cascade = CascadeType.ALL)
+    private Accurate accurate;
     @ManyToOne
     @JoinColumn
     private PersonalData player;
@@ -39,7 +41,7 @@ public class PlayersMatch {
     public PlayersMatch() {
     }
 
-    public PlayersMatch(PersonalData player, Matches match, int minutes, int goals, int assists) {
+    public PlayersMatch(PersonalData player, Accurate accurate, Matches match, int minutes, int goals, int assists) {
         this.minutes = minutes;
         this.distance = minutes * 10 * ThreadLocalRandom.current().nextInt(8, 15);
         this.shots = (int) ((((float) minutes) / 90) * ThreadLocalRandom.current().nextInt(0, 5));
@@ -81,9 +83,13 @@ public class PlayersMatch {
         this.degree = degreeValue;
         this.player = player;
         this.matches = match;
+//        accurate.setPassesAccurate((c;
+//        accurate.setShotsAccurate(((float)this.shots_on_target)/this.shots);
+        this.accurate=accurate;
+        this.accurate.setPlayersMatch(this);
     }
 
-    public PlayersMatch(PersonalData player, Matches match, int minutes) {
+    public PlayersMatch(PersonalData player, Accurate accurate, Matches match, int minutes) {
         this.goals = 0;
         this.assists = 0;
         this.minutes = minutes;
@@ -118,6 +124,10 @@ public class PlayersMatch {
         this.degree = degreeValue;
         this.player = player;
         this.matches = match;
+//        accurate.setPassesAccurate(((float)this.accurate_passes)/this.passes);
+//        accurate.setShotsAccurate(((float)this.shots_on_target)/this.shots);
+        this.accurate=accurate;
+        this.accurate.setPlayersMatch(this);
     }
 
     public PlayersMatch(float deegree, int minutes, float distance, int shots, int shots_on_target, int goals,
