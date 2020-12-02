@@ -25,6 +25,9 @@ public class Generator {
     private PlayersMatchRepo playersMatchRepo;
     private PlayerTeamRepo playerTeamRepo;
     private TeamRepo teamRepo;
+    private StatisticsRepo statisticsRepo;
+    private EffectiveStatisticsRepo effectiveStatisticsRepo;
+    private RefereeStatisticsRepo refereeStatisticsRepo;
 
     public Generator() throws DataMuseException {
     }
@@ -32,7 +35,8 @@ public class Generator {
     @Autowired
     public Generator(CompetitionRepo competitionRepo, MatchCompetitionsRepo matchCompetitionsRepo,
                      MatchRepo matchRepo, PersonalDataRepo personalDataRepo, PlayersMatchRepo playersMatchRepo,
-                     PlayerTeamRepo playerTeamRepo, TeamRepo teamRepo) throws DataMuseException {
+                     PlayerTeamRepo playerTeamRepo, TeamRepo teamRepo, StatisticsRepo statisticsRepo,
+                     EffectiveStatisticsRepo effectiveStatisticsRepo, RefereeStatisticsRepo refereeStatisticsRepo) throws DataMuseException {
         this.competitionRepo = competitionRepo;
         this.matchCompetitionsRepo = matchCompetitionsRepo;
         this.matchRepo = matchRepo;
@@ -40,12 +44,15 @@ public class Generator {
         this.playersMatchRepo = playersMatchRepo;
         this.playerTeamRepo = playerTeamRepo;
         this.teamRepo = teamRepo;
+        this.statisticsRepo = statisticsRepo;
+        this.effectiveStatisticsRepo = effectiveStatisticsRepo;
+        this.refereeStatisticsRepo = refereeStatisticsRepo;
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void contextRefreshedEvent() throws DataMuseException {
         System.out.println("Start");
-        int teamsSize = 10;
+        int teamsSize = 3;
         int playersSize = 22;
         int matchesSize = 10;
         List<Competition> competitions = new ArrayList<Competition>();
@@ -99,40 +106,36 @@ public class Generator {
                 int assistsT1 = goalsT1;
                 int assistsT2 = goalsT2;
                 for (int j = 0; j < 14; j++) {
+                    Statistics s1 = new Statistics();
+                    Statistics s2 = new Statistics();
+                    EffectiveStatistics es1 = new EffectiveStatistics();
+                    EffectiveStatistics es2 = new EffectiveStatistics();
+                    RefereeStatistics rs1 = new RefereeStatistics();
+                    RefereeStatistics rs2 = new RefereeStatistics();
                     int minutes = ThreadLocalRandom.current().nextInt(5, 46);
                     if(j<=8) {
-                            PlayersMatch p1 = new PlayersMatch(playerT1.get(j), m, 90, goalsT1, assistsT1);
-                            PlayersMatch p2 = new PlayersMatch(playerT2.get(j), m, 90, goalsT2, assistsT2);
-                            goalsT1 -= p1.getGoals();
-                            goalsT2 -= p2.getGoals();
-                            assistsT1 -= p1.getAssists();
-                            assistsT2 -= p2.getAssists();
+                            PlayersMatch p1 = new PlayersMatch(playerT1.get(j), m, 90, goalsT1, assistsT1, s1, es1, rs1);
+                            PlayersMatch p2 = new PlayersMatch(playerT2.get(j), m, 90, goalsT2, assistsT2, s2, es2, rs2);
+                            goalsT1 -= rs1.getGoals();
+                            goalsT2 -= rs2.getGoals();
+                            assistsT1 -= rs1.getAssists();
+                            assistsT2 -= rs2.getAssists();
                             playersMatchRepo.save(p1);
                             playersMatchRepo.save(p2);
                     }
                     else if(j>8 && j<=11) {
-                        playersMatchRepo.save(new PlayersMatch(playerT1.get(j), m, (90-minutes)));
-                        playersMatchRepo.save(new PlayersMatch(playerT2.get(j), m, (90-minutes)));
+                        playersMatchRepo.save(new PlayersMatch(playerT1.get(j), m, (90-minutes), s1, es1, rs1));
+                        playersMatchRepo.save(new PlayersMatch(playerT2.get(j), m, (90-minutes), s2, es2, rs2));
                     }
                     else {
-                        playersMatchRepo.save(new PlayersMatch(playerT1.get(j), m, minutes));
-                        playersMatchRepo.save(new PlayersMatch(playerT2.get(j), m, minutes));
+                        playersMatchRepo.save(new PlayersMatch(playerT1.get(j), m, minutes, s1, es1, rs1));
+                        playersMatchRepo.save(new PlayersMatch(playerT2.get(j), m, minutes, s2, es2, rs2));
                     }
 //                System.out.println("player match details: " + (j+1));
                 }
             }
         }
         System.out.println("END");
-//        Competition com =  new Competition("dsdf");
-//        MatchCompetitions matchCompetitions = new MatchCompetitions(com);
-//        Team team1 = new Team();
-//        Team team2 = new Team();
-//        PlayerTeam pt1 = new PlayerTeam(team1);
-//        PersonalData pe = new PersonalData(pt1);
-//        Matches match = new Matches(matchCompetitions, team1, team2);
-//        PlayersMatch playersMatch1 = new PlayersMatch(pe, match, 90, 2, 4);
-//        PlayersMatch playersMatch2 = new PlayersMatch(pe, match, 60, 2, 4);
-//        System.out.println("adfsfsdf");
     }
 
 
