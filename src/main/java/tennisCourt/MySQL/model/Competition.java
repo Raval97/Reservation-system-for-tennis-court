@@ -25,7 +25,7 @@ public class Competition {
     public Competition(String name) {
         this.name = name;
         this.level = "1";
-        this.session = ThreadLocalRandom.current().nextInt(0, 2)%2==1 ? "zimowa" : "wiosenna";
+        this.session = ThreadLocalRandom.current().nextInt(0, 3)%2==1 ? "zimowa" : "wiosenna";
         this.number_of_teams = 25;
     }
 

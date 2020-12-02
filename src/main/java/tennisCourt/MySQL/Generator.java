@@ -26,13 +26,13 @@ public class Generator {
     private PlayerTeamRepo playerTeamRepo;
     private TeamRepo teamRepo;
 
-    public Generator() {
+    public Generator() throws DataMuseException {
     }
 
     @Autowired
     public Generator(CompetitionRepo competitionRepo, MatchCompetitionsRepo matchCompetitionsRepo,
                      MatchRepo matchRepo, PersonalDataRepo personalDataRepo, PlayersMatchRepo playersMatchRepo,
-                     PlayerTeamRepo playerTeamRepo, TeamRepo teamRepo) {
+                     PlayerTeamRepo playerTeamRepo, TeamRepo teamRepo) throws DataMuseException {
         this.competitionRepo = competitionRepo;
         this.matchCompetitionsRepo = matchCompetitionsRepo;
         this.matchRepo = matchRepo;
@@ -67,9 +67,10 @@ public class Generator {
             }
         }
 
-        Competition c1 = new Competition("Ekstraklasa");
-        Competition c2 = new Competition("Puchar Polski");
-        competitions.add(c1); competitions.add(c2);
+        Competition c1 = new Competition("Ekstraklasa", "1", "zimowa", 25);
+        Competition c2 = new Competition("Ekstraklasa", "1", "wiosenna", 25);
+        Competition c3 = new Competition("Puchar Polski", "1", "none", 25);
+        competitions.add(c1); competitions.add(c2); competitions.add(c3);
         int iter2= 0;
         for (Competition c: competitions) {
             competitionRepo.save(c);
@@ -98,13 +99,12 @@ public class Generator {
                 int assistsT1 = goalsT1;
                 int assistsT2 = goalsT2;
                 for (int j = 0; j < 14; j++) {
-                    int minutes = ThreadLocalRandom.current().nextInt(5, 45);
+                    int minutes = ThreadLocalRandom.current().nextInt(5, 46);
                     if(j<=8) {
-
                             PlayersMatch p1 = new PlayersMatch(playerT1.get(j), m, 90, goalsT1, assistsT1);
                             PlayersMatch p2 = new PlayersMatch(playerT2.get(j), m, 90, goalsT2, assistsT2);
                             goalsT1 -= p1.getGoals();
-                            goalsT1 -= p2.getGoals();
+                            goalsT2 -= p2.getGoals();
                             assistsT1 -= p1.getAssists();
                             assistsT2 -= p2.getAssists();
                             playersMatchRepo.save(p1);
@@ -122,9 +122,19 @@ public class Generator {
                 }
             }
         }
-
         System.out.println("END");
+//        Competition com =  new Competition("dsdf");
+//        MatchCompetitions matchCompetitions = new MatchCompetitions(com);
+//        Team team1 = new Team();
+//        Team team2 = new Team();
+//        PlayerTeam pt1 = new PlayerTeam(team1);
+//        PersonalData pe = new PersonalData(pt1);
+//        Matches match = new Matches(matchCompetitions, team1, team2);
+//        PlayersMatch playersMatch1 = new PlayersMatch(pe, match, 90, 2, 4);
+//        PlayersMatch playersMatch2 = new PlayersMatch(pe, match, 60, 2, 4);
+//        System.out.println("adfsfsdf");
     }
+
 
 }
 
